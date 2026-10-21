@@ -176,7 +176,10 @@
         "number_label": "Rinkinys",
         "contents_label": "Rinkinyje",
         "view_label": "Žiūrėti rinkinį",
-        "collection": "emergency-kits"
+        "collection": "emergency-kits",
+        "source": "collection",
+        "kits_to_show": 6,
+        "all_label": "Visi rinkiniai"
       }
     },
     "brands": {

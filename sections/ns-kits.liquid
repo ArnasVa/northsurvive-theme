@@ -1,31 +1,32 @@
 {%- comment -%}
   NorthSurvive · sections/ns-kits.liquid
-  Preparedness kits shown as large cards with real products, prices and stock.
+  Preparedness kits as large cards with real products, prices and stock.
+  Built to grow: any number of kits.
 
-  Two ways to fill it:
-  1. Kit blocks (recommended): pick each kit product and, optionally, write
-     a short calm summary, a display title and the "Komplekte" list
-     (one item per line). Text left empty falls back to the product data.
-  2. No blocks: the first three products of the chosen collection.
-
-  "Komplekte" list, in order of preference: the block's list, the product
-  metafield ns.kit_components (product references), the product metafield
-  ns.in_the_box (text list). Without any of these the summary is shown.
+  Source (setting):
+  - "Collection" (recommended): every kit in the chosen collection is shown
+    automatically, in the collection's sort order. A new kit appears as soon
+    as it is added to the collection. Kit blocks are then optional
+    overrides: a block for the same product sets its display title,
+    summary and "Rinkinyje" list.
+  - "Chosen kits": only the kit blocks, in block order.
 
   Nothing renders on the live store while there are no kits to show.
 {%- endcomment -%}
 {%- liquid
-  assign use_blocks = false
+  assign source = section.settings.source
+  assign collection = section.settings.collection
+  assign limit = section.settings.kits_to_show
   assign kit_count = 0
-  for block in section.blocks
-    if block.settings.product != blank
-      assign use_blocks = true
-      assign kit_count = kit_count | plus: 1
-    endif
-  endfor
-  if use_blocks == false and section.settings.collection != blank
-    for product in section.settings.collection.products limit: 3
-      assign kit_count = kit_count | plus: 1
+
+  if source == 'collection' and collection != blank
+    assign kit_count = collection.products_count
+  else
+    assign source = 'blocks'
+    for block in section.blocks
+      if block.settings.product != blank
+        assign kit_count = kit_count | plus: 1
+      endif
     endfor
   endif
 -%}
@@ -42,16 +43,48 @@
           {%- endif -%}
           <h2 id="KitsHeading-{{ section.id }}" class="section-head__title">{{ section.settings.heading | escape }}</h2>
         </div>
-        {%- if section.settings.text != blank -%}
-          <p class="section-head__text">{{ section.settings.text | escape }}</p>
-        {%- endif -%}
+        <div class="kits__head-aside">
+          {%- if section.settings.text != blank -%}
+            <p class="section-head__text">{{ section.settings.text | escape }}</p>
+          {%- endif -%}
+          {%- if source == 'collection' and kit_count > limit and section.settings.all_label != blank -%}
+            <a href="{{ collection.url }}" class="text-link">
+              {{ section.settings.all_label | escape }}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+        </div>
       </div>
 
-      <ul class="kits__grid" role="list">
-        {%- if use_blocks -%}
+      <ul class="kits__grid kits__grid--{% if kit_count > limit %}{{ limit }}{% else %}{{ kit_count }}{% endif %}" role="list">
+        {%- if source == 'collection' -%}
+          {%- for product in collection.products limit: limit -%}
+            {%- liquid
+              assign override = nil
+              for block in section.blocks
+                if block.settings.product.id == product.id
+                  assign override = block
+                  break
+                endif
+              endfor
+            -%}
+            <li class="kits__item" {% if override %}{{ override.shopify_attributes }}{% endif %}>
+              {%- render 'kit-card',
+                product: product,
+                index: forloop.index,
+                title: override.settings.title,
+                summary: override.settings.summary,
+                contents: override.settings.contents,
+                number_label: section.settings.number_label,
+                view_label: section.settings.view_label,
+                contents_label: section.settings.contents_label
+              -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
           {%- assign index = 0 -%}
           {%- for block in section.blocks -%}
-            {%- if block.settings.product != blank -%}
+            {%- if block.settings.product != blank and index < limit -%}
               {%- assign index = index | plus: 1 -%}
               <li class="kits__item" {{ block.shopify_attributes }}>
                 {%- render 'kit-card',
@@ -67,10 +100,6 @@
               </li>
             {%- endif -%}
           {%- endfor -%}
-        {%- else -%}
-          {%- for product in section.settings.collection.products limit: 3 -%}
-            <li class="kits__item">{% render 'kit-card', product: product, index: forloop.index, number_label: section.settings.number_label, view_label: section.settings.view_label, contents_label: section.settings.contents_label %}</li>
-          {%- endfor -%}
         {%- endif -%}
       </ul>
     </div>
@@ -85,7 +114,7 @@
 {
   "name": "NS · Kits",
   "tag": "div",
-  "max_blocks": 3,
+  "max_blocks": 24,
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Pasiruošimo komplektai" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Pasiruošimas. Apgalvotas už jus." },
@@ -93,12 +122,26 @@
     { "type": "text", "id": "number_label", "label": "Number label", "default": "Rinkinys", "info": "Shown above each title as \"Rinkinys 01\". Leave empty to hide." },
     { "type": "text", "id": "contents_label", "label": "Contents heading", "default": "Rinkinyje" },
     { "type": "text", "id": "view_label", "label": "Link label", "default": "Žiūrėti rinkinį" },
+    { "type": "header", "content": "Which kits to show" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "value": "collection", "label": "All kits from a collection (automatic)" },
+        { "value": "blocks", "label": "Only kits I choose (kit blocks)" }
+      ],
+      "default": "collection"
+    },
     {
       "type": "collection",
       "id": "collection",
-      "label": "Kits collection (used when there are no kit blocks)",
-      "info": "Shows the first three products."
-    }
+      "label": "Kits collection",
+      "info": "Order follows the collection's sort order (Products › Collections › Sort)."
+    },
+    { "type": "range", "id": "kits_to_show", "label": "Maximum kits shown", "min": 2, "max": 12, "step": 1, "default": 6 },
+    { "type": "text", "id": "all_label", "label": "\"All kits\" link label", "default": "Visi rinkiniai", "info": "Shown when the collection has more kits than the maximum." },
+    { "type": "paragraph", "content": "Kit blocks: with the collection source they are optional overrides (title, summary, contents) for the same product." }
   ],
   "blocks": [
     {
