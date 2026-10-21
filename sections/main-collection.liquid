@@ -19,12 +19,14 @@
       {% render 'breadcrumbs' %}
     {%- endif -%}
 
-    <header class="collection__head">
-      <h1 class="collection__title">{{ collection.title | escape }}</h1>
-      {%- if section.settings.show_description and collection.description != blank -%}
-        <div class="collection__intro rte">{{ collection.description }}</div>
-      {%- endif -%}
-    </header>
+    {%- if section.settings.show_heading -%}
+      <header class="collection__head">
+        <h1 class="collection__title">{{ collection.title | escape }}</h1>
+        {%- if section.settings.description_position == 'top' and collection.description != blank -%}
+          <div class="collection__intro rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
 
     {%- liquid
       assign active_count = 0
@@ -223,6 +225,15 @@
         {%- endif -%}
       </div>
     </div>
+
+    {%- if section.settings.description_position == 'bottom' and collection.description != blank and paginate.current_page == 1 -%}
+      <div class="collection__about">
+        {%- if section.settings.description_heading != blank -%}
+          <h2 class="collection__about-heading">{{ section.settings.description_heading | escape }}</h2>
+        {%- endif -%}
+        <div class="rte collection__about-text">{{ collection.description }}</div>
+      </div>
+    {%- endif -%}
   </ns-facets>
 {%- endpaginate -%}
 
@@ -232,8 +243,20 @@
   "tag": "section",
   "class": "section-main-collection",
   "settings": [
-    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
-    { "type": "checkbox", "id": "show_description", "label": "Show collection description above products", "default": true, "info": "Keep it short. Longer texts work best in a section below the products." },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": false, "info": "The Collection banner already shows breadcrumbs." },
+    { "type": "checkbox", "id": "show_heading", "label": "Show title above products", "default": false, "info": "Turn on only if the Collection banner is hidden." },
+    {
+      "type": "select",
+      "id": "description_position",
+      "label": "Full collection description",
+      "options": [
+        { "value": "bottom", "label": "Below the products" },
+        { "value": "top", "label": "Above the products (with title)" },
+        { "value": "hidden", "label": "Hidden" }
+      ],
+      "default": "bottom"
+    },
+    { "type": "text", "id": "description_heading", "label": "Heading above the description", "default": "Daugiau apie kategoriją" },
     { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 24 },
     { "type": "checkbox", "id": "enable_filtering", "label": "Enable filters", "default": true, "info": "Choose the filters in the Shopify Search & Discovery app." },
     { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },

@@ -6,6 +6,16 @@
   Until an editorial photo is uploaded, a product's main image can stand in.
   Use it for visual storytelling between the shopping sections.
 {%- endcomment -%}
+{%- liquid
+  # On page templates this section shows only on the page picked in its settings.
+  assign ns_hidden = false
+  if template.name == 'page'
+    if section.settings.only_page == blank or section.settings.only_page.handle != page.handle
+      assign ns_hidden = true
+    endif
+  endif
+-%}
+{%- unless ns_hidden -%}
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
@@ -61,11 +71,14 @@
   </div>
 </section>
 
+{%- endunless -%}
+
 {% schema %}
 {
   "name": "NS · Image banner",
   "tag": "div",
   "settings": [
+    { "type": "page", "id": "only_page", "label": "Show on page", "info": "Only used on page templates, e.g. \"Apie mus\". Empty there: the section is hidden." },
     { "type": "image_picker", "id": "image", "label": "Image", "info": "Editorial photo, at least 1600 px wide." },
     {
       "type": "product",

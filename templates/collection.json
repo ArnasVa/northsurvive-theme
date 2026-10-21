@@ -3,12 +3,14 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "show_breadcrumbs": true,
-        "show_description": true,
+        "show_breadcrumbs": false,
         "products_per_page": 24,
         "enable_filtering": true,
         "enable_sorting": true,
-        "show_quick_add": true
+        "show_quick_add": true,
+        "show_heading": false,
+        "description_position": "bottom",
+        "description_heading": "Daugiau apie kategoriją"
       }
     },
     "kits_banner": {
@@ -114,15 +116,76 @@
             "heading": "Informacija be interneto.",
             "text": "<p>SANGEAN avarinius radijus atrinkome tam, kad žinotumėte, kas vyksta, net neveikiant mobiliajam ryšiui ar internetui.</p>"
           }
+        },
+        "cat_kits": {
+          "type": "brand",
+          "settings": {
+            "collection": "emergency-kits",
+            "eyebrow": "Rinkiniai",
+            "heading": "Pasiruošimas viename rinkinyje.",
+            "text": "<p>Kiekvienas rinkinys sudarytas iš atrinktų, patikrintų produktų. Nereikia rinktis kiekvieno daikto atskirai: viskas jau sudėta kartu.</p>"
+          }
+        },
+        "cat_light": {
+          "type": "brand",
+          "settings": {
+            "collection": "zibintuveliai",
+            "eyebrow": "Apšvietimas",
+            "heading": "Šviesa, kai dingsta elektra.",
+            "text": "<p>Žibintuvėliai ir galvos lempos namams, kelionėms ir netikėtoms situacijoms. Atrinkome patikimus, paprastai valdomus modelius.</p>"
+          }
+        },
+        "cat_power": {
+          "type": "brand",
+          "settings": {
+            "collection": "isorines-baterijos-ir-saules-paneles",
+            "eyebrow": "Energija",
+            "heading": "Telefonas veikia ir be elektros tinklo.",
+            "text": "<p>Išoriniai akumuliatoriai ir saulės panelės, padedantys išlaikyti ryšį ir svarbiausius prietaisus, kai elektros nėra.</p>"
+          }
+        },
+        "cat_aid": {
+          "type": "brand",
+          "settings": {
+            "collection": "pirmosios-pagalbos-rinkiniai",
+            "eyebrow": "Pirmoji pagalba",
+            "heading": "Pasiruošta iš anksto.",
+            "text": "<p>Pirmosios pagalbos rinkiniai namams, automobiliui ir kelionėms. Viskas, ko gali prireikti, vienoje vietoje.</p>"
+          }
+        },
+        "cat_radio": {
+          "type": "brand",
+          "settings": {
+            "collection": "avariniai-radijai",
+            "eyebrow": "Avariniai radijai",
+            "heading": "Informacija be interneto.",
+            "text": "<p>Radijai, kurie leidžia sužinoti, kas vyksta, net neveikiant mobiliajam ryšiui ar internetui.</p>"
+          }
         }
       },
       "block_order": [
         "b1",
         "b2",
         "b3",
-        "b4"
+        "b4",
+        "cat_kits",
+        "cat_light",
+        "cat_power",
+        "cat_aid",
+        "cat_radio"
       ],
-      "settings": {}
+      "settings": {
+        "show_default": true,
+        "show_breadcrumbs": true,
+        "color": "white",
+        "default_eyebrow": "Atrinkta NorthSurvive",
+        "intro_words": 28,
+        "point_1": "Atrinkti patikimų prekės ženklų produktai",
+        "point_2": "Rinkiniai sudaryti iš patikrintų produktų",
+        "point_3": "Kiekvienas produktas turi aiškią paskirtį",
+        "button_label": "Kaip atrenkame produktus",
+        "button_link": "shopify://pages/apie-mus"
+      }
     }
   },
   "order": [

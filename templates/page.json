@@ -1,6 +1,60 @@
 {
   "sections": {
-    "main": { "type": "main-page", "settings": {} }
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "about": {
+      "type": "ns-about",
+      "blocks": {
+        "c1": {
+          "type": "criterion",
+          "settings": {
+            "title": "Aiški paskirtis",
+            "text": "Kiekvienas produktas sprendžia konkrečią situaciją: šviesa, energija, informacija ar pirmoji pagalba."
+          }
+        },
+        "c2": {
+          "type": "criterion",
+          "settings": {
+            "title": "Patikimas gamintojas",
+            "text": "Renkamės prekės ženklus su aiškia garantija ir dokumentacija."
+          }
+        },
+        "c3": {
+          "type": "criterion",
+          "settings": {
+            "title": "Paprasta naudoti",
+            "text": "Įranga, kurią suprasite ir tamsoje, ir skubant."
+          }
+        },
+        "c4": {
+          "type": "criterion",
+          "settings": {
+            "title": "Patikrinta rinkiniuose",
+            "text": "Į rinkinius dedame tik tuos produktus, kuriuos atrinkome ir patikrinome."
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "Kaip atrenkame",
+        "heading": "Atrenkame tai, kuo verta pasikliauti.",
+        "text": "<p>NorthSurvive nėra didelis katalogas. Atrenkame nedaug, bet patikimų dalykų, kurie padeda jaustis ramiau namie, kelyje ir gamtoje.</p>",
+        "button_label": "Rinktis rinkinį",
+        "button_link": "shopify://collections/emergency-kits",
+        "criteria_label": "Kriterijus",
+        "only_page": "apie-mus"
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "about"
+  ]
 }

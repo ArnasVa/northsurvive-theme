@@ -58,6 +58,13 @@
             "source": "custom",
             "content": ""
           }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "words": 35,
+            "link_label": "Skaityti visą aprašymą"
+          }
         }
       },
       "block_order": [
@@ -65,6 +72,7 @@
         "title",
         "spec_line",
         "price",
+        "description",
         "variant_picker",
         "buy_buttons",
         "benefits",

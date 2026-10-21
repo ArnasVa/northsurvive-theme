@@ -228,6 +228,35 @@
               </ul>
             {%- endif -%}
 
+          {%- when 'description' -%}
+            {%- liquid
+              assign short_text = product.metafields.custom.short_description.value
+              assign desc_plain = product.description | replace: '</p>', ' </p>' | replace: '<br', ' <br' | replace: '</li>', ' </li>' | strip_html | strip_newlines | strip
+              assign desc_words = desc_plain | split: ' '
+              assign is_truncated = false
+              if short_text == blank and desc_plain != blank
+                if block.settings.words > 0 and desc_words.size > block.settings.words
+                  assign short_text = desc_plain | truncatewords: block.settings.words
+                  assign is_truncated = true
+                else
+                  assign short_text = desc_plain
+                endif
+              elsif short_text != blank
+                assign is_truncated = true
+              endif
+            -%}
+            {%- if short_text != blank -%}
+              <div class="product__description" {{ block.shopify_attributes }}>
+                <p>{{ short_text | escape | newline_to_br }}</p>
+                {%- if is_truncated and block.settings.link_label != blank -%}
+                  <a href="#ProductDetails" class="text-link product__description-link">
+                    {{ block.settings.link_label | escape }}
+                    {% render 'icon', name: 'chevron-down' %}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
               <div class="product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
@@ -311,6 +340,11 @@
     ] },
     { "type": "benefits", "name": "Key benefits", "limit": 1, "settings": [
       { "type": "paragraph", "content": "Uses the product metafield custom.key_benefits (list of single line text). Hidden when empty." }
+    ] },
+    { "type": "description", "name": "Short description", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Uses the product metafield custom.short_description (multi-line text) when filled. Otherwise the first words of the product description." },
+      { "type": "range", "id": "words", "label": "Words from the description", "min": 10, "max": 80, "step": 5, "default": 35 },
+      { "type": "text", "id": "link_label", "label": "Link to the full description", "default": "Skaityti visą aprašymą" }
     ] },
     { "type": "text", "name": "Text", "settings": [
       { "type": "richtext", "id": "text", "label": "Text" }

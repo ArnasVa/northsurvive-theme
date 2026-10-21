@@ -18,7 +18,7 @@
 {%- if product.description != blank or has_specs -%}
   {{ 'section-product-details.css' | asset_url | stylesheet_tag }}
 
-  <section class="section product-details" aria-labelledby="DetailsHeading-{{ section.id }}">
+  <section id="ProductDetails" class="section product-details" aria-labelledby="DetailsHeading-{{ section.id }}">
     <div class="page-width product-details__grid{% unless has_specs %} product-details__grid--single{% endunless %}">
       {%- if product.description != blank -%}
         <div class="product-details__description">

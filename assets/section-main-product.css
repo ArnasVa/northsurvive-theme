@@ -150,3 +150,8 @@
   }
   .product__info { position: static; }
 }
+
+/* Short description next to the buy button */
+.product__description { display: grid; gap: var(--space-3); justify-items: start; font-size: 1rem; line-height: 1.6; color: var(--color-graphite); }
+.product__description p { margin: 0; max-width: 58ch; }
+.product__description-link { font-size: 0.9375rem; }

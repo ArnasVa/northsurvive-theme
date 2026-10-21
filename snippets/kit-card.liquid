@@ -10,6 +10,8 @@
   @param {string} [number_label] - Label before the number, e.g. "Komplektas"
   @param {string} [contents_label] - Heading above the contents list
   @param {string} [view_label] - Link label
+  @param {boolean} [show_contents] - Show the contents list (default false)
+  @param {number} [summary_words] - Words of the description used as summary (default 14, 0 hides)
 
   @example
   {% render 'kit-card', product: product, index: 1 %}
@@ -20,10 +22,17 @@
   assign in_the_box = product.metafields.custom.in_the_box.value
   assign contents_lines = contents | strip | newline_to_br | split: '<br />'
 
+  assign words = summary_words | default: 14
+  assign has_contents = false
+  if show_contents
+    if contents != blank or components != blank or in_the_box != blank
+      assign has_contents = true
+    endif
+  endif
   if summary != blank
     assign kit_summary = summary
-  elsif product.description != blank
-    assign kit_summary = product.description | strip_html | truncatewords: 22
+  elsif product.description != blank and words > 0
+    assign kit_summary = product.description | replace: '</p>', ' </p>' | strip_html | strip_newlines | truncatewords: words
   endif
 -%}
 
@@ -58,7 +67,7 @@
       <p class="muted kit-card__excerpt">{{ kit_summary | escape }}</p>
     {%- endif -%}
 
-    {%- if contents != blank or components != blank or in_the_box != blank -%}
+    {%- if has_contents -%}
       <div class="kit-card__contents">
         <p class="eyebrow">{%- if contents_label != blank -%}{{ contents_label | escape }}{%- else -%}{{ 'sections.kits.contents' | t }}{%- endif -%}</p>
         <ul role="list">

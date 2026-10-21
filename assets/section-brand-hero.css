@@ -1,13 +1,25 @@
-/* NorthSurvive · assets/section-brand-hero.css — brand intro on brand collection pages */
+/* NorthSurvive · assets/section-brand-hero.css — collection banner at the top of collection pages */
 
-.brand-hero { padding-block: var(--space-6) 0; background: var(--color-white); border-bottom: 1px solid var(--color-line); }
+.brand-hero { padding-block: var(--space-5) 0; background: var(--color-white); border-bottom: 1px solid var(--color-line); }
+.brand-hero--paper { background: var(--color-paper); }
 .brand-hero__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-bottom: var(--space-7); }
-.brand-hero__copy { display: grid; gap: var(--space-5); justify-items: start; }
+.brand-hero__copy { display: grid; gap: var(--space-5); justify-items: start; align-content: center; }
+.brand-hero__copy .breadcrumbs { margin: 0; }
+.brand-hero__eyebrow { margin: 0; color: var(--color-orange); }
 .brand-hero__logo { width: auto; max-width: 13.75rem; max-height: 3.5rem; object-fit: contain; }
-.brand-hero__heading { font-family: var(--font-display); font-size: clamp(2rem, 1.2rem + 2.8vw, 3.5rem); font-weight: 600; line-height: 1.02; letter-spacing: -0.04em; max-width: 14ch; }
+.brand-hero__heading { margin: 0; font-family: var(--font-display); font-size: clamp(2.25rem, 1.3rem + 3vw, 3.75rem); font-weight: 600; line-height: 1.02; letter-spacing: -0.04em; max-width: 14ch; color: var(--color-ink); }
 .brand-hero__text { max-width: 46ch; font-size: 1.0625rem; color: var(--color-stone); }
-.brand-hero__media { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius-card); background: #e9e9e6; }
+.brand-hero__text p { margin: 0; }
+
+.brand-hero__points { display: grid !important; gap: var(--space-2); padding: 0 !important; margin: 0; list-style: none; }
+.brand-hero__points li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 0.9375rem; color: var(--color-graphite); }
+.brand-hero__points .icon { flex: none; width: 1.125rem; height: 1.125rem; margin-top: 0.15em; color: var(--color-orange); stroke-width: 2; }
+
+.brand-hero__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius-card); background: #e9e9e6; }
 .brand-hero__image { width: 100%; height: 100%; object-fit: cover; }
+.brand-hero__media--product { background: var(--color-paper); }
+.brand-hero--paper .brand-hero__media--product { background: var(--color-white); }
+.brand-hero__media--product .brand-hero__image { object-fit: contain; padding: clamp(1.5rem, 4vw, 3.5rem); mix-blend-mode: multiply; }
 .brand-hero__placeholder { width: 100%; height: 100%; background: linear-gradient(120deg, rgba(255, 214, 170, 0.4), rgba(255, 214, 170, 0) 50%), linear-gradient(180deg, #dcdad4, #c3c1ba); }
 
 .brand-hero__strengths { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-6); padding-block: var(--space-6) var(--space-7) !important; border-top: 1px solid var(--color-line); }
@@ -16,6 +28,7 @@
 .brand-hero__strengths .muted { font-size: 0.9375rem; }
 
 @media (max-width: 899px) {
-  .brand-hero__grid { grid-template-columns: 1fr; }
-  .brand-hero__media { order: -1; }
+  .brand-hero__grid { grid-template-columns: 1fr; gap: var(--space-5); padding-bottom: var(--space-6); }
+  .brand-hero__media { aspect-ratio: 16 / 10; }
+  .brand-hero__copy .breadcrumbs { order: -2; }
 }

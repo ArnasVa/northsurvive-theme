@@ -4,6 +4,16 @@
   paragraph and a button, followed by the selection criteria (blocks).
   The criteria should describe how products are really chosen.
 {%- endcomment -%}
+{%- liquid
+  # On page templates this section shows only on the page picked in its settings.
+  assign ns_hidden = false
+  if template.name == 'page'
+    if section.settings.only_page == blank or section.settings.only_page.handle != page.handle
+      assign ns_hidden = true
+    endif
+  endif
+-%}
+{%- unless ns_hidden -%}
 {{ 'section-about.css' | asset_url | stylesheet_tag }}
 
 <section class="section about" aria-labelledby="AboutHeading-{{ section.id }}">
@@ -46,12 +56,15 @@
   </div>
 </section>
 
+{%- endunless -%}
+
 {% schema %}
 {
   "name": "NS · About",
   "tag": "div",
   "max_blocks": 4,
   "settings": [
+    { "type": "page", "id": "only_page", "label": "Show on page", "info": "Only used on page templates, e.g. \"Apie mus\". Empty there: the section is hidden." },
     { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Apie NorthSurvive" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Atrenkame tai, kuo verta pasikliauti." },
     {

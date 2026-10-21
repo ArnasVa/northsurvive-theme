@@ -77,7 +77,9 @@
                 contents: override.settings.contents,
                 number_label: section.settings.number_label,
                 view_label: section.settings.view_label,
-                contents_label: section.settings.contents_label
+                contents_label: section.settings.contents_label,
+                show_contents: section.settings.show_contents,
+                summary_words: section.settings.summary_words
               -%}
             </li>
           {%- endfor -%}
@@ -95,7 +97,9 @@
                   contents: block.settings.contents,
                   number_label: section.settings.number_label,
                   view_label: section.settings.view_label,
-                  contents_label: section.settings.contents_label
+                  contents_label: section.settings.contents_label,
+                  show_contents: section.settings.show_contents,
+                  summary_words: section.settings.summary_words
                 -%}
               </li>
             {%- endif -%}
@@ -120,6 +124,9 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Pasiruošimas. Apgalvotas už jus." },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Praktiški įrangos deriniai, padedantys pasiruošti svarbiausioms situacijoms." },
     { "type": "text", "id": "number_label", "label": "Number label", "default": "Rinkinys", "info": "Shown above each title as \"Rinkinys 01\". Leave empty to hide." },
+    { "type": "header", "content": "Kit cards" },
+    { "type": "range", "id": "summary_words", "label": "Summary length (words)", "min": 0, "max": 30, "step": 2, "default": 14, "info": "0 hides the summary. A summary written in a block is always shown in full." },
+    { "type": "checkbox", "id": "show_contents", "label": "Show kit contents list", "default": false, "info": "Lists the products in each kit. Off keeps the cards short." },
     { "type": "text", "id": "contents_label", "label": "Contents heading", "default": "Rinkinyje" },
     { "type": "text", "id": "view_label", "label": "Link label", "default": "Žiūrėti rinkinį" },
     { "type": "header", "content": "Which kits to show" },

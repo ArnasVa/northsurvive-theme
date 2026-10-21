@@ -1,10 +1,15 @@
 {%- comment -%}
-  NorthSurvive · sections/ns-brand-hero.liquid
-  Brand introduction shown above the products on a brand's collection page.
-  Add one "Brand" block per brand and pick its collection. On each
-  collection page only the matching block is shown; on all other
-  collections this section shows nothing. So every brand page is edited
-  here, in the theme editor, without separate templates.
+  NorthSurvive · sections/ns-brand-hero.liquid  ("NS · Collection banner")
+  The banner at the top of every collection page: title, short text,
+  photo, trust points and a button (e.g. to the "Apie mus" page).
+
+  How content is chosen:
+  1. If a "Collection" block is set for the current collection, its texts
+     and image are used (good for brands and main categories).
+  2. Otherwise the banner is built automatically: collection title,
+     the first words of the collection description, and the collection
+     image (or, if it has none, the first product's photo).
+  Trust points and the button are shared by all collections.
   Only write facts you can stand behind: no invented history or awards.
 {%- endcomment -%}
 {%- liquid
@@ -15,31 +20,87 @@
       break
     endif
   endfor
+
+  assign show_banner = false
+  if brand or section.settings.show_default
+    assign show_banner = true
+  endif
 -%}
 
-{%- if brand -%}
+{%- if show_banner -%}
   {{ 'section-brand-hero.css' | asset_url | stylesheet_tag }}
-  {%- assign brand_image = brand.settings.image | default: collection.featured_image -%}
+  {%- liquid
+    assign banner_image = nil
+    assign image_is_product = false
+    if brand and brand.settings.image != blank
+      assign banner_image = brand.settings.image
+    elsif collection.featured_image != blank
+      assign banner_image = collection.featured_image
+    elsif collection.products.first.featured_media != blank
+      assign banner_image = collection.products.first.featured_media.preview_image
+      assign image_is_product = true
+    endif
 
-  <section class="brand-hero" {{ brand.shopify_attributes }}>
+    if brand and brand.settings.text != blank
+      assign banner_text = brand.settings.text
+    elsif collection.description != blank and section.settings.intro_words > 0
+      assign banner_text = collection.description | replace: '</p>', ' </p>' | replace: '<br', ' <br' | strip_html | strip_newlines | truncatewords: section.settings.intro_words | prepend: '<p>' | append: '</p>'
+    endif
+
+    assign has_points = false
+    if section.settings.point_1 != blank or section.settings.point_2 != blank or section.settings.point_3 != blank
+      assign has_points = true
+    endif
+  -%}
+
+  <section class="brand-hero brand-hero--{{ section.settings.color }}" {% if brand %}{{ brand.shopify_attributes }}{% endif %}>
     <div class="brand-hero__grid page-width">
       <div class="brand-hero__copy">
-        {%- if brand.settings.logo != blank -%}
-          {{ brand.settings.logo | image_url: width: 480 | image_tag: class: 'brand-hero__logo', loading: 'eager', alt: collection.title, widths: '240, 360, 480', sizes: '220px' }}
-        {%- elsif brand.settings.eyebrow != blank -%}
-          <p class="eyebrow">{{ brand.settings.eyebrow | escape }}</p>
+        {%- if section.settings.show_breadcrumbs -%}
+          {% render 'breadcrumbs' %}
         {%- endif -%}
-        {%- if brand.settings.heading != blank -%}
-          <p class="brand-hero__heading">{{ brand.settings.heading | escape }}</p>
+
+        {%- if brand -%}
+          {%- if brand.settings.logo != blank -%}
+            {{ brand.settings.logo | image_url: width: 480 | image_tag: class: 'brand-hero__logo', loading: 'eager', alt: '', widths: '240, 360, 480', sizes: '220px' }}
+            <h1 class="visually-hidden">{{ collection.title | escape }}</h1>
+          {%- else -%}
+            <h1 class="eyebrow brand-hero__eyebrow">{{ brand.settings.eyebrow | default: collection.title | escape }}</h1>
+          {%- endif -%}
+          {%- if brand.settings.heading != blank -%}
+            <p class="brand-hero__heading">{{ brand.settings.heading | escape }}</p>
+          {%- endif -%}
+        {%- else -%}
+          {%- if section.settings.default_eyebrow != blank -%}
+            <p class="eyebrow brand-hero__eyebrow">{{ section.settings.default_eyebrow | escape }}</p>
+          {%- endif -%}
+          <h1 class="brand-hero__heading">{{ collection.title | escape }}</h1>
         {%- endif -%}
-        {%- if brand.settings.text != blank -%}
-          <div class="brand-hero__text rte">{{ brand.settings.text }}</div>
+
+        {%- if banner_text != blank -%}
+          <div class="brand-hero__text rte">{{ banner_text }}</div>
+        {%- endif -%}
+
+        {%- if has_points -%}
+          <ul class="brand-hero__points" role="list">
+            {%- if section.settings.point_1 != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ section.settings.point_1 | escape }}</span></li>{%- endif -%}
+            {%- if section.settings.point_2 != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ section.settings.point_2 | escape }}</span></li>{%- endif -%}
+            {%- if section.settings.point_3 != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ section.settings.point_3 | escape }}</span></li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+          <a href="{{ section.settings.button_link }}" class="button button--secondary brand-hero__button">
+            {{ section.settings.button_label | escape }}
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
         {%- endif -%}
       </div>
-      <div class="brand-hero__media">
-        {%- if brand_image != blank -%}
-          {%- assign brand_alt = brand_image.alt | default: collection.title -%}
-          {{ brand_image | image_url: width: 1600 | image_tag: class: 'brand-hero__image', loading: 'eager', widths: '600, 900, 1200, 1600', sizes: '(min-width: 900px) 50vw, 100vw', alt: brand_alt }}
+
+      <div class="brand-hero__media{% if image_is_product %} brand-hero__media--product{% endif %}">
+        {%- if banner_image != blank -%}
+          {%- assign banner_alt = banner_image.alt | default: collection.title -%}
+          {{ banner_image | image_url: width: 1600 | image_tag: class: 'brand-hero__image', loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200, 1600', sizes: '(min-width: 900px) 55vw, 100vw', alt: banner_alt }}
         {%- else -%}
           <div class="brand-hero__placeholder" aria-hidden="true"></div>
         {%- endif -%}
@@ -48,8 +109,10 @@
 
     {%- liquid
       assign has_strengths = false
-      if brand.settings.strength_1_title != blank or brand.settings.strength_2_title != blank or brand.settings.strength_3_title != blank
-        assign has_strengths = true
+      if brand
+        if brand.settings.strength_1_title != blank or brand.settings.strength_2_title != blank or brand.settings.strength_3_title != blank
+          assign has_strengths = true
+        endif
       endif
     -%}
     {%- if has_strengths -%}
@@ -68,29 +131,46 @@
       </div>
     {%- endif -%}
   </section>
-{%- elsif request.design_mode and section.blocks.size == 0 -%}
-  <div class="page-width section--tight">
-    <p class="muted">{{ 'sections.brand.empty_editor' | t }}</p>
-  </div>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "NS · Brand intro",
+  "name": "NS · Collection banner",
   "tag": "div",
   "settings": [
-    { "type": "paragraph", "content": "One block per brand. Each block appears only on the collection you pick for it." }
+    { "type": "paragraph", "content": "Shown at the top of collection pages. Add a \"Collection\" block to write your own text and image for one collection; other collections use their own title, description and image." },
+    { "type": "checkbox", "id": "show_default", "label": "Show on collections without a block", "default": true, "info": "If you turn this off, turn on \"Show title and description\" in the Collection products section." },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Background",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "paper", "label": "Paper" }
+      ],
+      "default": "white"
+    },
+    { "type": "text", "id": "default_eyebrow", "label": "Small label above the title", "default": "Atrinkta NorthSurvive" },
+    { "type": "range", "id": "intro_words", "label": "Words from the collection description", "min": 0, "max": 60, "step": 2, "default": 28, "info": "The full description can be shown under the products (Collection products section)." },
+    { "type": "header", "content": "Trust points" },
+    { "type": "text", "id": "point_1", "label": "Point 1", "default": "Atrinkti patikimų prekės ženklų produktai" },
+    { "type": "text", "id": "point_2", "label": "Point 2", "default": "Rinkiniai sudaryti iš patikrintų produktų" },
+    { "type": "text", "id": "point_3", "label": "Point 3", "default": "Kiekvienas produktas turi aiškią paskirtį" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Label", "default": "Kaip atrenkame produktus" },
+    { "type": "url", "id": "button_link", "label": "Link", "info": "For example your \"Apie mus\" page." }
   ],
   "blocks": [
     {
       "type": "brand",
-      "name": "Brand",
+      "name": "Collection",
       "settings": [
-        { "type": "collection", "id": "collection", "label": "Brand collection" },
-        { "type": "image_picker", "id": "logo", "label": "Official logo", "info": "The brand's own logo file. Dark on transparent works best." },
-        { "type": "text", "id": "eyebrow", "label": "Small label (shown when there is no logo)" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "logo", "label": "Brand logo (optional)", "info": "The brand's own logo file. Dark on transparent works best." },
+        { "type": "text", "id": "eyebrow", "label": "Small label", "info": "Empty: the collection title is used." },
         { "type": "text", "id": "heading", "label": "Statement" },
-        { "type": "richtext", "id": "text", "label": "Why we chose this brand" },
+        { "type": "richtext", "id": "text", "label": "Text" },
         { "type": "image_picker", "id": "image", "label": "Image", "info": "Without an image, the collection image is used." },
         { "type": "header", "content": "Three strengths (optional)" },
         { "type": "text", "id": "strength_1_title", "label": "Strength 1 title" },
@@ -103,6 +183,6 @@
     }
   ],
   "enabled_on": { "templates": ["collection"] },
-  "presets": [{ "name": "NS · Brand intro" }]
+  "presets": [{ "name": "NS · Collection banner" }]
 }
 {% endschema %}
