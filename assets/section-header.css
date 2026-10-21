@@ -29,7 +29,7 @@
 .site-header__end { display: flex; justify-content: flex-end; gap: 2px; }
 .site-header__menu-button { display: none; margin-left: -10px; }
 
-.site-header__logo { display: inline-flex; align-items: center; }
+.site-header__logo { display: inline-flex; align-items: center; min-height: 2.75rem; }
 .site-header__logo-image { width: var(--logo-width); height: auto; }
 
 .wordmark {

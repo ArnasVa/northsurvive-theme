@@ -10,6 +10,12 @@
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
   assign og_image = page_image | default: settings.share_image
+  if og_image == blank and collection and collection.products.first.featured_image
+    assign og_image = collection.products.first.featured_image
+  endif
+  if og_image == blank and settings.logo
+    assign og_image = settings.logo
+  endif
 
   case request.page_type
     when 'product'
@@ -28,8 +34,9 @@
   {%- unless page_title contains shop.name %} – {{ shop.name }}{% endunless -%}
 </title>
 
-{%- if page_description -%}
-  <meta name="description" content="{{ page_description | escape }}">
+{%- assign meta_description = page_description | default: shop.description -%}
+{%- if meta_description != blank -%}
+  <meta name="description" content="{{ meta_description | strip_newlines | escape }}">
 {%- endif -%}
 <link rel="canonical" href="{{ canonical_url }}">
 

@@ -29,7 +29,7 @@
         <div>
           <ul class="cart-items cart-items--page" role="list">
             {%- for item in cart.items -%}
-              {% render 'cart-line-item', item: item, line: forloop.index %}
+              {% render 'cart-line-item', item: item, line: forloop.index, context: 'page' %}
             {%- endfor -%}
           </ul>
           <p class="cart-error small" role="alert" data-cart-error hidden></p>

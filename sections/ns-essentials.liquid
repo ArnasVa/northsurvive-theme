@@ -63,7 +63,7 @@
               {%- if block.settings.label != blank -%}
                 <p class="eyebrow essentials__label">{{ block.settings.label | escape }}</p>
               {%- endif -%}
-              <h3 class="essentials__title">{{ tile_title | escape }}</h3>
+              {%- if section.settings.main_heading -%}<h2 class="essentials__title">{{ tile_title | escape }}</h2>{%- else -%}<h3 class="essentials__title">{{ tile_title | escape }}</h3>{%- endif -%}
               {%- if collection != blank and section.settings.show_count -%}
                 <p class="essentials__count">{{ 'collections.products_count' | t: count: collection.products_count }}</p>
               {%- endif -%}

@@ -6,6 +6,7 @@
 
   @param {object} item - The cart line item
   @param {number} line - 1-based line number
+  @param {string} [context] - 'drawer' or 'page', keeps element ids unique
 
   @example
   {% render 'cart-line-item', item: item, line: forloop.index %}
@@ -43,9 +44,9 @@
         <button type="button" class="quantity__button" data-cart-qty="-1" aria-label="{{ 'products.quantity_decrease' | t }}">
           {% render 'icon', name: 'minus' %}
         </button>
-        <label for="CartQty-{{ item.key | handle }}" class="visually-hidden">{{ 'products.quantity' | t }}</label>
+        <label for="CartQty-{{ context | default: 'page' }}-{{ item.key | handle }}" class="visually-hidden">{{ 'products.quantity' | t }}</label>
         <input
-          id="CartQty-{{ item.key | handle }}"
+          id="CartQty-{{ context | default: 'page' }}-{{ item.key | handle }}"
           class="quantity__input"
           type="number"
           name="updates[]"

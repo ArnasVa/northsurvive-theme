@@ -24,6 +24,7 @@
 .no-js .featured__panel + .featured__panel { margin-top: var(--space-8); }
 
 @media (max-width: 699px) {
-  .featured__tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: calc(var(--page-margin) * -1); padding-right: var(--page-margin); }
+  .featured__controls { min-width: 0; }
+  .featured__tabs { flex: 1 1 100%; min-width: 0; max-width: calc(100% + var(--page-margin)); flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: calc(var(--page-margin) * -1); padding-right: var(--page-margin); }
   .featured__tab { flex: none; }
 }

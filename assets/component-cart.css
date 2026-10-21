@@ -66,7 +66,7 @@
 .cart-item__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); margin-top: var(--space-3); }
 .cart-item__price { display: grid; justify-items: end; font-weight: 500; font-variant-numeric: tabular-nums; }
 .cart-item__compare { font-size: 0.75rem; font-weight: 400; color: var(--color-stone); }
-.cart-item__remove { justify-self: start; margin-top: var(--space-2); font-size: 0.8125rem; color: var(--color-stone); text-decoration: underline; text-underline-offset: 4px; }
+.cart-item__remove { justify-self: start; margin-top: 0; padding-block: 0.625rem; font-size: 0.8125rem; color: var(--color-stone); text-decoration: underline; text-underline-offset: 4px; }
 .cart-item__remove:hover { color: var(--color-ink); }
 .cart-item.is-updating { opacity: 0.5; pointer-events: none; }
 

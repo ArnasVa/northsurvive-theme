@@ -195,6 +195,7 @@
         {%- endif -%}
 
         {%- if collection.products.size > 0 -%}
+          <h2 class="visually-hidden">{{ 'search.products' | t }}</h2>
           <ul class="product-grid collection__grid" role="list">
             {%- for product in collection.products -%}
               <li>

@@ -62,7 +62,7 @@
 
           <ul class="cart-items" role="list">
             {%- for item in cart.items -%}
-              {% render 'cart-line-item', item: item, line: forloop.index %}
+              {% render 'cart-line-item', item: item, line: forloop.index, context: 'drawer' %}
             {%- endfor -%}
           </ul>
 

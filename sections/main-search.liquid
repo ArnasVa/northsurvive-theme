@@ -44,6 +44,7 @@
         </div>
       {%- else -%}
         {%- if product_count > 0 -%}
+          <h2 class="visually-hidden">{{ 'search.products' | t }}</h2>
           <ul class="product-grid" role="list">
             {%- for result in search.results -%}
               {%- if result.object_type == 'product' -%}
