@@ -1,0 +1,99 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-guide.liquid
+  "Gidas": real articles from a Shopify blog. The newest article is the
+  large lead story; the next three form a reading list beside it.
+  The section renders nothing on the live store while the blog is empty.
+{%- endcomment -%}
+{%- assign blog = blogs[section.settings.blog] -%}
+
+{%- if blog != blank and blog.articles_count > 0 -%}
+  {{ 'section-guide.css' | asset_url | stylesheet_tag }}
+
+  <section class="section guide" aria-labelledby="GuideHeading-{{ section.id }}">
+    <div class="page-width">
+      <div class="section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="GuideHeading-{{ section.id }}" class="section-head__title">{{ section.settings.heading | escape }}</h2>
+        </div>
+        <a href="{{ blog.url }}" class="text-link">
+          {{ section.settings.link_label | escape }}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      </div>
+
+      <div class="guide__grid{% if blog.articles_count == 1 %} guide__grid--single{% endif %}">
+        {%- for article in blog.articles limit: 1 -%}
+          <a href="{{ article.url }}" class="guide__lead">
+            <div class="guide__lead-media">
+              {%- if article.image -%}
+                {{
+                  article.image
+                  | image_url: width: 1600
+                  | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '(min-width: 900px) 58vw, 100vw', alt: article.image.alt, class: 'guide__image'
+                }}
+              {%- else -%}
+                <div class="guide__placeholder"></div>
+              {%- endif -%}
+            </div>
+            <div class="guide__lead-body">
+              <p class="eyebrow">
+                {{- article.published_at | date: '%Y-%m-%d' -}}
+                {%- if article.tags.size > 0 %} · {{ article.tags.first | escape }}{% endif -%}
+              </p>
+              <h3 class="guide__lead-title">{{ article.title | escape }}</h3>
+              {%- liquid
+                if article.excerpt != blank
+                  assign summary = article.excerpt | strip_html | truncatewords: 30
+                else
+                  assign summary = article.content | strip_html | truncatewords: 30
+                endif
+              -%}
+              <p class="muted guide__summary">{{ summary }}</p>
+            </div>
+          </a>
+        {%- endfor -%}
+
+        {%- if blog.articles_count > 1 -%}
+          <ul class="guide__list" role="list">
+            {%- for article in blog.articles offset: 1 limit: 3 -%}
+              <li>
+                <a href="{{ article.url }}" class="guide__item">
+                  <div class="guide__thumb">
+                    {%- if article.image -%}
+                      {{ article.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
+                    {%- endif -%}
+                  </div>
+                  <div>
+                    <p class="eyebrow">{{ article.published_at | date: '%Y-%m-%d' }}</p>
+                    <h3 class="guide__item-title">{{ article.title | escape }}</h3>
+                  </div>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <div class="page-width section--tight">
+    <p class="muted">{{ 'sections.guide.empty_editor' | t }}</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "NS · Guide articles",
+  "tag": "div",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog", "info": "Hidden on the live store until the blog has at least one article." },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Gidas" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pasiruošimas prasideda nuo žinių." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Visi straipsniai" }
+  ],
+  "presets": [{ "name": "NS · Guide articles" }]
+}
+{% endschema %}

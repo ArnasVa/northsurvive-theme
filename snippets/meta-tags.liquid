@@ -81,6 +81,7 @@
       assign same_as = same_as | slice: 0, same_as_size
     endif
   -%}
+  {%- capture search_target -%}{{ request.origin }}{{ routes.search_url }}?q={search_term_string}{%- endcapture -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -104,7 +105,7 @@
           "publisher": { "@id": {{ request.origin | append: '/#organization' | json }} },
           "potentialAction": {
             "@type": "SearchAction",
-            "target": {{ request.origin | append: routes.search_url | append: '?q={search_term_string}' | json }},
+            "target": {{ search_target | json }},
             "query-input": "required name=search_term_string"
           }
         }

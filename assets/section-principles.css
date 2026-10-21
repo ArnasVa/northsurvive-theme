@@ -1,0 +1,43 @@
+/* NorthSurvive · assets/section-principles.css */
+
+.principles { padding-bottom: calc(var(--section-space) * 0.55); }
+
+.principles__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+.principles__heading {
+  margin-top: var(--space-3);
+  max-width: 13ch;
+  font-size: clamp(1.875rem, 1.3rem + 2vw, 3rem);
+  letter-spacing: -0.035em;
+}
+
+.principles__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-6);
+}
+
+.principles__item {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-ink);
+}
+.principles__index { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--color-stone); }
+.principles__title { font-size: 1.3125rem; letter-spacing: -0.02em; }
+.principles__item p { font-size: 0.96875rem; }
+
+@media (max-width: 1100px) {
+  .principles__inner { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 699px) {
+  .principles__list { grid-template-columns: 1fr; gap: 0; }
+  .principles__item { padding: var(--space-5) 0 var(--space-6); border-top-color: var(--color-line); }
+  .principles__item:first-child { border-top-color: var(--color-ink); }
+}

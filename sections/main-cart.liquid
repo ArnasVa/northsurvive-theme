@@ -25,9 +25,9 @@
             {%- endif -%}
             <div>
               {%- if item.vendor != blank -%}<p class="eyebrow">{{ item.vendor | escape }}</p>{%- endif -%}
-              <a href="{{ item.url }}" class="title">{{ item.product.title | escape }}</a>
+              <a href="{{ item.url }}" class="title" style="display: block;">{{ item.product.title | escape }}</a>
               {%- unless item.product.has_only_default_variant -%}<p class="small muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
-              <a href="{{ item.url_to_remove }}" class="small muted" style="text-decoration: underline; text-underline-offset: 4px;">{{ 'cart.remove' | t }}</a>
+              <p style="margin-top: var(--space-2);"><a href="{{ item.url_to_remove }}" class="small muted" style="text-decoration: underline; text-underline-offset: 4px;">{{ 'cart.remove' | t }}</a></p>
             </div>
             <div class="field">
               <label class="visually-hidden" for="Qty-{{ item.key }}">{{ 'products.quantity' | t }}</label>

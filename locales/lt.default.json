@@ -36,7 +36,12 @@
     "sold_out": "Išparduota",
     "in_stock": "Yra sandėlyje",
     "variant": "Pasirinkimas",
-    "quantity": "Kiekis"
+    "quantity": "Kiekis",
+    "sale": "Akcija",
+    "new": "Naujiena",
+    "from_price_html": "nuo {{ price }}",
+    "regular_price": "Įprasta kaina",
+    "choose_options": "Pasirinkti"
   },
   "collections": {
     "all_title": "Visos kategorijos",
@@ -90,5 +95,29 @@
     "use_code": "Įveskite šį kodą atsiskaitydami:",
     "apple_wallet": "Pridėti į Apple Wallet",
     "shop": "Į parduotuvę"
+  },
+  "sections": {
+    "hero": {
+      "add_image": "Pridėkite nuotrauką sekcijos nustatymuose"
+    },
+    "featured": {
+      "choose_collection": "Pasirinkite kolekciją šiam skirtukui."
+    },
+    "kits": {
+      "kit_label": "Komplektas 0{{ number }}",
+      "contents": "Komplekte",
+      "view": "Žiūrėti komplektą",
+      "empty_editor": "Pasirinkite komplektų kolekciją. Kol kolekcija tuščia, ši sekcija parduotuvėje nerodoma."
+    },
+    "brands": {
+      "view": "Žiūrėti produktus"
+    },
+    "guide": {
+      "all": "Visi straipsniai",
+      "empty_editor": "Pasirinkite tinklaraštį. Kol jame nėra straipsnių, ši sekcija parduotuvėje nerodoma."
+    },
+    "service": {
+      "empty_editor": "Įrašykite tekstą. Be teksto šis punktas parduotuvėje nerodomas."
+    }
   }
 }

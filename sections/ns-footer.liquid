@@ -17,7 +17,7 @@
           | image_tag: class: 'site-footer__logo', loading: 'lazy', alt: shop.name, widths: '160, 320, 480'
         }}
       {%- else -%}
-        <span class="wordmark">{{ shop.name | upcase }}</span>
+        <span class="wordmark">{{ settings.wordmark | default: shop.name | upcase }}</span>
       {%- endif -%}
 
       {%- if section.settings.statement != blank -%}
@@ -51,14 +51,14 @@
                 aria-invalid="true" aria-describedby="FooterNewsletterMessage"
               {% endif %}
             >
-            <button type="submit" class="button button--light">{{ 'footer.subscribe' | t }}</button>
+            <button type="submit" class="button button--light">{{ section.settings.newsletter_button | escape }}</button>
           </div>
           {%- if form.errors -%}
             <p id="FooterNewsletterMessage" class="form-message form-message--error" role="alert">
               {{ 'footer.newsletter_error' | t }}
             </p>
           {%- elsif form.posted_successfully? -%}
-            <p class="form-message form-message--success" role="status">{{ 'footer.newsletter_success' | t }}</p>
+            <p class="form-message form-message--success" role="status">{{ section.settings.newsletter_success | escape }}</p>
           {%- endif -%}
         {%- endform -%}
       {%- endif -%}
@@ -151,6 +151,8 @@
       "default": true
     },
     { "type": "text", "id": "newsletter_text", "label": "Newsletter label", "default": "Naujienlaiškis. Retai, tik tai, kas naudinga." },
+    { "type": "text", "id": "newsletter_button", "label": "Newsletter button label", "default": "Prenumeruoti" },
+    { "type": "text", "id": "newsletter_success", "label": "Message after signing up", "default": "Ačiū. Jūsų el. paštas užregistruotas." },
     { "type": "header", "content": "Bottom bar" },
     {
       "type": "text",

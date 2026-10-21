@@ -1,0 +1,37 @@
+/* NorthSurvive · assets/section-about.css */
+
+.about { border-top: 1px solid var(--color-line); }
+
+.about__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: end;
+}
+.about__heading {
+  margin-top: var(--space-4);
+  max-width: 12ch;
+  font-size: clamp(2.25rem, 1.2rem + 3.6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.about__aside { display: grid; gap: var(--space-6); justify-items: start; }
+.about__text { max-width: 48ch; font-size: 1.125rem; line-height: 1.6; color: var(--color-stone); }
+.about__text p + p { margin-top: 0.8em; }
+
+.about__criteria {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-8) !important;
+}
+.about__criterion { display: grid; gap: var(--space-2); align-content: start; padding-top: var(--space-5); border-top: 1px solid var(--color-ink); }
+.about__criterion-title { font-size: 1.25rem; letter-spacing: -0.02em; }
+.about__criterion p.muted { font-size: 0.9375rem; }
+
+@media (max-width: 899px) {
+  .about__intro { grid-template-columns: 1fr; }
+  .about__criteria { grid-template-columns: 1fr; gap: 0; margin-top: var(--space-7) !important; }
+  .about__criterion { padding-block: var(--space-5); border-top-color: var(--color-line); }
+  .about__criterion:first-child { border-top-color: var(--color-ink); }
+}

@@ -1,0 +1,101 @@
+/* NorthSurvive · assets/section-lights-out.css */
+
+.lights-out__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+.lights-out__grid--reverse { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.lights-out__grid--reverse .lights-out__media { order: 2; }
+
+.lights-out__media { position: relative; min-height: 35rem; overflow: hidden; border-radius: var(--radius-card); background: #16191b; }
+.lights-out__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lights-out__placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 34% 64%, rgba(255, 214, 166, 0.7) 0, rgba(255, 190, 120, 0.24) 14%, rgba(40, 36, 32, 0) 42%),
+    linear-gradient(180deg, #24282b, #16191b);
+}
+
+/* The stage: the text panel with the beam */
+.lights-out__stage {
+  --beam-x: 30%;
+  --beam-y: 45%;
+  --beam-size: 16rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-7);
+  min-height: 35rem;
+  overflow: hidden;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: var(--radius-card);
+  background: #191c1f;
+}
+
+.lights-out__copy { position: relative; display: grid; gap: var(--space-5); }
+.lights-out__heading {
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.125rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.lights-out__text { max-width: 42ch; font-size: 1.0625rem; line-height: 1.6; color: #cdd1d4; }
+.lights-out__text p + p { margin-top: 0.8em; }
+.lights-out__footer { position: relative; z-index: 2; }
+
+/* Fully lit by default (no JS, reduced motion, or effect switched off) */
+.lights-out__beam,
+.lights-out__lit { display: none; }
+
+/* Active: dim base copy + a lit copy revealed through a radial mask */
+.lights-out__stage.is-active:not(.is-static) > .lights-out__copy .lights-out__heading { color: #596066; }
+.lights-out__stage.is-active:not(.is-static) > .lights-out__copy .lights-out__text { color: #545a5f; }
+.lights-out__stage.is-active:not(.is-static) > .lights-out__copy .lights-out__eyebrow { color: #6e757a; }
+
+.lights-out__stage.is-active:not(.is-static) .lights-out__beam {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle var(--beam-size) at var(--beam-x) var(--beam-y), rgba(255, 233, 207, 0.14), rgba(255, 233, 207, 0.04) 45%, transparent 70%);
+}
+
+.lights-out__stage.is-active:not(.is-static) .lights-out__lit {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: inherit;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle var(--beam-size) at var(--beam-x) var(--beam-y), #000 30%, transparent 72%);
+  mask-image: radial-gradient(circle var(--beam-size) at var(--beam-x) var(--beam-y), #000 30%, transparent 72%);
+}
+.lights-out__lit .lights-out__heading { color: var(--color-on-dark); }
+.lights-out__lit .lights-out__text { color: #cdd1d4; }
+.lights-out__lit .lights-out__eyebrow { color: var(--color-signal); }
+.lights-out__stage:not(.is-active) .lights-out__eyebrow,
+.lights-out__stage.is-static .lights-out__eyebrow { color: var(--color-signal); }
+
+/* Key points under the grid */
+.lights-out__points {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0 var(--space-6);
+  margin-top: var(--space-8) !important;
+  border-top: 1px solid var(--color-line-dark);
+}
+.lights-out__point { display: grid; gap: 6px; padding-top: var(--space-5); }
+.lights-out__point-title { font-size: 1.1875rem; letter-spacing: -0.02em; }
+.lights-out__point p { font-size: 0.90625rem; }
+
+@media (max-width: 899px) {
+  .lights-out__grid,
+  .lights-out__grid--reverse { grid-template-columns: 1fr; }
+  .lights-out__grid--reverse .lights-out__media { order: 0; }
+  .lights-out__media { min-height: 0; aspect-ratio: 4 / 3; }
+  .lights-out__stage { min-height: 0; }
+  .lights-out__points { grid-template-columns: 1fr; }
+  .lights-out__point { padding-block: var(--space-4); border-bottom: 1px solid var(--color-line-dark); }
+}

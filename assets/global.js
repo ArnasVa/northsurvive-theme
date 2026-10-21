@@ -2,8 +2,10 @@
  * NorthSurvive · assets/global.js
  * Small, dependency-free scripts loaded on every page (with `defer`).
  *
- * <ns-header>  Mega panels (click, hover on desktop, Escape, click outside),
- *              the mobile menu dialog, and the hide-on-scroll sticky header.
+ * <ns-header>      Mega panels (click, hover on desktop, Escape, click outside),
+ *                  the mobile menu dialog, and the hide-on-scroll sticky header.
+ * <ns-tabs>        Tabs in the featured products section.
+ * <ns-lights-out>  The pointer-following light in the editorial story section.
  *
  * The page works without JavaScript: links still navigate, and the
  * mobile menu button simply does nothing.
@@ -139,6 +141,116 @@
   }
 
   if (!customElements.get('ns-header')) customElements.define('ns-header', NsHeader);
+
+  /**
+   * <ns-tabs>  Tabs for the featured products section.
+   * Click or use the arrow keys to switch; only the active panel is shown.
+   */
+  class NsTabs extends HTMLElement {
+    connectedCallback() {
+      this.tabs = Array.from(this.querySelectorAll('[role="tab"]'));
+      if (this.tabs.length < 2) return;
+
+      this.tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => this.select(index));
+        tab.addEventListener('keydown', (event) => {
+          var next = null;
+          if (event.key === 'ArrowRight') next = (index + 1) % this.tabs.length;
+          if (event.key === 'ArrowLeft') next = (index - 1 + this.tabs.length) % this.tabs.length;
+          if (event.key === 'Home') next = 0;
+          if (event.key === 'End') next = this.tabs.length - 1;
+          if (next === null) return;
+          event.preventDefault();
+          this.select(next);
+          this.tabs[next].focus();
+        });
+      });
+    }
+
+    select(activeIndex) {
+      this.tabs.forEach((tab, index) => {
+        var active = index === activeIndex;
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        tab.tabIndex = active ? 0 : -1;
+        if (panel) panel.toggleAttribute('data-inactive', !active);
+      });
+    }
+  }
+
+  if (!customElements.get('ns-tabs')) customElements.define('ns-tabs', NsTabs);
+
+  /**
+   * <ns-lights-out>  The editorial "Lights Out" moment: the text starts dim
+   * and a soft beam follows the pointer. On touch screens the beam sweeps
+   * across once when the section scrolls into view. With reduced motion the
+   * text is simply fully lit (handled in CSS, and skipped here).
+   */
+  class NsLightsOut extends HTMLElement {
+    connectedCallback() {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || this.classList.contains('is-static') || document.body.classList.contains('no-motion')) {
+        this.classList.add('is-static');
+        return;
+      }
+      this.classList.add('is-active');
+
+      if (canHover.matches) {
+        this.addEventListener('pointermove', (event) => {
+          var rect = this.getBoundingClientRect();
+          this.style.setProperty('--beam-x', event.clientX - rect.left + 'px');
+          this.style.setProperty('--beam-y', event.clientY - rect.top + 'px');
+        });
+        return;
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        this.classList.add('is-static');
+        return;
+      }
+      var observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            observer.disconnect();
+            this.sweep();
+          });
+        },
+        { threshold: 0.5 }
+      );
+      observer.observe(this);
+    }
+
+    sweep() {
+      var start = null;
+      var duration = 2200;
+      var step = (time) => {
+        if (start === null) start = time;
+        var progress = Math.min((time - start) / duration, 1);
+        var rect = this.getBoundingClientRect();
+        this.style.setProperty('--beam-x', progress * rect.width + 'px');
+        this.style.setProperty('--beam-y', rect.height * 0.55 + 'px');
+        if (progress < 1) window.requestAnimationFrame(step);
+        else this.classList.add('is-static');
+      };
+      window.requestAnimationFrame(step);
+    }
+  }
+
+  if (!customElements.get('ns-lights-out')) customElements.define('ns-lights-out', NsLightsOut);
+
+  /**
+   * Variant picker on the product page: reload the page for the chosen
+   * variant so price, images and availability always come straight from
+   * Shopify (Phase 4 replaces this with an instant update).
+   */
+  document.addEventListener('change', function (event) {
+    var select = event.target.closest('[data-variant-select]');
+    if (!select) return;
+    var url = new URL(window.location.href);
+    url.searchParams.set('variant', select.value);
+    window.location.href = url.toString();
+  });
 
   /**
    * Keeps the header cart count in sync. Phase 4's cart drawer dispatches

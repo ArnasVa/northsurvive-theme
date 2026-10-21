@@ -1,4 +1,305 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "hero": {
+      "type": "ns-hero",
+      "settings": {
+        "eyebrow": "Pasiruošimo rinkiniai",
+        "heading": "Pasiruošimas, sudėtas į vieną rinkinį.",
+        "text": "Apgalvoti rinkiniai namams ir kasdienai. Kiekvienas sudarytas iš patikimų produktų, kuriuos galite įsigyti ir atskirai.",
+        "button_label": "Rinktis rinkinį",
+        "button_link": "shopify://collections/emergency-kits",
+        "button_2_label": "Atskiri produktai",
+        "button_2_link": "/collections",
+        "fallback_product": "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki",
+        "essentials_label": "Greitos nuorodos"
+      }
+    },
+    "essentials": {
+      "type": "ns-essentials",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "zibintuveliai",
+            "label": "",
+            "title": "Apšvietimas"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "isorines-baterijos-ir-saules-paneles",
+            "label": "",
+            "title": "Energija"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "pirmosios-pagalbos-rinkiniai",
+            "label": "",
+            "title": "Pirmoji pagalba"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "avariniai-radijai",
+            "label": "",
+            "title": "Avariniai radijai"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "layout": "row",
+        "eyebrow": "Produktai",
+        "heading": "Pirkite pagal kategoriją",
+        "text": "",
+        "show_count": true,
+        "main_heading": false
+      }
+    },
+    "featured": {
+      "type": "ns-featured-products",
+      "blocks": {
+        "t1": {
+          "type": "collection",
+          "settings": {
+            "collection": "zibintuveliai",
+            "label": "Apšvietimas"
+          }
+        },
+        "t2": {
+          "type": "collection",
+          "settings": {
+            "collection": "isorines-baterijos-ir-saules-paneles",
+            "label": "Energija"
+          }
+        },
+        "t3": {
+          "type": "collection",
+          "settings": {
+            "collection": "pirmosios-pagalbos-rinkiniai",
+            "label": "Pirmoji pagalba"
+          }
+        },
+        "t4": {
+          "type": "collection",
+          "settings": {
+            "collection": "avariniai-radijai",
+            "label": "Avariniai radijai"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "eyebrow": "Atskiri produktai",
+        "heading": "Atrinkta įranga",
+        "products_to_show": 4,
+        "show_quick_add": true,
+        "link_label": "Visi produktai",
+        "link": "shopify://collections/all"
+      }
+    },
+    "lights_out": {
+      "type": "ns-lights-out",
+      "settings": {
+        "image_position": "left",
+        "eyebrow": "Kasdienis pasiruošimas",
+        "heading": "Kai kasdienybė sustoja, pasiruošimas lieka.",
+        "text": "<p>Elektra kartais dingsta be įspėjimo. Telefonas išsikrauna pačiu netinkamiausiu metu. Tokios akimirkos retai būna dramatiškos, tačiau jos parodo, kas iš tiesų svarbu: šviesa, energija ir ryšys su artimaisiais.</p>",
+        "link_label": "Kaip pasiruošti elektros dingimui",
+        "link": "",
+        "enable_effect": true
+      }
+    },
+    "kits": {
+      "type": "ns-kits",
+      "blocks": {
+        "k1": {
+          "type": "kit",
+          "settings": {
+            "product": "other-example-product-2",
+            "title": "Urban Starter Kit",
+            "summary": "Paprastas pirmas žingsnis į pasiruošimą: be sudėtingumo ir be didelės investicijos.",
+            "contents": ""
+          }
+        },
+        "k2": {
+          "type": "kit",
+          "settings": {
+            "product": "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki",
+            "title": "Blackout Core Kit",
+            "summary": "Šviesa, energija ir informacija vienoje vietoje, kai dingsta elektra. Sukurtas miesto namams.",
+            "contents": ""
+          }
+        },
+        "k3": {
+          "type": "kit",
+          "settings": {
+            "product": "other-example-product-1",
+            "title": "Water Secure Kit",
+            "summary": "Aiškus sprendimas geriamajam vandeniui, kai tiekimas sutrinka ar situacija užsitęsia.",
+            "contents": ""
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2",
+        "k3"
+      ],
+      "settings": {
+        "eyebrow": "Rinkiniai",
+        "heading": "Pasirinkite savo rinkinį",
+        "text": "Nuo pirmo žingsnio iki išsamaus pasiruošimo namams.",
+        "number_label": "Rinkinys",
+        "contents_label": "Rinkinyje",
+        "view_label": "Žiūrėti rinkinį",
+        "collection": "emergency-kits"
+      }
+    },
+    "brands": {
+      "type": "ns-brands",
+      "blocks": {
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "name": "NITECORE",
+            "label": "Šviesa",
+            "text": "Žibintuvėliai ir galvos lempos",
+            "link": ""
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "name": "XTORM",
+            "label": "Energija",
+            "text": "Išoriniai akumuliatoriai ir saulės įkrovikliai",
+            "link": ""
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "name": "Care Plus",
+            "label": "Pagalba",
+            "text": "Pirmosios pagalbos rinkiniai",
+            "link": ""
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "name": "SANGEAN",
+            "label": "Ryšys",
+            "text": "Avariniai radijai",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Prekės ženklai",
+        "heading": "Gamintojai, kuriais pasitikime",
+        "text": "Patikimi gamintojai, iš kurių įrangos sudaryti mūsų rinkiniai.",
+        "link_label": "Žiūrėti produktus"
+      }
+    },
+    "guide": {
+      "type": "ns-guide",
+      "settings": {
+        "blog": "news",
+        "eyebrow": "Gidas",
+        "heading": "Pasiruošimas prasideda nuo žinių.",
+        "link_label": "Visi straipsniai"
+      }
+    },
+    "service": {
+      "type": "ns-service-strip",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Pristatymas",
+            "text": ""
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Grąžinimas",
+            "text": ""
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "icon": "mail",
+            "title": "Pagalba renkantis",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {}
+    },
+    "built": {
+      "type": "ns-image-banner",
+      "settings": {
+        "fallback_product": "xtorm-rugged-solar-isorinis-akumuliatorius-su-saules-baterijomis-10-000-mah",
+        "layout": "split",
+        "image_position": "left",
+        "color": "white",
+        "eyebrow": "Kaip sudarome rinkinius",
+        "heading": "Kiekvienas rinkinys sudarytas iš atskirų, patikrintų produktų.",
+        "text": "<p>Rinkiniuose naudojame NITECORE apšvietimą, XTORM energiją, Care Plus pirmąją pagalbą ir SANGEAN radijus. Tą pačią įrangą galite įsigyti ir atskirai: papildyti savo rinkinį arba susidaryti jį patys.</p>",
+        "button_label": "Rinktis kategoriją",
+        "button_link": "/collections"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "kits",
+    "built",
+    "essentials",
+    "featured",
+    "lights_out",
+    "brands",
+    "guide",
+    "service"
+  ]
 }

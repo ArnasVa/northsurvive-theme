@@ -1,3 +1,6 @@
 # Files Shopify CLI should never upload to the store
 licenses/*
 README.md
+# Temporary files created by editors and file sync while saving
+*.tmp
+**/.*.tmp

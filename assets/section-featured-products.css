@@ -1,0 +1,29 @@
+/* NorthSurvive · assets/section-featured-products.css */
+
+.featured { border-block: 1px solid var(--color-line); }
+
+.featured__controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5); }
+.featured__tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.featured__tab {
+  min-height: 2.5rem;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color var(--duration-fast) var(--ease), background-color var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
+}
+.featured__tab:hover { border-color: #b9bbb8; }
+.featured__tab[aria-selected='true'] { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-paper); }
+
+/* With JavaScript: only the active panel shows. Without: all panels stack. */
+.js .featured__panel[data-inactive] { display: none; }
+.no-js .featured__tabs { display: none; }
+.no-js .featured__panel + .featured__panel { margin-top: var(--space-8); }
+
+@media (max-width: 699px) {
+  .featured__tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: calc(var(--page-margin) * -1); padding-right: var(--page-margin); }
+  .featured__tab { flex: none; }
+}

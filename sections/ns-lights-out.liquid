@@ -1,0 +1,132 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-lights-out.liquid
+  The editorial story chapter on graphite. Photo on one side, text panel on
+  the other. The text panel is the "Lights Out" moment: dim text that the
+  pointer lights up like a beam (behaviour in assets/global.js).
+  Without JavaScript or with reduced motion the text is simply fully lit.
+  The lit copy is a visual duplicate hidden from screen readers.
+{%- endcomment -%}
+{{ 'section-lights-out.css' | asset_url | stylesheet_tag }}
+
+{%- capture story_copy -%}
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="eyebrow lights-out__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+  {%- endif -%}
+  <p class="lights-out__heading h2">{{ section.settings.heading | escape }}</p>
+  {%- if section.settings.text != blank -%}
+    <div class="lights-out__text">{{ section.settings.text }}</div>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="section section--dark lights-out" aria-labelledby="LightsOutHeading-{{ section.id }}">
+  <div class="page-width">
+    <div class="lights-out__grid{% if section.settings.image_position == 'right' %} lights-out__grid--reverse{% endif %}">
+      <div class="lights-out__media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 1800
+            | image_tag:
+              loading: 'lazy',
+              widths: '600, 900, 1200, 1500, 1800',
+              sizes: '(min-width: 900px) 58vw, 100vw',
+              class: 'lights-out__image',
+              alt: section.settings.image.alt
+          }}
+        {%- else -%}
+          <div class="lights-out__placeholder" aria-hidden="true"></div>
+        {%- endif -%}
+      </div>
+
+      <ns-lights-out class="lights-out__stage{% unless section.settings.enable_effect %} is-static{% endunless %}">
+          <div class="lights-out__beam" aria-hidden="true"></div>
+
+          <div class="lights-out__copy">
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="eyebrow lights-out__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+            {%- endif -%}
+            <h2 id="LightsOutHeading-{{ section.id }}" class="lights-out__heading">{{ section.settings.heading | escape }}</h2>
+            {%- if section.settings.text != blank -%}
+              <div class="lights-out__text">{{ section.settings.text }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="lights-out__lit" aria-hidden="true">
+            <div class="lights-out__copy">{{ story_copy }}</div>
+          </div>
+
+          {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+            <div class="lights-out__footer">
+              <a href="{{ section.settings.link }}" class="text-link">
+                {{ section.settings.link_label | escape }}
+                {% render 'icon', name: 'arrow-right' %}
+              </a>
+            </div>
+          {%- endif -%}
+      </ns-lights-out>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="lights-out__points" role="list">
+        {%- for block in section.blocks -%}
+          <li class="lights-out__point" {{ block.shopify_attributes }}>
+            <h3 class="lights-out__point-title">{{ block.settings.title | escape }}</h3>
+            <p class="muted">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NS · Lights Out story",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "A calm interior at dusk works best. Landscape, at least 1500 px wide." },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Kasdienis pasiruošimas" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Kai kasdienybė sustoja, pasiruošimas lieka." },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Elektra kartais dingsta be įspėjimo. Telefonas išsikrauna pačiu netinkamiausiu metu. Tokios akimirkos retai būna dramatiškos, tačiau jos parodo, kas iš tiesų svarbu: šviesa, energija ir ryšys su artimaisiais.</p>"
+    },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Kaip pasiruošti elektros dingimui" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "checkbox", "id": "enable_effect", "label": "Enable the light beam effect", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Key point",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Šviesa" },
+        { "type": "text", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NS · Lights Out story",
+      "blocks": [
+        { "type": "point", "settings": { "title": "Šviesa", "text": "Kad namuose būtų saugu judėti ir ramu laukti." } },
+        { "type": "point", "settings": { "title": "Energija", "text": "Kad telefonas ir svarbiausi prietaisai veiktų toliau." } },
+        { "type": "point", "settings": { "title": "Ryšys", "text": "Kad žinotumėte, kas vyksta, net neveikiant internetui." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-hero.liquid
+  The homepage hero: an asymmetric split with the headline on the left and
+  one editorial photograph bleeding to the right edge. On phones the image
+  comes first (with its own mobile crop) and the text sits below it.
+  This section holds the page's only H1.
+{%- endcomment -%}
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="hero" aria-labelledby="HeroHeading-{{ section.id }}">
+  <div class="hero__copy">
+    <div class="hero__intro">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 id="HeroHeading-{{ section.id }}" class="h-display hero__heading">{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="lead hero__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank or section.settings.button_2_label != blank -%}
+        <div class="hero__actions">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button">
+              {{ section.settings.button_label | escape }}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_2_label != blank -%}
+            <a href="{{ section.settings.button_2_link | default: routes.root_url }}" class="button button--secondary">
+              {{ section.settings.button_2_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <nav class="hero__essentials" aria-label="{{ section.settings.essentials_label | escape }}">
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="hero__essential" {{ block.shopify_attributes }}>
+            {{- block.settings.label | escape -}}
+          </a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+  </div>
+
+  <div class="hero__media">
+    {%- liquid
+      assign desktop_image = section.settings.image
+      if desktop_image == blank and section.settings.fallback_product != blank
+        assign desktop_image = section.settings.fallback_product.featured_media.preview_image
+      endif
+      assign mobile_image = section.settings.image_mobile | default: desktop_image
+      assign focal_style = 'object-position: ' | append: desktop_image.presentation.focal_point
+    -%}
+    {%- if desktop_image != blank -%}
+      <picture>
+        {%- if section.settings.image_mobile != blank -%}
+          <source
+            media="(max-width: 899px)"
+            srcset="{{ mobile_image | image_url: width: 600 }} 600w, {{ mobile_image | image_url: width: 900 }} 900w, {{ mobile_image | image_url: width: 1200 }} 1200w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{
+          desktop_image
+          | image_url: width: 2400
+          | image_tag:
+            class: 'hero__image',
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '800, 1200, 1600, 2000, 2400',
+            sizes: '(min-width: 900px) 50vw, 100vw',
+            alt: desktop_image.alt,
+            style: focal_style
+        }}
+      </picture>
+    {%- else -%}
+      <div class="hero__placeholder">
+        {%- if request.design_mode -%}
+          <span class="hero__placeholder-note">{{ 'sections.hero.add_image' | t }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NS · Hero",
+  "tag": "div",
+  "class": "section-hero",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Pasiruošimo rinkiniai" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pasiruošimas, sudėtas į vieną rinkinį." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Patikima, apgalvotai atrinkta įranga namams, kasdienai ir nenumatytoms situacijoms." },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "button_label", "label": "Primary button label", "default": "Atrasti produktus" },
+    { "type": "url", "id": "button_link", "label": "Primary button link" },
+    { "type": "text", "id": "button_2_label", "label": "Secondary button label", "default": "Apie NorthSurvive" },
+    { "type": "url", "id": "button_2_link", "label": "Secondary button link" },
+    { "type": "header", "content": "Image" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Portrait or square editorial photo, at least 1600 px wide. Set the focal point in Shopify Files so cropping keeps the subject."
+    },
+    {
+      "type": "product",
+      "id": "fallback_product",
+      "label": "Use a product photo until the editorial image is ready",
+      "info": "Its main product image is shown when no image is set above."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image (optional)",
+      "info": "A separate 4:5 crop for phones."
+    },
+    { "type": "header", "content": "Quick links" },
+    {
+      "type": "paragraph",
+      "content": "Optional quick links (blocks) shown under the text."
+    },
+    { "type": "text", "id": "essentials_label", "label": "Quick links name (for screen readers)", "default": "Greitos nuorodos" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Quick link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Šviesa" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NS · Hero",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,102 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-brands.liquid
+  A spec-sheet row of the brands NorthSurvive works with. Each block is one
+  brand: official logo (upload the brand's own SVG/PNG, never a redrawn
+  version), a short line on what it is for, and a link.
+  Without a logo the brand name is set in the theme's typeface.
+  Without a link the block links to all products with that vendor name.
+{%- endcomment -%}
+{{ 'section-brands.css' | asset_url | stylesheet_tag }}
+
+<section class="section brands" aria-labelledby="BrandsHeading-{{ section.id }}">
+  <div class="page-width">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 id="BrandsHeading-{{ section.id }}" class="section-head__title">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.text != blank -%}
+        <p class="section-head__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <ul class="brands__grid brands__grid--{{ section.blocks.size }}" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign brand_url = block.settings.link
+          if brand_url == blank
+            assign encoded_name = block.settings.name | url_encode
+            assign brand_url = routes.collections_url | append: '/vendors?q=' | append: encoded_name
+          endif
+        -%}
+        <li class="brands__item" {{ block.shopify_attributes }}>
+          <a href="{{ brand_url }}" class="brands__link">
+            <div class="brands__logo">
+              {%- if block.settings.logo != blank -%}
+                {{
+                  block.settings.logo
+                  | image_url: width: 480
+                  | image_tag: loading: 'lazy', widths: '240, 360, 480', sizes: '240px', alt: block.settings.name, class: 'brands__logo-image'
+                }}
+              {%- else -%}
+                <span class="brands__name">{{ block.settings.name | escape }}</span>
+              {%- endif -%}
+            </div>
+            <div class="brands__body">
+              {%- if block.settings.label != blank -%}
+                <p class="eyebrow">{{ block.settings.label | escape }}</p>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="brands__text">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+              <span class="text-link brands__more">
+                {{ section.settings.link_label | escape }}
+                {% render 'icon', name: 'arrow-right' %}
+              </span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NS · Brands",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Prekės ženklai" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Gamintojai, kuriais pasitikime" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Patikimi gamintojai, iš kurių įrangos sudaryti mūsų rinkiniai." },
+    { "type": "text", "id": "link_label", "label": "Link label on each brand", "default": "Žiūrėti produktus" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "NITECORE", "info": "Must match the product Vendor field for the automatic link to work." },
+        { "type": "image_picker", "id": "logo", "label": "Official logo", "info": "Use the brand's own logo file. Dark logo on transparent background works best." },
+        { "type": "text", "id": "label", "label": "Small label", "default": "Šviesa" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Žibintuvėliai ir galvos lempos" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Leave empty to link to all products from this brand." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NS · Brands",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "NITECORE", "label": "Šviesa", "text": "Žibintuvėliai ir galvos lempos" } },
+        { "type": "brand", "settings": { "name": "XTORM", "label": "Energija", "text": "Išoriniai akumuliatoriai ir įkrovikliai" } },
+        { "type": "brand", "settings": { "name": "Care Plus", "label": "Pagalba", "text": "Pirmosios pagalbos rinkiniai" } },
+        { "type": "brand", "settings": { "name": "SANGEAN", "label": "Ryšys", "text": "Avariniai radijai" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

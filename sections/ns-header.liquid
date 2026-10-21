@@ -45,7 +45,7 @@
               widths: '160, 240, 320, 480, 600'
           }}
         {%- else -%}
-          <span class="wordmark">{{ shop.name | upcase }}</span>
+          <span class="wordmark">{{ settings.wordmark | default: shop.name | upcase }}</span>
         {%- endif -%}
       </a>
     </div>
@@ -90,14 +90,14 @@
                     </ul>
                     {%- unless link.url == '#' -%}
                       <a href="{{ link.url }}" class="text-link mega__all">
-                        {{ 'header.view_all' | t }}
+                        {{ section.settings.view_all_label | escape }}
                         {% render 'icon', name: 'arrow-right' %}
                       </a>
                     {%- endunless -%}
                   </div>
 
-                  {%- if section.settings.feature_heading != blank -%}
-                    <a href="{{ section.settings.feature_link | default: '#' }}" class="mega__feature">
+                  {%- if section.settings.feature_heading != blank and section.settings.feature_link != blank -%}
+                    <a href="{{ section.settings.feature_link }}" class="mega__feature">
                       <div class="mega__feature-media">
                         {%- if section.settings.feature_image != blank -%}
                           {{
@@ -119,7 +119,7 @@
                         {%- endif -%}
                         <p class="mega__feature-title">{{ section.settings.feature_heading | escape }}</p>
                         <span class="text-link">
-                          {{ 'header.read_more' | t }}
+                          {{ section.settings.feature_link_label | escape }}
                           {% render 'icon', name: 'arrow-right' %}
                         </span>
                       </div>
@@ -169,7 +169,7 @@
 
 <dialog id="MobileMenu" class="mobile-menu" aria-label="{{ 'header.menu' | t }}">
   <div class="mobile-menu__top page-width">
-    <span class="wordmark">{{ shop.name | upcase }}</span>
+    <span class="wordmark">{{ settings.wordmark | default: shop.name | upcase }}</span>
     <button type="button" class="icon-button" data-mobile-close>
       {% render 'icon', name: 'close' %}
       <span class="visually-hidden">{{ 'header.close_menu' | t }}</span>
@@ -192,7 +192,7 @@
                 {%- endfor -%}
                 {%- unless link.url == '#' -%}
                   <li>
-                    <a href="{{ link.url }}" class="mobile-menu__all">{{ 'header.view_all' | t }}</a>
+                    <a href="{{ link.url }}" class="mobile-menu__all">{{ section.settings.view_all_label | escape }}</a>
                   </li>
                 {%- endunless -%}
               </ul>
@@ -243,18 +243,20 @@
       "label": "Show product count next to collections in the mega panel",
       "default": true
     },
+    { "type": "text", "id": "view_all_label", "label": "\"View all\" link label", "default": "Žiūrėti visus" },
     {
       "type": "header",
       "content": "Mega panel feature card"
     },
     {
       "type": "paragraph",
-      "content": "An optional editorial card shown on the right of every mega panel. Leave the heading empty to hide it."
+      "content": "An optional editorial card shown on the right of every mega panel. It appears once both a heading and a link are set."
     },
     { "type": "image_picker", "id": "feature_image", "label": "Image" },
     { "type": "text", "id": "feature_eyebrow", "label": "Small label", "default": "Gidas" },
     { "type": "text", "id": "feature_heading", "label": "Heading" },
-    { "type": "url", "id": "feature_link", "label": "Link" }
+    { "type": "url", "id": "feature_link", "label": "Link" },
+    { "type": "text", "id": "feature_link_label", "label": "Link label", "default": "Skaityti" }
   ]
 }
 {% endschema %}

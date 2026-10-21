@@ -1,0 +1,98 @@
+{% doc %}
+  A large preparedness-kit card: photo, number, title, summary or
+  "Komplekte" list, real price and a link to the kit.
+
+  @param {product} product - The kit product
+  @param {number} index - Position, shown as "Komplektas 01"
+  @param {string} [title] - Optional display title
+  @param {string} [summary] - Optional short summary
+  @param {string} [contents] - Optional contents, one item per line
+  @param {string} [number_label] - Label before the number, e.g. "Komplektas"
+  @param {string} [contents_label] - Heading above the contents list
+  @param {string} [view_label] - Link label
+
+  @example
+  {% render 'kit-card', product: product, index: 1 %}
+{% enddoc %}
+{%- liquid
+  assign kit_title = title | default: product.title
+  assign components = product.metafields.ns.kit_components.value
+  assign in_the_box = product.metafields.ns.in_the_box.value
+  assign contents_lines = contents | strip | newline_to_br | split: '<br />'
+
+  if summary != blank
+    assign kit_summary = summary
+  elsif product.description != blank
+    assign kit_summary = product.description | strip_html | truncatewords: 22
+  endif
+-%}
+
+<article class="kit-card">
+  <a href="{{ product.url }}" class="kit-card__media" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_media -%}
+      {{
+        product.featured_media.preview_image
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          widths: '400, 600, 900, 1200',
+          sizes: '(min-width: 900px) 33vw, 85vw',
+          alt: '',
+          class: 'kit-card__image'
+      }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="badge kit-card__badge">{{ 'products.sold_out' | t }}</span>
+    {%- endunless -%}
+  </a>
+
+  <div class="kit-card__body">
+    {%- if number_label != blank -%}
+      <p class="eyebrow">{{ number_label | escape }} {{ index | prepend: '0' }}</p>
+    {%- endif -%}
+    <h3 class="kit-card__title"><a href="{{ product.url }}">{{ kit_title | escape }}</a></h3>
+
+    {%- if kit_summary != blank -%}
+      <p class="muted kit-card__excerpt">{{ kit_summary | escape }}</p>
+    {%- endif -%}
+
+    {%- if contents != blank or components != blank or in_the_box != blank -%}
+      <div class="kit-card__contents">
+        <p class="eyebrow">{%- if contents_label != blank -%}{{ contents_label | escape }}{%- else -%}{{ 'sections.kits.contents' | t }}{%- endif -%}</p>
+        <ul role="list">
+          {%- if contents != blank -%}
+            {%- for line in contents_lines limit: 8 -%}
+              {%- assign clean_line = line | strip -%}
+              {%- if clean_line != blank -%}<li>{{ clean_line | escape }}</li>{%- endif -%}
+            {%- endfor -%}
+          {%- elsif components != blank -%}
+            {%- for item in components limit: 8 -%}
+              <li><a href="{{ item.url }}">{{ item.title | escape }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for item in in_the_box limit: 8 -%}
+              <li>{{ item | escape }}</li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <div class="kit-card__footer">
+      <p class="kit-card__price">
+        {%- if product.price_varies -%}
+          {%- assign kit_min_price = product.price_min | money -%}
+          {{ 'products.from_price_html' | t: price: kit_min_price }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      </p>
+      <a href="{{ product.url }}" class="text-link">
+        {%- if view_label != blank -%}{{ view_label | escape }}{%- else -%}{{ 'sections.kits.view' | t }}{%- endif -%}
+        {% render 'icon', name: 'arrow-right' %}
+      </a>
+    </div>
+  </div>
+</article>

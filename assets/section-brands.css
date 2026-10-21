@@ -1,0 +1,49 @@
+/* NorthSurvive · assets/section-brands.css */
+
+.brands { padding-top: 0; }
+
+.brands__grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-line);
+}
+.brands__grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.brands__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.brands__grid--5,
+.brands__grid--6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.brands__item { background: var(--color-white); }
+.brands__link {
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-7);
+  height: 100%;
+  min-height: 15.5rem;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  transition: background-color 250ms var(--ease);
+}
+.brands__link:hover { background: #fbfbfa; }
+
+.brands__logo { display: flex; align-items: center; height: 3.5rem; }
+.brands__logo-image { max-width: 10rem; max-height: 2.75rem; width: auto; height: auto; object-fit: contain; }
+.brands__name { font-family: var(--font-display); font-size: 1.125rem; font-weight: 700; letter-spacing: 0.06em; }
+
+.brands__body { display: grid; gap: var(--space-2); justify-items: start; }
+.brands__text { color: var(--color-stone); font-size: 0.9375rem; }
+.brands__more { margin-top: var(--space-3); }
+.brands__link:hover .brands__more { border-color: currentColor; }
+
+@media (max-width: 899px) {
+  .brands__grid,
+  .brands__grid--3,
+  .brands__grid--5,
+  .brands__grid--6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brands__link { min-height: 0; gap: var(--space-6); padding: var(--space-5) var(--space-4); }
+}
+@media (max-width: 420px) {
+  .brands__more { font-size: 0.8125rem; }
+}

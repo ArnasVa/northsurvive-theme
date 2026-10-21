@@ -1,0 +1,61 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-principles.liquid
+  A statement on the left and up to four principles on the right, each
+  opened by a thin ink rule. Typography only, no icons.
+{%- endcomment -%}
+{{ 'section-principles.css' | asset_url | stylesheet_tag }}
+
+<section class="section principles" aria-labelledby="PrinciplesHeading-{{ section.id }}">
+  <div class="page-width principles__inner">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="PrinciplesHeading-{{ section.id }}" class="principles__heading">{{ section.settings.heading | escape }}</h2>
+    </div>
+
+    <div class="principles__list">
+      {%- for block in section.blocks -%}
+        <div class="principles__item" {{ block.shopify_attributes }}>
+          <span class="principles__index" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+          <h3 class="principles__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}
+            <p class="muted">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "NS · Principles",
+  "tag": "div",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Mūsų požiūris" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Mažiau nežinomybės. Daugiau pasiruošimo." }
+  ],
+  "blocks": [
+    {
+      "type": "principle",
+      "name": "Principle",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Apgalvotas pasirinkimas" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NS · Principles",
+      "blocks": [
+        { "type": "principle", "settings": { "title": "Apgalvotas pasirinkimas", "text": "Renkamės mažiau, bet geriau. Kiekvienas produktas turi aiškią paskirtį ir pagrįstą vietą asortimente." } },
+        { "type": "principle", "settings": { "title": "Patikima įranga", "text": "Dirbame su prekės ženklais, kurių įranga kuriama ilgam naudojimui ir yra aiškiai aprašyta." } },
+        { "type": "principle", "settings": { "title": "Pasiruošimas kasdienai", "text": "Tai, kas padeda dingus elektrai, praverčia ir kelionėje, sode ar automobilyje." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

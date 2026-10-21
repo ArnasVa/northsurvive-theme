@@ -1,0 +1,72 @@
+/* NorthSurvive · assets/section-image-banner.css */
+
+.image-banner { position: relative; display: grid; }
+.image-banner--paper { background: var(--color-paper); }
+.image-banner--white { background: var(--color-white); }
+.image-banner--graphite { background: var(--color-graphite); color: var(--color-on-dark); }
+.image-banner--graphite .eyebrow,
+.image-banner--graphite .image-banner__text { color: var(--color-on-dark-muted); }
+
+.image-banner__media { position: relative; overflow: hidden; background: #d3d1cb; }
+.image-banner__image { width: 100%; height: 100%; object-fit: cover; }
+.image-banner__placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 30rem;
+  background:
+    linear-gradient(112deg, rgba(255, 213, 168, 0.55) 0%, rgba(255, 213, 168, 0) 50%),
+    linear-gradient(180deg, #d6d4ce, #b2b0a9);
+}
+
+.image-banner__inner { display: grid; gap: var(--space-5); justify-items: start; max-width: 34rem; }
+.image-banner__heading {
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.image-banner__text { font-size: 1.0625rem; line-height: 1.6; color: var(--color-stone); }
+.image-banner__text p + p { margin-top: 0.8em; }
+.image-banner__inner .button { margin-top: var(--space-3); }
+
+/* Split: photo half, text half */
+.image-banner--split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); min-height: 40rem; }
+.image-banner--split.image-banner--reverse { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.image-banner--split.image-banner--reverse .image-banner__media { order: 2; }
+.image-banner--split .image-banner__content {
+  display: flex;
+  align-items: center;
+  padding: clamp(3rem, 6vw, 6rem) var(--page-margin) clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem);
+}
+.image-banner--split.image-banner--reverse .image-banner__content { padding-left: var(--page-margin); padding-right: clamp(2rem, 5vw, 5rem); justify-content: flex-end; }
+
+/* Overlay: full-width photo, text bottom left */
+.image-banner--overlay { min-height: min(46rem, 88svh); color: var(--color-on-dark); }
+.image-banner--overlay .image-banner__media { position: absolute; inset: 0; }
+.image-banner--overlay .image-banner__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 23, 25, 0) 35%, rgba(20, 23, 25, 0.66) 100%);
+}
+.image-banner--overlay .image-banner__content {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  width: 100%;
+  max-width: calc(var(--page-width) + var(--page-margin) * 2);
+  margin-inline: auto;
+  padding: var(--section-space) var(--page-margin) clamp(3rem, 5vw, 5rem);
+}
+.image-banner--overlay .eyebrow { color: rgba(247, 247, 245, 0.8); }
+.image-banner--overlay .image-banner__text { color: rgba(247, 247, 245, 0.86); }
+
+@media (max-width: 899px) {
+  .image-banner--split,
+  .image-banner--split.image-banner--reverse { grid-template-columns: 1fr; min-height: 0; }
+  .image-banner--split.image-banner--reverse .image-banner__media { order: 0; }
+  .image-banner--split .image-banner__media { aspect-ratio: 4 / 3; }
+  .image-banner--split .image-banner__content,
+  .image-banner--split.image-banner--reverse .image-banner__content { padding: var(--space-7) var(--page-margin); justify-content: flex-start; }
+  .image-banner__placeholder { min-height: 0; }
+  .image-banner--overlay { min-height: 34rem; }
+}

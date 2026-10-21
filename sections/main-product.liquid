@@ -34,7 +34,7 @@
       {%- unless product.has_only_default_variant -%}
         <div class="field">
           <label class="field__label" for="Variant-{{ section.id }}">{{ 'products.variant' | t }}</label>
-          <select id="Variant-{{ section.id }}" name="id" class="basic-select">
+          <select id="Variant-{{ section.id }}" name="id" class="basic-select" data-variant-select>
             {%- for variant in product.variants -%}
               <option value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled{% endunless %}>
                 {{ variant.title | escape }} – {{ variant.price | money }}{% unless variant.available %} ({{ 'products.sold_out' | t }}){% endunless %}

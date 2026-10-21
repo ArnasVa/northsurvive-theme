@@ -1,0 +1,77 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-service-strip.liquid
+  A white strip with up to three service promises (delivery, returns, help).
+  A block without text is hidden on the live store, so nothing unconfirmed
+  is ever shown. Write only what is true for your store.
+{%- endcomment -%}
+{%- liquid
+  assign visible_blocks = 0
+  for block in section.blocks
+    if block.settings.text != blank
+      assign visible_blocks = visible_blocks | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if visible_blocks > 0 or request.design_mode -%}
+  {{ 'section-service-strip.css' | asset_url | stylesheet_tag }}
+
+  <div class="service-strip">
+    <ul class="page-width service-strip__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.text != blank or request.design_mode -%}
+          <li class="service-strip__item" {{ block.shopify_attributes }}>
+            {% render 'icon', name: block.settings.icon, class: 'service-strip__icon' %}
+            <div>
+              <p class="service-strip__title">{{ block.settings.title | escape }}</p>
+              {%- if block.settings.text != blank -%}
+                <p class="service-strip__text">{{ block.settings.text | escape }}</p>
+              {%- else -%}
+                <p class="service-strip__text">{{ 'sections.service.empty_editor' | t }}</p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "NS · Service strip",
+  "tag": "div",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Service item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "return", "label": "Returns" },
+            { "value": "mail", "label": "Contact" }
+          ],
+          "default": "truck"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Pristatymas" },
+        { "type": "text", "id": "text", "label": "Text", "info": "Hidden until you write it. For example your real delivery times." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NS · Service strip",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "title": "Pristatymas" } },
+        { "type": "item", "settings": { "icon": "return", "title": "Grąžinimas" } },
+        { "type": "item", "settings": { "icon": "mail", "title": "Pagalba renkantis" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
