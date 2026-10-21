@@ -147,6 +147,12 @@
     },
     "service": {
       "empty_editor": "Įrašykite tekstą. Be teksto šis punktas parduotuvėje nerodomas."
+    },
+    "brand": {
+      "empty_editor": "Pridėkite bloką „Brand“ kiekvienam prekės ženklui ir pasirinkite jo kolekciją."
+    },
+    "product_story": {
+      "empty_editor": "Šiam produktui banerių dar nėra. Pridėkite bloką ir pasirinkite produktą arba kolekciją."
     }
   },
   "blogs": {

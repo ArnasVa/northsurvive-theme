@@ -191,7 +191,7 @@
             "name": "NITECORE",
             "label": "Šviesa",
             "text": "Žibintuvėliai ir galvos lempos",
-            "link": ""
+            "link": "shopify://collections/nitecore"
           }
         },
         "b2": {
@@ -200,7 +200,7 @@
             "name": "XTORM",
             "label": "Energija",
             "text": "Išoriniai akumuliatoriai ir saulės įkrovikliai",
-            "link": ""
+            "link": "shopify://collections/xtorm"
           }
         },
         "b3": {
@@ -209,7 +209,7 @@
             "name": "Care Plus",
             "label": "Pagalba",
             "text": "Pirmosios pagalbos rinkiniai",
-            "link": ""
+            "link": "shopify://collections/careplus"
           }
         },
         "b4": {
@@ -218,7 +218,7 @@
             "name": "SANGEAN",
             "label": "Ryšys",
             "text": "Avariniai radijai",
-            "link": ""
+            "link": "shopify://collections/sangean"
           }
         }
       },

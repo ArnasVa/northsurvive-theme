@@ -75,9 +75,58 @@
         "show_count": true,
         "main_heading": false
       }
+    },
+    "brand_intro": {
+      "type": "ns-brand-hero",
+      "blocks": {
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "collection": "nitecore",
+            "eyebrow": "NITECORE",
+            "heading": "Šviesa, kuria galima pasikliauti.",
+            "text": "<p>NITECORE žibintuvėlius ir galvos lempas atrinkome kasdieniam pasiruošimui: namams, kelionėms ir situacijoms, kai dingsta elektra.</p>"
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "collection": "xtorm",
+            "eyebrow": "XTORM",
+            "heading": "Energija, kai jos labiausiai reikia.",
+            "text": "<p>XTORM išorinius akumuliatorius ir saulės paneles atrinkome tam, kad telefonas ir svarbiausi prietaisai veiktų ir be elektros tinklo.</p>"
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "collection": "careplus",
+            "eyebrow": "Care Plus",
+            "heading": "Pirmoji pagalba, paruošta iš anksto.",
+            "text": "<p>Care Plus pirmosios pagalbos rinkinius atrinkome namams, automobiliui ir kelionėms.</p>"
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "collection": "sangean",
+            "eyebrow": "SANGEAN",
+            "heading": "Informacija be interneto.",
+            "text": "<p>SANGEAN avarinius radijus atrinkome tam, kad žinotumėte, kas vyksta, net neveikiant mobiliajam ryšiui ar internetui.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {}
     }
   },
   "order": [
+    "brand_intro",
     "main",
     "kits_banner",
     "other"

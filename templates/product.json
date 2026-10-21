@@ -99,10 +99,81 @@
         "text": "Kiekvieną rinkinio produktą galite įsigyti ir atskirai.",
         "show_quick_add": true
       }
+    },
+    "story": {
+      "type": "ns-product-story",
+      "blocks": {
+        "numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "Maža lempa, daug šviesos.",
+            "value_1": "600 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "132 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "56 g",
+            "label_3": "Svoris",
+            "value_4": "IP68",
+            "label_4": "Apsauga nuo vandens ir dulkių"
+          }
+        },
+        "light": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "MCT™ technologija",
+            "heading": "Šviesa, kuri prisitaiko.",
+            "text": "<p>Trys šviesos temperatūros – 3000 K, 4500 K ir 6500 K – nuo šiltos iki dienos šviesos. Taip pat yra papildoma raudona šviesa.</p>"
+          }
+        },
+        "hands": {
+          "type": "full_banner",
+          "settings": {
+            "products": [
+              "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m"
+            ],
+            "media_index": 3,
+            "eyebrow": "Galvos lempa",
+            "heading": "Rankos lieka laisvos.",
+            "text": "Šviesa krypsta ten, kur žiūrite: žygyje, darbe ar namuose dingus elektrai."
+          }
+        },
+        "control": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m"
+            ],
+            "media_index": 4,
+            "image_position": "left",
+            "color": "paper",
+            "eyebrow": "Valdymas",
+            "heading": "Du mygtukai. Jokių instrukcijų.",
+            "text": "<p>Patogus dviejų mygtukų valdymas, SOS ir Beacon režimai, kai reikia būti pastebėtam.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "numbers",
+        "light",
+        "hands",
+        "control"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "story",
     "kit_contents",
     "details",
     "related"

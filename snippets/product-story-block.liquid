@@ -1,0 +1,77 @@
+{% doc %}
+  Renders one block of the NS · Product story section.
+
+  @param {object} block - The section block
+  @param {product} product - The current product
+  @param {number} position - 1-based position among visible blocks
+{% enddoc %}
+{%- liquid
+  assign story_image = block.settings.image
+  if story_image == blank and block.settings.media_index
+    assign media_offset = block.settings.media_index | minus: 1
+    assign story_media = product.media[media_offset]
+    if story_media.media_type == 'image'
+      assign story_image = story_media.preview_image
+    endif
+  endif
+-%}
+
+{%- case block.type -%}
+  {%- when 'image_text' -%}
+    <section class="story-split story-split--{{ block.settings.color }}{% if block.settings.image_position == 'right' %} story-split--reverse{% endif %}" {{ block.shopify_attributes }}>
+      <div class="story-split__media">
+        {%- if story_image != blank -%}
+          {{ story_image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1500, 1800', sizes: '(min-width: 900px) 55vw, 100vw', alt: '', class: 'story-split__image' }}
+        {%- endif -%}
+      </div>
+      <div class="story-split__content">
+        <div class="story-split__inner">
+          {%- if block.settings.eyebrow != blank -%}<p class="eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+          <h2 class="story-split__heading">{{ block.settings.heading | escape }}</h2>
+          {%- if block.settings.text != blank -%}<div class="story-split__text rte">{{ block.settings.text }}</div>{%- endif -%}
+        </div>
+      </div>
+    </section>
+
+  {%- when 'full_banner' -%}
+    <section class="story-full" {{ block.shopify_attributes }}>
+      <div class="story-full__media">
+        {%- if story_image != blank -%}
+          {{ story_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '800, 1200, 1600, 2000, 2400', sizes: '100vw', alt: '', class: 'story-full__image' }}
+        {%- endif -%}
+      </div>
+      <div class="story-full__content page-width">
+        {%- if block.settings.eyebrow != blank -%}<p class="eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="story-full__heading">{{ block.settings.heading | escape }}</h2>
+        {%- if block.settings.text != blank -%}<p class="story-full__text">{{ block.settings.text | escape }}</p>{%- endif -%}
+      </div>
+    </section>
+
+  {%- when 'highlights' -%}
+    <section class="story-numbers section--dark" {{ block.shopify_attributes }}>
+      <div class="page-width">
+        {%- if block.settings.eyebrow != blank or block.settings.heading != blank -%}
+          <div class="story-numbers__head">
+            {%- if block.settings.eyebrow != blank -%}<p class="eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+            {%- if block.settings.heading != blank -%}<h2 class="story-numbers__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+          </div>
+        {%- endif -%}
+        <dl class="story-numbers__list">
+          {%- for i in (1..4) -%}
+            {%- liquid
+              assign value_key = 'value_' | append: i
+              assign label_key = 'label_' | append: i
+              assign value = block.settings[value_key]
+              assign label = block.settings[label_key]
+            -%}
+            {%- if value != blank -%}
+              <div class="story-numbers__item">
+                <dt class="story-numbers__label">{{ label | escape }}</dt>
+                <dd class="story-numbers__value">{{ value | escape }}</dd>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      </div>
+    </section>
+{%- endcase -%}
