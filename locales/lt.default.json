@@ -1,0 +1,94 @@
+{
+  "general": {
+    "page_number": "{{ page }} puslapis",
+    "pagination": "Puslapiai"
+  },
+  "accessibility": {
+    "skip_to_content": "Pereiti prie turinio"
+  },
+  "header": {
+    "main_navigation": "Pagrindinis meniu",
+    "menu": "Meniu",
+    "open_menu": "Atidaryti meniu",
+    "close_menu": "Uždaryti meniu",
+    "search": "Paieška",
+    "account": "Paskyra",
+    "view_all": "Žiūrėti visus",
+    "read_more": "Skaityti",
+    "cart_count": {
+      "one": "Krepšelis, {{ count }} prekė",
+      "few": "Krepšelis, {{ count }} prekės",
+      "many": "Krepšelis, {{ count }} prekės",
+      "other": "Krepšelis, {{ count }} prekių"
+    }
+  },
+  "footer": {
+    "newsletter_label": "Naujienlaiškis",
+    "email_placeholder": "vardas@pastas.lt",
+    "subscribe": "Prenumeruoti",
+    "newsletter_success": "Ačiū. Jūsų el. paštas užregistruotas.",
+    "newsletter_error": "Patikrinkite el. pašto adresą ir bandykite dar kartą.",
+    "social": "Socialiniai tinklai",
+    "payment_methods": "Mokėjimo būdai"
+  },
+  "products": {
+    "add_to_cart": "Į krepšelį",
+    "sold_out": "Išparduota",
+    "in_stock": "Yra sandėlyje",
+    "variant": "Pasirinkimas",
+    "quantity": "Kiekis"
+  },
+  "collections": {
+    "all_title": "Visos kategorijos",
+    "empty": "Šioje kategorijoje kol kas nėra produktų.",
+    "products_count": {
+      "one": "{{ count }} produktas",
+      "few": "{{ count }} produktai",
+      "many": "{{ count }} produkto",
+      "other": "{{ count }} produktų"
+    }
+  },
+  "cart": {
+    "title": "Krepšelis",
+    "empty": "Krepšelis kol kas tuščias.",
+    "continue": "Žiūrėti produktus",
+    "remove": "Pašalinti",
+    "update": "Atnaujinti",
+    "subtotal": "Tarpinė suma",
+    "taxes_shipping": "Pristatymo kaina apskaičiuojama atsiskaitant.",
+    "checkout": "Pereiti prie apmokėjimo"
+  },
+  "search": {
+    "title": "Paieška",
+    "label": "Ieškoti parduotuvėje",
+    "placeholder": "Ko ieškote?",
+    "submit": "Ieškoti",
+    "results_count": {
+      "one": "Rastas {{ count }} rezultatas pagal „{{ terms }}“",
+      "few": "Rasti {{ count }} rezultatai pagal „{{ terms }}“",
+      "many": "Rasta {{ count }} rezultato pagal „{{ terms }}“",
+      "other": "Rasta {{ count }} rezultatų pagal „{{ terms }}“"
+    }
+  },
+  "templates": {
+    "404": {
+      "title": "Šio puslapio nėra.",
+      "text": "Galbūt nuoroda pasikeitė arba puslapis buvo perkeltas. Pradėkite nuo produktų arba grįžkite į pradžią.",
+      "cta": "Žiūrėti produktus"
+    }
+  },
+  "password": {
+    "title": "Netrukus atsidarome.",
+    "label": "Slaptažodis",
+    "enter": "Įeiti",
+    "error": "Neteisingas slaptažodis."
+  },
+  "gift_card": {
+    "title": "Dovanų kortelė",
+    "expired": "Šios dovanų kortelės galiojimas baigėsi.",
+    "expires_on": "Galioja iki {{ expires_on }}",
+    "use_code": "Įveskite šį kodą atsiskaitydami:",
+    "apple_wallet": "Pridėti į Apple Wallet",
+    "shop": "Į parduotuvę"
+  }
+}

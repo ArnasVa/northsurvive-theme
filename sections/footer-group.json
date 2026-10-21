@@ -1,0 +1,35 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "ns-footer",
+      "blocks": {
+        "menu_shop": {
+          "type": "menu",
+          "settings": { "heading": "Parduotuvė", "menu": "main-menu" }
+        },
+        "menu_help": {
+          "type": "menu",
+          "settings": { "heading": "Pirkėjams", "menu": "footer" }
+        },
+        "contact": {
+          "type": "text",
+          "settings": {
+            "heading": "Kontaktai",
+            "text": "<p>Įrašykite savo kontaktus teminiame redaktoriuje.</p>"
+          }
+        }
+      },
+      "block_order": ["menu_shop", "menu_help", "contact"],
+      "settings": {
+        "statement": "Pasiruošimas be baimės.",
+        "show_newsletter": true,
+        "newsletter_text": "Naujienlaiškis. Retai, tik tai, kas naudinga.",
+        "company_details": "",
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

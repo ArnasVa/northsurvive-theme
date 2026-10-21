@@ -1,0 +1,32 @@
+/* NorthSurvive · assets/template-basic.css
+   Simple, on-brand styles for the TEMPORARY page templates (product,
+   collection, cart, search, blog). Phase 4 replaces these with the full designs. */
+.basic { padding-block: var(--section-space); }
+.basic__head { display: grid; gap: var(--space-3); margin-bottom: var(--space-7); }
+.basic__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
+.basic-card { display: grid; gap: var(--space-3); align-content: start; }
+.basic-card__media { aspect-ratio: 4 / 5; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--color-line); border-radius: var(--radius-card); background: var(--color-white); }
+.basic-card__media img { width: 100%; height: 100%; object-fit: contain; padding: 8%; }
+.basic-product { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 6rem); padding-block: var(--space-7) var(--section-space); }
+.basic-product__media { display: grid; gap: var(--gutter); }
+.basic-product__media img { width: 100%; border: 1px solid var(--color-line); border-radius: var(--radius-card); background: var(--color-white); }
+.basic-product__info { display: grid; gap: var(--space-5); align-content: start; position: sticky; top: calc(var(--header-height) + var(--space-5)); }
+.basic-product__price { font-size: 1.25rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.basic-form { display: grid; gap: var(--space-4); }
+.basic-select { min-height: var(--control-height); padding: 0 var(--space-4); border: 1px solid #cfd1ce; border-radius: var(--radius-control); background: var(--color-white); }
+.basic-qty { width: 6rem; }
+.basic-cart { display: grid; gap: var(--space-6); }
+.basic-cart__row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 7rem 7rem; gap: var(--space-5); align-items: center; padding-block: var(--space-5); border-bottom: 1px solid var(--color-line); }
+.basic-cart__row img { border-radius: 4px; border: 1px solid var(--color-line); background: var(--color-white); }
+.basic-cart__footer { display: grid; justify-items: end; gap: var(--space-4); }
+.basic-search { display: flex; gap: var(--space-2); max-width: 36rem; }
+.basic-list { display: grid; gap: var(--space-2); border-top: 1px solid var(--color-ink); }
+.basic-list a { display: block; padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); }
+.pagination { display: flex; gap: var(--space-3); margin-top: var(--space-7); font-family: var(--font-mono); font-size: 0.875rem; }
+.pagination .current { color: var(--color-signal-deep); }
+@media (max-width: 899px) {
+  .basic__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .basic-product { grid-template-columns: 1fr; }
+  .basic-product__info { position: static; }
+  .basic-cart__row { grid-template-columns: 72px minmax(0, 1fr); }
+}

@@ -1,0 +1,43 @@
+{%- comment -%}
+  NorthSurvive · sections/main-collection.liquid
+  TEMPORARY collection page: title, description and a paginated product grid.
+  Phase 4 adds filters, sorting and the final product card.
+{%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+
+<section class="page-width basic">
+  <header class="basic__head">
+    <p class="eyebrow">{{ 'collections.products_count' | t: count: collection.products_count }}</p>
+    <h1>{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}<div class="rte muted">{{ collection.description }}</div>{%- endif -%}
+  </header>
+
+  {%- paginate collection.products by 24 -%}
+    <div class="basic__grid">
+      {%- for product in collection.products -%}
+        <a href="{{ product.url }}" class="basic-card">
+          <div class="basic-card__media">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 900px) 25vw, 50vw' }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          {%- if product.vendor != blank -%}<span class="eyebrow">{{ product.vendor | escape }}</span>{%- endif -%}
+          <span class="title">{{ product.title | escape }}</span>
+          <span>{{ product.price | money }}</span>
+          {%- unless product.available -%}<span class="availability availability--sold-out">{{ 'products.sold_out' | t }}</span>{%- endunless -%}
+        </a>
+      {%- else -%}
+        <p class="muted">{{ 'collections.empty' | t }}</p>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{ "name": "Collection (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

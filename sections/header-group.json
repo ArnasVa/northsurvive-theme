@@ -1,0 +1,17 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "ns-header",
+      "settings": {
+        "menu": "main-menu",
+        "sticky": "scroll-up",
+        "show_counts": true,
+        "feature_eyebrow": "Gidas",
+        "feature_heading": "Kaip pasiruošti elektros dingimui"
+      }
+    }
+  },
+  "order": ["header"]
+}

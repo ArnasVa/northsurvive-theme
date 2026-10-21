@@ -1,0 +1,17 @@
+{%- comment -%} NorthSurvive · sections/main-blog.liquid — TEMPORARY blog (Gidas) list {%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+<section class="page-width basic">
+  <header class="basic__head"><h1>{{ blog.title | escape }}</h1></header>
+  {%- paginate blog.articles by 12 -%}
+    <div class="basic-list">
+      {%- for article in blog.articles -%}
+        <a href="{{ article.url }}"><span class="eyebrow">{{ article.published_at | date: '%Y-%m-%d' }}</span><br><span class="title">{{ article.title | escape }}</span></a>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>{%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{ "name": "Blog (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

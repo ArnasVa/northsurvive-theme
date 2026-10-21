@@ -1,0 +1,14 @@
+{%- comment -%} NorthSurvive · sections/main-404.liquid — "page not found" {%- endcomment -%}
+<section class="section page-width" style="display: grid; gap: var(--space-5); justify-items: start;">
+  <p class="eyebrow">404</p>
+  <h1>{{ 'templates.404.title' | t }}</h1>
+  <p class="lead">{{ 'templates.404.text' | t }}</p>
+  <a href="{{ routes.all_products_collection_url }}" class="button">
+    {{ 'templates.404.cta' | t }}
+    {% render 'icon', name: 'arrow-right' %}
+  </a>
+</section>
+
+{% schema %}
+{ "name": "404 page", "tag": "div", "settings": [] }
+{% endschema %}

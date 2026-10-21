@@ -1,0 +1,15 @@
+{%- comment -%} NorthSurvive · sections/main-article.liquid — TEMPORARY article page {%- endcomment -%}
+<article class="section page-width">
+  <header style="display: grid; gap: var(--space-4); margin-bottom: var(--space-7);">
+    <p class="eyebrow">{{ article.published_at | date: '%Y-%m-%d' }}</p>
+    <h1>{{ article.title | escape }}</h1>
+  </header>
+  {%- if article.image -%}
+    {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '800, 1200, 1600', sizes: '100vw', style: 'border-radius: 6px; margin-bottom: 3rem;' }}
+  {%- endif -%}
+  <div class="rte">{{ article.content }}</div>
+</article>
+
+{% schema %}
+{ "name": "Article (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

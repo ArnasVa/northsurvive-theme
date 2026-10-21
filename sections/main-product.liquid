@@ -1,0 +1,65 @@
+{%- comment -%}
+  NorthSurvive · sections/main-product.liquid
+  TEMPORARY product page so the theme works from day one: real images,
+  title, price, variants, quantity and add to cart (Shopify's real cart).
+  Phase 4 replaces it with the full premium product page.
+{%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<section class="page-width basic-product">
+  <div class="basic-product__media">
+    {%- for media in product.media -%}
+      {%- if media.media_type == 'image' -%}
+        {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
+        {{ media.preview_image | image_url: width: 1400 | image_tag: loading: loading, widths: '600, 900, 1200, 1400', sizes: '(min-width: 900px) 55vw, 100vw' }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endfor -%}
+  </div>
+
+  <div class="basic-product__info">
+    {%- if product.vendor != blank -%}<p class="eyebrow">{{ product.vendor | escape }}</p>{%- endif -%}
+    <h1 class="h2">{{ product.title | escape }}</h1>
+    <p class="basic-product__price">{{ current_variant.price | money }}</p>
+
+    {%- if current_variant.available -%}
+      <span class="availability">{{ 'products.in_stock' | t }}</span>
+    {%- else -%}
+      <span class="availability availability--sold-out">{{ 'products.sold_out' | t }}</span>
+    {%- endif -%}
+
+    {%- form 'product', product, class: 'basic-form' -%}
+      {%- unless product.has_only_default_variant -%}
+        <div class="field">
+          <label class="field__label" for="Variant-{{ section.id }}">{{ 'products.variant' | t }}</label>
+          <select id="Variant-{{ section.id }}" name="id" class="basic-select">
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                {{ variant.title | escape }} – {{ variant.price | money }}{% unless variant.available %} ({{ 'products.sold_out' | t }}){% endunless %}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      {%- endunless -%}
+
+      <div class="field">
+        <label class="field__label" for="Quantity-{{ section.id }}">{{ 'products.quantity' | t }}</label>
+        <input id="Quantity-{{ section.id }}" class="field__input basic-qty" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+      </div>
+
+      <button type="submit" class="button button--full" {% unless current_variant.available %}disabled{% endunless %}>
+        {%- if current_variant.available -%}{{ 'products.add_to_cart' | t }}{%- else -%}{{ 'products.sold_out' | t }}{%- endif -%}
+      </button>
+    {%- endform -%}
+
+    <div class="rte">{{ product.description }}</div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Product (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

@@ -1,0 +1,55 @@
+{%- comment -%}
+  NorthSurvive · sections/main-cart.liquid
+  TEMPORARY cart page using Shopify's native cart form. Works without
+  JavaScript. Phase 4 adds the cart drawer and the final design.
+{%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+
+<section class="page-width basic">
+  <header class="basic__head"><h1>{{ 'cart.title' | t }}</h1></header>
+
+  {%- if cart.item_count == 0 -%}
+    <div style="display: grid; gap: var(--space-5); justify-items: start;">
+      <p class="lead">{{ 'cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow-right' %}</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" class="basic-cart">
+      <div>
+        {%- for item in cart.items -%}
+          <div class="basic-cart__row">
+            {%- if item.image -%}
+              {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 96, height: 96, alt: item.product.title }}
+            {%- else -%}
+              <span></span>
+            {%- endif -%}
+            <div>
+              {%- if item.vendor != blank -%}<p class="eyebrow">{{ item.vendor | escape }}</p>{%- endif -%}
+              <a href="{{ item.url }}" class="title">{{ item.product.title | escape }}</a>
+              {%- unless item.product.has_only_default_variant -%}<p class="small muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
+              <a href="{{ item.url_to_remove }}" class="small muted" style="text-decoration: underline; text-underline-offset: 4px;">{{ 'cart.remove' | t }}</a>
+            </div>
+            <div class="field">
+              <label class="visually-hidden" for="Qty-{{ item.key }}">{{ 'products.quantity' | t }}</label>
+              <input id="Qty-{{ item.key }}" class="field__input" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
+            </div>
+            <span style="text-align: right;">{{ item.final_line_price | money }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="basic-cart__footer">
+        <p><span class="muted">{{ 'cart.subtotal' | t }}</span> <strong>{{ cart.total_price | money }}</strong></p>
+        <p class="small muted">{{ 'cart.taxes_shipping' | t }}</p>
+        <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+          <button type="submit" class="button button--secondary">{{ 'cart.update' | t }}</button>
+          <button type="submit" name="checkout" class="button">{{ 'cart.checkout' | t }}</button>
+        </div>
+      </div>
+    </form>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{ "name": "Cart (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

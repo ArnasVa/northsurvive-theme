@@ -1,0 +1,260 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-header.liquid
+  The site header: logo, main menu (with a mega panel for any menu item
+  that has sub-links), search, account and cart. On screens under 900px the
+  menu moves into a full-screen <dialog>.
+
+  Menu content comes from Shopify admin › Content › Menus, so links are
+  edited there, never in code. Behaviour lives in assets/global.js (<ns-header>).
+{%- endcomment -%}
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign menu = section.settings.menu
+  if section.settings.sticky != 'none'
+    assign sticky_class = 'site-header--sticky'
+  endif
+-%}
+
+<ns-header class="site-header {{ sticky_class }}" data-sticky="{{ section.settings.sticky }}">
+  <div class="page-width site-header__inner">
+    <div class="site-header__start">
+      <button
+        type="button"
+        class="icon-button site-header__menu-button"
+        aria-controls="MobileMenu"
+        aria-expanded="false"
+        data-mobile-open
+      >
+        {% render 'icon', name: 'menu' %}
+        <span class="visually-hidden">{{ 'header.open_menu' | t }}</span>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="site-header__logo">
+        {%- if settings.logo != blank -%}
+          {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio | round -%}
+          {{
+            settings.logo
+            | image_url: width: 600
+            | image_tag:
+              class: 'site-header__logo-image',
+              width: settings.logo_width,
+              height: logo_height,
+              alt: shop.name,
+              loading: 'eager',
+              widths: '160, 240, 320, 480, 600'
+          }}
+        {%- else -%}
+          <span class="wordmark">{{ shop.name | upcase }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    <nav class="site-nav" aria-label="{{ 'header.main_navigation' | t }}">
+      <ul class="site-nav__list" role="list">
+        {%- for link in menu.links -%}
+          <li class="site-nav__item">
+            {%- if link.links != blank -%}
+              <button
+                type="button"
+                class="site-nav__link"
+                aria-expanded="false"
+                aria-controls="MegaPanel-{{ forloop.index }}"
+                data-mega-toggle
+              >
+                {{ link.title | escape }}
+                {% render 'icon', name: 'chevron-down', class: 'site-nav__chevron' %}
+              </button>
+
+              <div class="mega" id="MegaPanel-{{ forloop.index }}" data-mega-panel hidden>
+                <div class="page-width mega__inner">
+                  <div class="mega__column">
+                    <p class="eyebrow">{{ link.title | escape }}</p>
+                    <ul class="mega__list" role="list">
+                      {%- for child in link.links -%}
+                        <li>
+                          <a
+                            href="{{ child.url }}"
+                            class="mega__link"
+                            {% if child.current %}
+                              aria-current="page"
+                            {% endif %}
+                          >
+                            <span>{{ child.title | escape }}</span>
+                            {%- if child.type == 'collection_link' and section.settings.show_counts -%}
+                              <span class="mega__count">{{ child.object.products_count }}</span>
+                            {%- endif -%}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                    {%- unless link.url == '#' -%}
+                      <a href="{{ link.url }}" class="text-link mega__all">
+                        {{ 'header.view_all' | t }}
+                        {% render 'icon', name: 'arrow-right' %}
+                      </a>
+                    {%- endunless -%}
+                  </div>
+
+                  {%- if section.settings.feature_heading != blank -%}
+                    <a href="{{ section.settings.feature_link | default: '#' }}" class="mega__feature">
+                      <div class="mega__feature-media">
+                        {%- if section.settings.feature_image != blank -%}
+                          {{
+                            section.settings.feature_image
+                            | image_url: width: 900
+                            | image_tag:
+                              loading: 'lazy',
+                              widths: '450, 600, 900',
+                              sizes: '(min-width: 900px) 30vw, 100vw',
+                              alt: section.settings.feature_image.alt
+                          }}
+                        {%- else -%}
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {%- endif -%}
+                      </div>
+                      <div class="mega__feature-body">
+                        {%- if section.settings.feature_eyebrow != blank -%}
+                          <p class="eyebrow">{{ section.settings.feature_eyebrow | escape }}</p>
+                        {%- endif -%}
+                        <p class="mega__feature-title">{{ section.settings.feature_heading | escape }}</p>
+                        <span class="text-link">
+                          {{ 'header.read_more' | t }}
+                          {% render 'icon', name: 'arrow-right' %}
+                        </span>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- else -%}
+              <a
+                href="{{ link.url }}"
+                class="site-nav__link"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{- link.title | escape -}}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="site-header__end">
+      <a href="{{ routes.search_url }}" class="icon-button">
+        {% render 'icon', name: 'search' %}
+        <span class="visually-hidden">{{ 'header.search' | t }}</span>
+      </a>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="icon-button site-header__account">
+          {% render 'icon', name: 'account' %}
+          <span class="visually-hidden">{{ 'header.account' | t }}</span>
+        </a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="icon-button site-header__cart" id="HeaderCart">
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+          {{- cart.item_count -}}
+        </span>
+        <span class="visually-hidden">{{ 'header.cart_count' | t: count: cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</ns-header>
+
+<dialog id="MobileMenu" class="mobile-menu" aria-label="{{ 'header.menu' | t }}">
+  <div class="mobile-menu__top page-width">
+    <span class="wordmark">{{ shop.name | upcase }}</span>
+    <button type="button" class="icon-button" data-mobile-close>
+      {% render 'icon', name: 'close' %}
+      <span class="visually-hidden">{{ 'header.close_menu' | t }}</span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu__nav page-width" aria-label="{{ 'header.main_navigation' | t }}">
+    <ul role="list">
+      {%- for link in menu.links -%}
+        <li class="mobile-menu__item">
+          {%- if link.links != blank -%}
+            <details class="mobile-menu__group">
+              <summary class="mobile-menu__link">
+                {{ link.title | escape }}
+                {% render 'icon', name: 'plus', class: 'mobile-menu__plus' %}
+              </summary>
+              <ul class="mobile-menu__sub" role="list">
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title | escape }}</a></li>
+                {%- endfor -%}
+                {%- unless link.url == '#' -%}
+                  <li>
+                    <a href="{{ link.url }}" class="mobile-menu__all">{{ 'header.view_all' | t }}</a>
+                  </li>
+                {%- endunless -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}" class="mobile-menu__link">{{ link.title | escape }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+
+  <div class="mobile-menu__footer page-width">
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="{{ routes.account_url }}" class="button button--secondary button--small">{{ 'header.account' | t }}</a>
+    {%- endif -%}
+    <a href="{{ routes.search_url }}" class="button button--secondary button--small">{{ 'header.search' | t }}</a>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu",
+      "info": "Menu items with sub-links open a mega panel. Edit links in Content › Menus."
+    },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "Sticky header",
+      "options": [
+        { "value": "none", "label": "Off" },
+        { "value": "always", "label": "Always visible" },
+        { "value": "scroll-up", "label": "Hide on scroll down, show on scroll up" }
+      ],
+      "default": "scroll-up"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counts",
+      "label": "Show product count next to collections in the mega panel",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mega panel feature card"
+    },
+    {
+      "type": "paragraph",
+      "content": "An optional editorial card shown on the right of every mega panel. Leave the heading empty to hide it."
+    },
+    { "type": "image_picker", "id": "feature_image", "label": "Image" },
+    { "type": "text", "id": "feature_eyebrow", "label": "Small label", "default": "Gidas" },
+    { "type": "text", "id": "feature_heading", "label": "Heading" },
+    { "type": "url", "id": "feature_link", "label": "Link" }
+  ]
+}
+{% endschema %}

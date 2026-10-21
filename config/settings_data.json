@@ -1,0 +1,17 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_paper": "#F7F7F5",
+      "color_white": "#FFFFFF",
+      "color_ink": "#202326",
+      "color_graphite": "#22272B",
+      "color_stone": "#62676B",
+      "color_line": "#E4E5E3",
+      "color_signal": "#E87532",
+      "color_signal_deep": "#B85418",
+      "logo_width": 160,
+      "enable_motion": true
+    }
+  }
+}

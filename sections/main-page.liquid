@@ -1,0 +1,11 @@
+{%- comment -%} NorthSurvive · sections/main-page.liquid — standard content pages (Apie mus, policies, etc.) {%- endcomment -%}
+<section class="section page-width">
+  <header class="basic__head" style="margin-bottom: var(--space-7);">
+    <h1>{{ page.title | escape }}</h1>
+  </header>
+  <div class="rte">{{ page.content }}</div>
+</section>
+
+{% schema %}
+{ "name": "Page content", "tag": "div", "settings": [] }
+{% endschema %}

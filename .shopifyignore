@@ -1,0 +1,3 @@
+# Files Shopify CLI should never upload to the store
+licenses/*
+README.md

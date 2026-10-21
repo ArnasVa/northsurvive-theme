@@ -1,0 +1,42 @@
+{%- comment -%} NorthSurvive · sections/main-search.liquid — TEMPORARY search page {%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+
+<section class="page-width basic">
+  <header class="basic__head">
+    <h1>{{ 'search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="basic-search">
+      <label for="SearchInput" class="visually-hidden">{{ 'search.label' | t }}</label>
+      <input id="SearchInput" class="field__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}">
+      <button type="submit" class="button">{{ 'search.submit' | t }}</button>
+    </form>
+  </header>
+
+  {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
+      <p class="muted" style="margin-bottom: var(--space-6);">{{ 'search.results_count' | t: count: search.results_count, terms: search.terms }}</p>
+      <div class="basic__grid">
+        {%- for result in search.results -%}
+          <a href="{{ result.url }}" class="basic-card">
+            {%- assign result_image = result.featured_image | default: result.image -%}
+            <div class="basic-card__media">
+              {%- if result_image -%}
+                {{ result_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 900px) 25vw, 50vw' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <span class="title">{{ result.title | escape }}</span>
+            {%- if result.object_type == 'product' -%}<span>{{ result.price | money }}</span>{%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{ "name": "Search (temporary)", "tag": "div", "settings": [] }
+{% endschema %}

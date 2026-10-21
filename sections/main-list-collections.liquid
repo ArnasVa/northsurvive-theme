@@ -1,0 +1,14 @@
+{%- comment -%} NorthSurvive · sections/main-list-collections.liquid — TEMPORARY list of all collections {%- endcomment -%}
+{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+<section class="page-width basic">
+  <header class="basic__head"><h1>{{ 'collections.all_title' | t }}</h1></header>
+  <div class="basic-list">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="title">{{ collection.title | escape }}</a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collections list (temporary)", "tag": "div", "settings": [] }
+{% endschema %}
