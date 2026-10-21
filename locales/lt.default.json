@@ -94,7 +94,15 @@
       "few": "Rasti {{ count }} rezultatai pagal „{{ terms }}“",
       "many": "Rasta {{ count }} rezultato pagal „{{ terms }}“",
       "other": "Rasta {{ count }} rezultatų pagal „{{ terms }}“"
-    }
+    },
+    "products": "Produktai",
+    "other": "Kategorijos ir straipsniai",
+    "view_all": "Visi rezultatai pagal „{{ terms }}“",
+    "no_results": "Pagal „{{ terms }}“ nieko neradome.",
+    "close": "Uždaryti paiešką",
+    "type_article": "Straipsnis",
+    "type_page": "Puslapis",
+    "type_collection": "Kategorija"
   },
   "templates": {
     "404": {
@@ -140,5 +148,10 @@
     "service": {
       "empty_editor": "Įrašykite tekstą. Be teksto šis punktas parduotuvėje nerodomas."
     }
+  },
+  "blogs": {
+    "topics": "Temos",
+    "all": "Visos temos",
+    "empty": "Straipsnių kol kas nėra."
   }
 }

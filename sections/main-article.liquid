@@ -1,15 +1,66 @@
-{%- comment -%} NorthSurvive · sections/main-article.liquid — TEMPORARY article page {%- endcomment -%}
-<article class="section page-width">
-  <header style="display: grid; gap: var(--space-4); margin-bottom: var(--space-7);">
-    <p class="eyebrow">{{ article.published_at | date: '%Y-%m-%d' }}</p>
-    <h1>{{ article.title | escape }}</h1>
+{%- comment -%}
+  NorthSurvive · sections/main-article.liquid
+  One "Gidas" article: title, date, cover image and a comfortable reading
+  column. Add "NS · Featured products" or other sections under it in the
+  theme editor to show related products.
+{%- endcomment -%}
+{{ 'section-blog.css' | asset_url | stylesheet_tag }}
+
+<article class="article page-width">
+  <header class="article__head">
+    <a href="{{ blog.url }}" class="text-link article__back">← {{ blog.title | escape }}</a>
+    <p class="eyebrow">
+      {{- article.published_at | date: '%Y-%m-%d' -}}
+      {%- if section.settings.show_author and article.author != blank %} · {{ article.author | escape }}{% endif -%}
+    </p>
+    <h1 class="article__title">{{ article.title | escape }}</h1>
+    {%- if article.excerpt != blank -%}
+      <div class="lead article__lead">{{ article.excerpt | strip_html }}</div>
+    {%- endif -%}
   </header>
+
   {%- if article.image -%}
-    {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '800, 1200, 1600', sizes: '100vw', style: 'border-radius: 6px; margin-bottom: 3rem;' }}
+    <div class="article__cover">
+      {{ article.image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '800, 1200, 1600, 2000', sizes: '(min-width: 1440px) 1440px, 100vw', alt: article.image.alt, class: 'article__image' }}
+    </div>
   {%- endif -%}
-  <div class="rte">{{ article.content }}</div>
+
+  <div class="article__content rte">{{ article.content }}</div>
+
+  {%- if article.tags.size > 0 -%}
+    <ul class="article__tags" role="list">
+      {%- for tag in article.tags -%}
+        <li><a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="blog__tag">{{ tag | escape }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
 </article>
 
+{%- if section.settings.show_more and blog.articles_count > 1 -%}
+  <section class="section article-more">
+    <div class="page-width">
+      <h2 class="article-more__heading">{{ section.settings.more_heading | escape }}</h2>
+      <ul class="blog__grid blog__grid--three" role="list">
+        {%- assign shown = 0 -%}
+        {%- for item in blog.articles -%}
+          {%- if item.id != article.id and shown < 3 -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <li>{% render 'article-card', article: item %}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
 {% schema %}
-{ "name": "Article (temporary)", "tag": "div", "settings": [] }
+{
+  "name": "Article",
+  "tag": "div",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "show_more", "label": "Show more articles below", "default": true },
+    { "type": "text", "id": "more_heading", "label": "\"More articles\" heading", "default": "Daugiau iš Gido" }
+  ]
+}
 {% endschema %}

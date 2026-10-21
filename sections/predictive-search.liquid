@@ -1,0 +1,56 @@
+{%- comment -%}
+  NorthSurvive · sections/predictive-search.liquid
+  Rendered by Shopify's predictive search API while the visitor types in
+  the search overlay (assets/search.js). Not added to pages directly.
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  <div class="predictive" data-predictive-results>
+    {%- assign products = predictive_search.resources.products -%}
+    {%- assign collections = predictive_search.resources.collections -%}
+    {%- assign articles = predictive_search.resources.articles -%}
+    {%- assign pages = predictive_search.resources.pages -%}
+
+    {%- if products.size > 0 or collections.size > 0 or articles.size > 0 or pages.size > 0 -%}
+      {%- if products.size > 0 -%}
+        <div class="predictive__group">
+          <p class="eyebrow">{{ 'search.products' | t }}</p>
+          <ul class="predictive__products" role="list">
+            {%- for product in products -%}
+              <li>
+                <a href="{{ product.url }}" class="predictive__product">
+                  <span class="predictive__thumb">
+                    {%- if product.featured_image -%}
+                      {{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', width: 80, height: 80, alt: '' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="predictive__product-info">
+                    <span class="predictive__title">{{ product.title | escape }}</span>
+                    <span class="predictive__price">{{ product.price | money }}</span>
+                  </span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if collections.size > 0 or articles.size > 0 or pages.size > 0 -%}
+        <div class="predictive__group">
+          <p class="eyebrow">{{ 'search.other' | t }}</p>
+          <ul class="predictive__links" role="list">
+            {%- for item in collections -%}<li><a href="{{ item.url }}">{{ item.title | escape }}</a></li>{%- endfor -%}
+            {%- for item in articles -%}<li><a href="{{ item.url }}">{{ item.title | escape }}</a></li>{%- endfor -%}
+            {%- for item in pages -%}<li><a href="{{ item.url }}">{{ item.title | escape }}</a></li>{%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}" class="text-link predictive__all">
+        {{ 'search.view_all' | t: terms: predictive_search.terms }}
+        {% render 'icon', name: 'arrow-right' %}
+      </a>
+    {%- else -%}
+      <p class="predictive__empty muted">{{ 'search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

@@ -8,6 +8,8 @@
   edited there, never in code. Behaviour lives in assets/global.js (<ns-header>).
 {%- endcomment -%}
 {{ 'section-header.css' | asset_url | stylesheet_tag }}
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'search.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign menu = section.settings.menu
@@ -144,7 +146,7 @@
     </nav>
 
     <div class="site-header__end">
-      <a href="{{ routes.search_url }}" class="icon-button">
+      <a href="{{ routes.search_url }}" class="icon-button" data-search-open>
         {% render 'icon', name: 'search' %}
         <span class="visually-hidden">{{ 'header.search' | t }}</span>
       </a>
@@ -166,6 +168,8 @@
     </div>
   </div>
 </ns-header>
+
+{% render 'search-overlay' %}
 
 <dialog id="MobileMenu" class="mobile-menu" aria-label="{{ 'header.menu' | t }}">
   <div class="mobile-menu__top page-width">
@@ -209,7 +213,7 @@
     {%- if shop.customer_accounts_enabled -%}
       <a href="{{ routes.account_url }}" class="button button--secondary button--small">{{ 'header.account' | t }}</a>
     {%- endif -%}
-    <a href="{{ routes.search_url }}" class="button button--secondary button--small">{{ 'header.search' | t }}</a>
+    <a href="{{ routes.search_url }}" class="button button--secondary button--small" data-search-open>{{ 'header.search' | t }}</a>
   </div>
 </dialog>
 

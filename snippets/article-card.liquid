@@ -1,0 +1,35 @@
+{% doc %}
+  An article card for the blog list and related articles.
+
+  @param {object} article - The article
+  @param {boolean} [lead] - Large version
+  @param {boolean} [show_excerpt] - Show the excerpt
+
+  @example
+  {% render 'article-card', article: article %}
+{% enddoc %}
+<article class="article-card{% if lead %} article-card--lead{% endif %}">
+  <a href="{{ article.url }}" class="article-card__media" tabindex="-1" aria-hidden="true">
+    {%- if article.image -%}
+      {%- if lead -%}{%- assign card_sizes = '(min-width: 900px) 60vw, 100vw' -%}{%- else -%}{%- assign card_sizes = '(min-width: 900px) 33vw, 100vw' -%}{%- endif -%}
+      {{ article.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 900, 1200, 1400', sizes: card_sizes, alt: '', class: 'article-card__image' }}
+    {%- else -%}
+      <span class="article-card__placeholder"></span>
+    {%- endif -%}
+  </a>
+  <div class="article-card__body">
+    <p class="eyebrow">
+      {{- article.published_at | date: '%Y-%m-%d' -}}
+      {%- if article.tags.size > 0 %} · {{ article.tags.first | escape }}{% endif -%}
+    </p>
+    <h3 class="article-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+    {%- if show_excerpt -%}
+      {%- if article.excerpt != blank -%}
+        {%- assign summary = article.excerpt | strip_html | truncatewords: 28 -%}
+      {%- else -%}
+        {%- assign summary = article.content | strip_html | truncatewords: 28 -%}
+      {%- endif -%}
+      <p class="muted article-card__excerpt">{{ summary }}</p>
+    {%- endif -%}
+  </div>
+</article>

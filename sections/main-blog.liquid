@@ -1,17 +1,54 @@
-{%- comment -%} NorthSurvive · sections/main-blog.liquid — TEMPORARY blog (Gidas) list {%- endcomment -%}
-{{ 'template-basic.css' | asset_url | stylesheet_tag }}
-<section class="page-width basic">
-  <header class="basic__head"><h1>{{ blog.title | escape }}</h1></header>
-  {%- paginate blog.articles by 12 -%}
-    <div class="basic-list">
-      {%- for article in blog.articles -%}
-        <a href="{{ article.url }}"><span class="eyebrow">{{ article.published_at | date: '%Y-%m-%d' }}</span><br><span class="title">{{ article.title | escape }}</span></a>
+{%- comment -%}
+  NorthSurvive · sections/main-blog.liquid
+  "Gidas" — the article list. Newest article large, the rest in a grid.
+  Tag filter chips appear when articles have tags.
+{%- endcomment -%}
+{{ 'section-blog.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+
+<section class="blog page-width">
+  <header class="blog__head">
+    {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h1 class="blog__title">{{ blog.title | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<p class="lead">{{ section.settings.intro | escape }}</p>{%- endif -%}
+  </header>
+
+  {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+    <nav class="blog__tags" aria-label="{{ 'blogs.topics' | t }}">
+      <a href="{{ blog.url }}" class="blog__tag{% if current_tags == blank %} is-active{% endif %}">{{ 'blogs.all' | t }}</a>
+      {%- for tag in blog.all_tags -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="blog__tag{% if current_tags contains tag %} is-active{% endif %}">{{ tag | escape }}</a>
       {%- endfor -%}
-    </div>
-    {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>{%- endif -%}
+    </nav>
+  {%- endif -%}
+
+  {%- paginate blog.articles by section.settings.per_page -%}
+    {%- if blog.articles.size > 0 -%}
+      <ul class="blog__grid" role="list">
+        {%- for article in blog.articles -%}
+          <li class="{% if forloop.first and paginate.current_page == 1 %}blog__item--lead{% endif %}">
+            {% render 'article-card', article: article, lead: forloop.first, show_excerpt: true %}
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- else -%}
+      <p class="lead muted">{{ 'blogs.empty' | t }}</p>
+    {%- endif -%}
   {%- endpaginate -%}
 </section>
 
 {% schema %}
-{ "name": "Blog (temporary)", "tag": "div", "settings": [] }
+{
+  "name": "Blog",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Gidas" },
+    { "type": "text", "id": "intro", "label": "Intro text", "default": "Praktiški patarimai, kaip ramiai pasiruošti nenumatytoms situacijoms." },
+    { "type": "checkbox", "id": "show_tags", "label": "Show topic filter", "default": true },
+    { "type": "range", "id": "per_page", "label": "Articles per page", "min": 6, "max": 24, "step": 3, "default": 12 }
+  ]
+}
 {% endschema %}

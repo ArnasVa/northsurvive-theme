@@ -1,0 +1,33 @@
+{% doc %}
+  The search panel that opens under the header from the search icon.
+  Suggestions appear while typing (assets/search.js); Enter opens the full
+  search page. Without JavaScript the icon simply links to the search page.
+
+  @example
+  {% render 'search-overlay' %}
+{% enddoc %}
+<ns-search class="search-overlay" hidden data-search-overlay>
+  <div class="search-overlay__backdrop" data-search-close></div>
+  <div class="search-overlay__panel" role="dialog" aria-modal="true" aria-label="{{ 'search.title' | t }}">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="page-width search-overlay__form">
+      <label for="SearchOverlayInput" class="visually-hidden">{{ 'search.label' | t }}</label>
+      {% render 'icon', name: 'search', class: 'search-overlay__icon' %}
+      <input
+        id="SearchOverlayInput"
+        class="search-overlay__input"
+        type="search"
+        name="q"
+        placeholder="{{ 'search.placeholder' | t }}"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        data-search-input
+      >
+      <button type="button" class="icon-button" data-search-close>
+        {% render 'icon', name: 'close' %}
+        <span class="visually-hidden">{{ 'search.close' | t }}</span>
+      </button>
+    </form>
+    <div class="page-width search-overlay__results" data-search-results aria-live="polite"></div>
+  </div>
+</ns-search>
