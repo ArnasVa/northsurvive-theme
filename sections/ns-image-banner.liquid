@@ -20,10 +20,8 @@
 
 {%- liquid
   assign banner_image = section.settings.image
-  assign from_product = false
   if banner_image == blank and section.settings.fallback_product != blank
     assign banner_image = section.settings.fallback_product.featured_media.preview_image
-    assign from_product = true
   endif
   assign focal = banner_image.presentation.focal_point | default: '50% 50%'
   assign focal_style = 'object-position: ' | append: focal

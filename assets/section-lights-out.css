@@ -95,7 +95,7 @@
   .lights-out__grid--reverse { grid-template-columns: 1fr; }
   .lights-out__grid--reverse .lights-out__media { order: 0; }
   .lights-out__media { min-height: 0; aspect-ratio: 4 / 3; }
-  .lights-out__stage { min-height: 0; }
+  .lights-out__stage { min-height: 0; --beam-size: 13rem; }
   .lights-out__points { grid-template-columns: 1fr; }
   .lights-out__point { padding-block: var(--space-4); border-bottom: 1px solid var(--color-line-dark); }
 }

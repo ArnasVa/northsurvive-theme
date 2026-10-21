@@ -182,9 +182,11 @@
 
   /**
    * <ns-lights-out>  The editorial "Lights Out" moment: the text starts dim
-   * and a soft beam follows the pointer. On touch screens the beam sweeps
-   * across once when the section scrolls into view. With reduced motion the
-   * text is simply fully lit (handled in CSS, and skipped here).
+   * and a soft beam lights it up like a torch.
+   * - Mouse: the beam follows the pointer.
+   * - Touch screens: the beam moves down the text as you scroll (so the
+   *   lines light up in reading order), and follows your finger on touch.
+   * With reduced motion the text is simply fully lit (CSS, skipped here).
    */
   class NsLightsOut extends HTMLElement {
     connectedCallback() {
@@ -196,44 +198,57 @@
       this.classList.add('is-active');
 
       if (canHover.matches) {
-        this.addEventListener('pointermove', (event) => {
-          var rect = this.getBoundingClientRect();
-          this.style.setProperty('--beam-x', event.clientX - rect.left + 'px');
-          this.style.setProperty('--beam-y', event.clientY - rect.top + 'px');
-        });
+        this.addEventListener('pointermove', (event) => this.moveTo(event.clientX, event.clientY));
         return;
       }
 
-      if (!('IntersectionObserver' in window)) {
-        this.classList.add('is-static');
-        return;
-      }
-      var observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            observer.disconnect();
-            this.sweep();
-          });
-        },
-        { threshold: 0.5 }
-      );
-      observer.observe(this);
+      this.touching = false;
+      this.ticking = false;
+      this.onScroll = () => {
+        if (this.ticking || this.touching) return;
+        this.ticking = true;
+        window.requestAnimationFrame(() => {
+          this.ticking = false;
+          this.followScroll();
+        });
+      };
+      this.addEventListener('touchstart', (event) => {
+        this.touching = true;
+        var t = event.touches[0];
+        this.moveTo(t.clientX, t.clientY);
+      }, { passive: true });
+      this.addEventListener('touchmove', (event) => {
+        var t = event.touches[0];
+        this.moveTo(t.clientX, t.clientY);
+      }, { passive: true });
+      this.addEventListener('touchend', () => { this.touching = false; }, { passive: true });
+      window.addEventListener('scroll', this.onScroll, { passive: true });
+      window.addEventListener('resize', this.onScroll, { passive: true });
+      this.followScroll();
     }
 
-    sweep() {
-      var start = null;
-      var duration = 2200;
-      var step = (time) => {
-        if (start === null) start = time;
-        var progress = Math.min((time - start) / duration, 1);
-        var rect = this.getBoundingClientRect();
-        this.style.setProperty('--beam-x', progress * rect.width + 'px');
-        this.style.setProperty('--beam-y', rect.height * 0.55 + 'px');
-        if (progress < 1) window.requestAnimationFrame(step);
-        else this.classList.add('is-static');
-      };
-      window.requestAnimationFrame(step);
+    disconnectedCallback() {
+      if (this.onScroll) {
+        window.removeEventListener('scroll', this.onScroll);
+        window.removeEventListener('resize', this.onScroll);
+      }
+    }
+
+    moveTo(clientX, clientY) {
+      var rect = this.getBoundingClientRect();
+      this.style.setProperty('--beam-x', clientX - rect.left + 'px');
+      this.style.setProperty('--beam-y', clientY - rect.top + 'px');
+    }
+
+    /* The beam sits where the reader's eyes are: about 45% down the screen. */
+    followScroll() {
+      var rect = this.getBoundingClientRect();
+      var eye = window.innerHeight * 0.45;
+      var y = Math.min(Math.max(eye - rect.top, rect.height * 0.12), rect.height * 0.88);
+      var progress = rect.height ? y / rect.height : 0.5;
+      var x = rect.width * (0.35 + 0.3 * Math.sin(progress * Math.PI));
+      this.style.setProperty('--beam-x', x + 'px');
+      this.style.setProperty('--beam-y', y + 'px');
     }
   }
 
