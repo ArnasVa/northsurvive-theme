@@ -1,0 +1,75 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-product-details.liquid
+  Below the buy box: the product description on the left and the
+  technical specifications table on the right.
+  Specifications come from the product metafield custom.specifications
+  (multi-line text, one "Label: Value" per line). Without it, only the
+  description is shown, full width.
+{%- endcomment -%}
+{%- liquid
+  assign spec_text = product.metafields.custom.specifications.value
+  assign has_specs = false
+  if spec_text != blank
+    assign has_specs = true
+    assign spec_lines = spec_text | newline_to_br | split: '<br />'
+  endif
+-%}
+
+{%- if product.description != blank or has_specs -%}
+  {{ 'section-product-details.css' | asset_url | stylesheet_tag }}
+
+  <section class="section product-details" aria-labelledby="DetailsHeading-{{ section.id }}">
+    <div class="page-width product-details__grid{% unless has_specs %} product-details__grid--single{% endunless %}">
+      {%- if product.description != blank -%}
+        <div class="product-details__description">
+          {%- if section.settings.description_heading != blank -%}
+            <h2 id="DetailsHeading-{{ section.id }}" class="product-details__heading">{{ section.settings.description_heading | escape }}</h2>
+          {%- endif -%}
+          <div class="rte">{{ product.description }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if has_specs -%}
+        <div class="product-details__specs">
+          {%- if section.settings.specs_heading != blank -%}
+            <h2 class="product-details__heading"{% if product.description == blank %} id="DetailsHeading-{{ section.id }}"{% endif %}>
+              {{- section.settings.specs_heading | escape -}}
+            </h2>
+          {%- endif -%}
+          <dl class="spec-table">
+            {%- for line in spec_lines -%}
+              {%- assign clean = line | strip -%}
+              {%- if clean != blank -%}
+                {%- assign parts = clean | split: ':' -%}
+                {%- if parts.size > 1 -%}
+                  {%- assign label = parts | first | strip -%}
+                  {%- assign label_length = parts.first.size | plus: 1 -%}
+                  {%- assign value = clean | slice: label_length, 500 | strip -%}
+                  <div class="spec-table__row">
+                    <dt>{{ label | escape }}</dt>
+                    <dd>{{ value | escape }}</dd>
+                  </div>
+                {%- else -%}
+                  <div class="spec-table__row spec-table__row--full"><dd>{{ clean | escape }}</dd></div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product details",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "description_heading", "label": "Description heading", "default": "Apie produktą" },
+    { "type": "text", "id": "specs_heading", "label": "Specifications heading", "default": "Techninės specifikacijos" },
+    { "type": "paragraph", "content": "Specifications come from the product metafield custom.specifications: one \"Label: Value\" per line." }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

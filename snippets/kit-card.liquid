@@ -16,8 +16,8 @@
 {% enddoc %}
 {%- liquid
   assign kit_title = title | default: product.title
-  assign components = product.metafields.ns.kit_components.value
-  assign in_the_box = product.metafields.ns.in_the_box.value
+  assign components = product.metafields.custom.kit_components.value
+  assign in_the_box = product.metafields.custom.in_the_box.value
   assign contents_lines = contents | strip | newline_to_br | split: '<br />'
 
   if summary != blank

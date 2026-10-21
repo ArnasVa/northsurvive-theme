@@ -1,7 +1,9 @@
 {
   "general": {
     "page_number": "{{ page }} puslapis",
-    "pagination": "Puslapiai"
+    "pagination": "Puslapiai",
+    "home": "Pradžia",
+    "breadcrumbs": "Naršymo kelias"
   },
   "accessibility": {
     "skip_to_content": "Pereiti prie turinio"
@@ -41,7 +43,12 @@
     "new": "Naujiena",
     "from_price_html": "nuo {{ price }}",
     "regular_price": "Įprasta kaina",
-    "choose_options": "Pasirinkti"
+    "choose_options": "Pasirinkti",
+    "added_to_cart_html": "Pridėta į krepšelį. <a href=\"{{ cart_url }}\">Peržiūrėti krepšelį</a>",
+    "add_error": "Nepavyko pridėti į krepšelį. Bandykite dar kartą.",
+    "unavailable": "Toks pasirinkimas negalimas",
+    "quantity_decrease": "Mažinti kiekį",
+    "quantity_increase": "Didinti kiekį"
   },
   "collections": {
     "all_title": "Visos kategorijos",

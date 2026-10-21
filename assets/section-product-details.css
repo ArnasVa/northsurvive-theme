@@ -1,0 +1,31 @@
+/* NorthSurvive · assets/section-product-details.css — description, specifications, kit contents */
+
+.product-details { border-top: 1px solid var(--color-line); }
+.product-details__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 6rem); align-items: start; }
+.product-details__grid--single { grid-template-columns: minmax(0, 1fr); }
+.product-details__heading { margin-bottom: var(--space-5); font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); letter-spacing: -0.03em; }
+.product-details__description .rte { font-size: 1.0625rem; color: #3b3f43; }
+
+.spec-table { margin: 0; border-top: 1px solid var(--color-ink); font-size: 0.9375rem; }
+.spec-table__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-line);
+}
+.spec-table__row--full { grid-template-columns: 1fr; }
+.spec-table dt { color: var(--color-stone); }
+.spec-table dd { margin: 0; font-family: var(--font-mono); font-size: 0.875rem; }
+
+.kit-contents__list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0 var(--space-6);
+  border-top: 1px solid var(--color-ink);
+}
+.kit-contents__list li { padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); font-family: var(--font-mono); font-size: 0.875rem; }
+
+@media (max-width: 899px) {
+  .product-details__grid { grid-template-columns: 1fr; }
+}

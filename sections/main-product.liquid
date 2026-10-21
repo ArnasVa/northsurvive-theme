@@ -1,65 +1,340 @@
 {%- comment -%}
   NorthSurvive · sections/main-product.liquid
-  TEMPORARY product page so the theme works from day one: real images,
-  title, price, variants, quantity and add to cart (Shopify's real cart).
-  Phase 4 replaces it with the full premium product page.
+  The product page: gallery on the left, buy box on the right (sticky on
+  desktop). Everything in the buy box is a block, so its content and order
+  are edited in the theme editor. All product data — title, images, price,
+  variants, stock — comes from Shopify.
+
+  Behaviour (variant picker, quantity, add to cart, mobile gallery):
+  assets/product.js (<ns-product>).
+
+  Product metafields used (create them in Settings › Custom data › Products):
+  - custom.spec_line       List of single line text  → short spec line under the title
+  - custom.key_benefits    List of single line text  → benefits list
+  - custom.in_the_box      List of single line text  → "Komplekte" accordion source
+  - custom.specifications  Multi-line text, one "Label: Value" per line
 {%- endcomment -%}
-{{ 'template-basic.css' | asset_url | stylesheet_tag }}
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
 
-<section class="page-width basic-product">
-  <div class="basic-product__media">
-    {%- for media in product.media -%}
-      {%- if media.media_type == 'image' -%}
-        {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
-        {{ media.preview_image | image_url: width: 1400 | image_tag: loading: loading, widths: '600, 900, 1200, 1400', sizes: '(min-width: 900px) 55vw, 100vw' }}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+  assign show_vendor = true
+  assign vendor_handle = product.vendor | handle
+  assign shop_handle = shop.name | handle
+  if product.vendor == blank or vendor_handle == shop_handle
+    assign show_vendor = false
+  endif
+-%}
+
+<ns-product
+  class="product page-width"
+  data-section-id="{{ section.id }}"
+  data-added-text="{{ 'products.added_to_cart_html' | t: cart_url: routes.cart_url | escape }}"
+  data-error-text="{{ 'products.add_error' | t | escape }}"
+  data-unavailable-text="{{ 'products.unavailable' | t | escape }}"
+  data-add-text="{{ 'products.add_to_cart' | t | escape }}"
+  data-sold-out-text="{{ 'products.sold_out' | t | escape }}"
+>
+  {%- if section.settings.show_breadcrumbs -%}
+    {% render 'breadcrumbs' %}
+  {%- endif -%}
+
+  <div class="product__grid">
+    {%- comment -%} Gallery {%- endcomment -%}
+    <div class="product__gallery">
+      <ul class="product__media-list" role="list" data-gallery>
+        {%- for media in product.media -%}
+          <li
+            class="product__media-item{% if media.id == featured_media.id %} is-active{% endif %}"
+            data-media-id="{{ media.id }}"
+          >
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {%- liquid
+                  assign loading = 'lazy'
+                  assign priority = 'auto'
+                  if forloop.first
+                    assign loading = 'eager'
+                    assign priority = 'high'
+                  endif
+                  assign media_alt = media.alt | default: product.title
+                -%}
+                {{
+                  media
+                  | image_url: width: 1800
+                  | image_tag:
+                    loading: loading,
+                    fetchpriority: priority,
+                    widths: '400, 600, 900, 1200, 1500, 1800',
+                    sizes: '(min-width: 1100px) 55vw, (min-width: 900px) 50vw, 100vw',
+                    alt: media_alt,
+                    class: 'product__media-image'
+                }}
+              {%- when 'video' -%}
+                {{ media | video_tag: controls: true, class: 'product__media-video', image_size: '1200x' }}
+              {%- when 'external_video' -%}
+                {{ media | external_video_tag: class: 'product__media-video' }}
+              {%- else -%}
+                {{ media | media_tag: class: 'product__media-video' }}
+            {%- endcase -%}
+          </li>
+        {%- else -%}
+          <li class="product__media-item is-active">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</li>
+        {%- endfor -%}
+      </ul>
+      {%- if product.media.size > 1 -%}
+        <p class="product__media-counter" aria-hidden="true"><span data-gallery-current>1</span> / {{ product.media.size }}</p>
       {%- endif -%}
-    {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-    {%- endfor -%}
+    </div>
+
+    {%- comment -%} Buy box {%- endcomment -%}
+    <div class="product__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+
+          {%- when 'vendor' -%}
+            {%- if show_vendor -%}
+              <p class="eyebrow product__vendor" {{ block.shopify_attributes }}>{{ product.vendor | escape }}</p>
+            {%- endif -%}
+
+          {%- when 'title' -%}
+            <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
+
+          {%- when 'spec_line' -%}
+            {%- assign spec_values = product.metafields.custom.spec_line.value -%}
+            {%- if spec_values != blank -%}
+              <p class="spec-line product__spec-line" {{ block.shopify_attributes }}>
+                {%- for spec in spec_values limit: 4 -%}<span>{{ spec | escape }}</span>{%- endfor -%}
+              </p>
+            {%- endif -%}
+
+          {%- when 'price' -%}
+            <div class="product__price-block" {{ block.shopify_attributes }}>
+              <p class="product__price">
+                <span data-price>{{ current_variant.price | money }}</span>
+                <s class="product__compare" data-compare-price data-label="{{ 'products.regular_price' | t | escape }}" {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>
+                  <span class="visually-hidden">{{ 'products.regular_price' | t }}</span>
+                  {{ current_variant.compare_at_price | money }}
+                </s>
+              </p>
+              {%- if block.settings.tax_note != blank -%}
+                <p class="small muted">{{ block.settings.tax_note | escape }}</p>
+              {%- endif -%}
+            </div>
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="product__variants" {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  <fieldset class="variant-option" data-option-index="{{ forloop.index0 }}">
+                    <legend class="variant-option__legend">
+                      {{ option.name | escape }}:
+                      <span class="variant-option__selected" data-option-selected>{{ option.selected_value | escape }}</span>
+                    </legend>
+                    <div class="variant-option__values">
+                      {%- for value in option.values -%}
+                        <label class="variant-pill">
+                          <input
+                            type="radio"
+                            class="visually-hidden"
+                            name="Option-{{ section.id }}-{{ forloop.parentloop.index0 }}"
+                            value="{{ value | escape }}"
+                            {% if option.selected_value == value %}
+                              checked
+                            {% endif %}
+                            data-option-input
+                          >
+                          <span>{{ value | escape }}</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+          {%- when 'buy_buttons' -%}
+            <div class="product__buy" {{ block.shopify_attributes }}>
+              <p
+                class="availability{% unless current_variant.available %} availability--sold-out{% endunless %}"
+                data-availability
+                data-in-stock-text="{{ 'products.in_stock' | t | escape }}"
+                data-sold-out-text="{{ 'products.sold_out' | t | escape }}"
+              >
+                {%- if current_variant.available -%}
+                  {{ 'products.in_stock' | t }}
+                {%- else -%}
+                  {{ 'products.sold_out' | t }}
+                {%- endif -%}
+              </p>
+
+              {%- form 'product', product, class: 'product__form', data-product-form: '', novalidate: 'novalidate' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+                <div class="product__buy-row">
+                  <div class="quantity" data-quantity>
+                    <label for="Quantity-{{ section.id }}" class="visually-hidden">{{ 'products.quantity' | t }}</label>
+                    <button type="button" class="quantity__button" data-quantity-minus aria-label="{{ 'products.quantity_decrease' | t }}">
+                      {% render 'icon', name: 'minus' %}
+                    </button>
+                    <input
+                      id="Quantity-{{ section.id }}"
+                      class="quantity__input"
+                      type="number"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      inputmode="numeric"
+                    >
+                    <button type="button" class="quantity__button" data-quantity-plus aria-label="{{ 'products.quantity_increase' | t }}">
+                      {% render 'icon', name: 'plus' %}
+                    </button>
+                  </div>
+
+                  <button
+                    type="submit"
+                    name="add"
+                    class="button product__add"
+                    data-add-button
+                    {% unless current_variant.available %}
+                      disabled
+                    {% endunless %}
+                  >
+                    <span data-add-label>
+                      {%- if current_variant.available -%}{{ 'products.add_to_cart' | t }}{%- else -%}{{ 'products.sold_out' | t }}{%- endif -%}
+                    </span>
+                  </button>
+                </div>
+
+                {%- if block.settings.show_dynamic_checkout -%}
+                  <div class="product__dynamic">{{ form | payment_button }}</div>
+                {%- endif -%}
+
+                <p class="product__message small" role="status" aria-live="polite" data-product-message hidden></p>
+              {%- endform -%}
+            </div>
+
+          {%- when 'benefits' -%}
+            {%- assign benefits = product.metafields.custom.key_benefits.value -%}
+            {%- if benefits != blank -%}
+              <ul class="product__benefits" role="list" {{ block.shopify_attributes }}>
+                {%- for benefit in benefits -%}
+                  <li>{{ benefit | escape }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- endif -%}
+
+          {%- when 'collapsible' -%}
+            {%- liquid
+              assign panel_content = ''
+              case block.settings.source
+                when 'in_the_box'
+                  assign items = product.metafields.custom.in_the_box.value
+                  if items != blank
+                    capture panel_content
+                      echo '<ul class="product__list">'
+                      for item in items
+                        assign safe_item = item | escape
+                        echo '<li>' | append: safe_item | append: '</li>'
+                      endfor
+                      echo '</ul>'
+                    endcapture
+                  endif
+                when 'page'
+                  assign panel_content = block.settings.page.content
+                else
+                  assign panel_content = block.settings.content
+              endcase
+            -%}
+            {%- if panel_content != blank -%}
+              <details class="accordion" {{ block.shopify_attributes }}>
+                <summary class="accordion__summary">
+                  {{ block.settings.heading | escape }}
+                  {% render 'icon', name: 'plus', class: 'accordion__icon' %}
+                </summary>
+                <div class="accordion__content rte">{{ panel_content }}</div>
+              </details>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
   </div>
 
-  <div class="basic-product__info">
-    {%- if product.vendor != blank -%}<p class="eyebrow">{{ product.vendor | escape }}</p>{%- endif -%}
-    <h1 class="h2">{{ product.title | escape }}</h1>
-    <p class="basic-product__price">{{ current_variant.price | money }}</p>
-
-    {%- if current_variant.available -%}
-      <span class="availability">{{ 'products.in_stock' | t }}</span>
-    {%- else -%}
-      <span class="availability availability--sold-out">{{ 'products.sold_out' | t }}</span>
-    {%- endif -%}
-
-    {%- form 'product', product, class: 'basic-form' -%}
-      {%- unless product.has_only_default_variant -%}
-        <div class="field">
-          <label class="field__label" for="Variant-{{ section.id }}">{{ 'products.variant' | t }}</label>
-          <select id="Variant-{{ section.id }}" name="id" class="basic-select" data-variant-select>
-            {%- for variant in product.variants -%}
-              <option value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled{% endunless %}>
-                {{ variant.title | escape }} – {{ variant.price | money }}{% unless variant.available %} ({{ 'products.sold_out' | t }}){% endunless %}
-              </option>
-            {%- endfor -%}
-          </select>
-        </div>
-      {%- else -%}
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
-      {%- endunless -%}
-
-      <div class="field">
-        <label class="field__label" for="Quantity-{{ section.id }}">{{ 'products.quantity' | t }}</label>
-        <input id="Quantity-{{ section.id }}" class="field__input basic-qty" type="number" name="quantity" value="1" min="1" inputmode="numeric">
-      </div>
-
-      <button type="submit" class="button button--full" {% unless current_variant.available %}disabled{% endunless %}>
-        {%- if current_variant.available -%}{{ 'products.add_to_cart' | t }}{%- else -%}{{ 'products.sold_out' | t }}{%- endif -%}
-      </button>
-    {%- endform -%}
-
-    <div class="rte">{{ product.description }}</div>
-  </div>
-</section>
+  <script type="application/json" data-variants>
+    [
+      {%- for variant in product.variants -%}
+        {
+          "id": {{ variant.id }},
+          "available": {{ variant.available | json }},
+          "options": {{ variant.options | json }},
+          "price": {{ variant.price | money | json }},
+          "compare": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
+          "media": {% if variant.featured_media %}{{ variant.featured_media.id }}{% else %}null{% endif %}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+</ns-product>
 
 {% schema %}
-{ "name": "Product (temporary)", "tag": "div", "settings": [] }
+{
+  "name": "Product",
+  "tag": "section",
+  "class": "section-main-product",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "vendor", "name": "Brand", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows the product's Vendor field. Hidden when the vendor is the shop name." }
+    ] },
+    { "type": "title", "name": "Title", "limit": 1, "settings": [] },
+    { "type": "spec_line", "name": "Spec line", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Uses the product metafield custom.spec_line (list of single line text). Hidden when empty." }
+    ] },
+    { "type": "price", "name": "Price", "limit": 1, "settings": [
+      { "type": "text", "id": "tax_note", "label": "Note under the price", "default": "Kaina su PVM." }
+    ] },
+    { "type": "variant_picker", "name": "Variant picker", "limit": 1, "settings": [] },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show express checkout buttons", "default": false }
+    ] },
+    { "type": "benefits", "name": "Key benefits", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Uses the product metafield custom.key_benefits (list of single line text). Hidden when empty." }
+    ] },
+    { "type": "text", "name": "Text", "settings": [
+      { "type": "richtext", "id": "text", "label": "Text" }
+    ] },
+    {
+      "type": "collapsible",
+      "name": "Collapsible row",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Pristatymas ir grąžinimas" },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Content",
+          "options": [
+            { "value": "custom", "label": "Text below" },
+            { "value": "page", "label": "A page" },
+            { "value": "in_the_box", "label": "Product metafield custom.in_the_box" }
+          ],
+          "default": "custom"
+        },
+        { "type": "richtext", "id": "content", "label": "Text" },
+        { "type": "page", "id": "page", "label": "Page" }
+      ]
+    }
+  ]
+}
 {% endschema %}

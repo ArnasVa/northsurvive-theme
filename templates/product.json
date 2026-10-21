@@ -1,6 +1,110 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "main": { "type": "main-product", "settings": {} }
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "spec_line": {
+          "type": "spec_line",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "tax_note": "Kaina su PVM."
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false
+          }
+        },
+        "benefits": {
+          "type": "benefits",
+          "settings": {}
+        },
+        "in_box": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Komplekte",
+            "source": "in_the_box"
+          }
+        },
+        "delivery": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Pristatymas ir grąžinimas",
+            "source": "custom",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "spec_line",
+        "price",
+        "variant_picker",
+        "buy_buttons",
+        "benefits",
+        "in_box",
+        "delivery"
+      ],
+      "settings": {
+        "show_breadcrumbs": true
+      }
+    },
+    "details": {
+      "type": "ns-product-details",
+      "settings": {
+        "description_heading": "Apie produktą",
+        "specs_heading": "Techninės specifikacijos"
+      }
+    },
+    "related": {
+      "type": "ns-related-products",
+      "settings": {
+        "eyebrow": "Taip pat",
+        "heading": "Jums gali praversti",
+        "products_to_show": 4,
+        "show_quick_add": false
+      }
+    },
+    "kit_contents": {
+      "type": "ns-kit-contents",
+      "settings": {
+        "eyebrow": "Rinkinyje",
+        "heading": "Kas yra šiame rinkinyje",
+        "text": "Kiekvieną rinkinio produktą galite įsigyti ir atskirai.",
+        "show_quick_add": true
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "kit_contents",
+    "details",
+    "related"
+  ]
 }

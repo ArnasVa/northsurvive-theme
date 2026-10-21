@@ -3,7 +3,7 @@
   image fades in on hover), brand, title, Spec Line, real price and stock.
   Everything comes from Shopify; nothing is hard-coded.
 
-  Spec Line: filled from the product metafield `ns.spec_line`
+  Spec Line: filled from the product metafield `custom.spec_line`
   (type: list of single line text, max 3 values, e.g. "600 lm", "IP66").
   If the metafield is empty the line is simply not shown.
 
@@ -86,7 +86,7 @@
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
 
-    {%- assign spec_values = product.metafields.ns.spec_line.value -%}
+    {%- assign spec_values = product.metafields.custom.spec_line.value -%}
     {%- if spec_values != blank -%}
       <p class="spec-line">
         {%- for spec in spec_values limit: 3 -%}

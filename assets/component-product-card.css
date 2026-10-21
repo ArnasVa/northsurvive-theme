@@ -72,3 +72,6 @@
   .product-card__title { font-size: 0.9375rem; }
   .product-card .button--small { padding-inline: var(--space-2); font-size: 0.8125rem; white-space: normal; text-align: center; }
 }
+
+/* Related products section (product page) */
+.related { display: block; border-top: 1px solid var(--color-line); }

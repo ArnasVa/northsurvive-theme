@@ -1,0 +1,62 @@
+{%- comment -%}
+  NorthSurvive · sections/ns-kit-contents.liquid
+  For kit product pages: "Rinkinyje" — every product in the kit as a real
+  product card, each one also available on its own.
+  Source: the product metafield custom.kit_components (list of product
+  references). Without it, the text list custom.in_the_box is shown instead.
+  Hidden when neither is filled in.
+{%- endcomment -%}
+{%- liquid
+  assign components = product.metafields.custom.kit_components.value
+  assign in_the_box = product.metafields.custom.in_the_box.value
+-%}
+
+{%- if components != blank or in_the_box != blank -%}
+  {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+  {{ 'section-product-details.css' | asset_url | stylesheet_tag }}
+
+  <section class="section section--white kit-contents" aria-labelledby="KitContentsHeading-{{ section.id }}">
+    <div class="page-width">
+      <div class="section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="KitContentsHeading-{{ section.id }}" class="section-head__title">{{ section.settings.heading | escape }}</h2>
+        </div>
+        {%- if section.settings.text != blank -%}
+          <p class="section-head__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if components != blank -%}
+        <ul class="product-grid" role="list">
+          {%- for item in components -%}
+            <li>{% render 'product-card', product: item, show_quick_add: section.settings.show_quick_add %}</li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <ul class="kit-contents__list" role="list">
+          {%- for item in in_the_box -%}
+            <li>{{ item | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kit contents",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Rinkinyje" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Kas yra šiame rinkinyje" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Kiekvieną rinkinio produktą galite įsigyti ir atskirai." },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show add-to-cart buttons", "default": true },
+    { "type": "paragraph", "content": "Uses the product metafield custom.kit_components (list of products). Hidden when empty." }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
