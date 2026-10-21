@@ -1,0 +1,72 @@
+{% doc %}
+  One line in the cart (drawer and cart page): image, brand, title,
+  variant, quantity control, line price and remove.
+  Works without JavaScript on the cart page (updates[] inputs and the
+  remove link); assets/cart.js makes it instant.
+
+  @param {object} item - The cart line item
+  @param {number} line - 1-based line number
+
+  @example
+  {% render 'cart-line-item', item: item, line: forloop.index %}
+{% enddoc %}
+{%- liquid
+  assign show_vendor = true
+  assign vendor_handle = item.vendor | handle
+  assign shop_handle = shop.name | handle
+  if item.vendor == blank or vendor_handle == shop_handle
+    assign show_vendor = false
+  endif
+-%}
+<li class="cart-item" data-line="{{ line }}" data-key="{{ item.key }}">
+  <a href="{{ item.url }}" class="cart-item__media" tabindex="-1" aria-hidden="true">
+    {%- if item.image -%}
+      {{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
+    {%- endif -%}
+  </a>
+
+  <div class="cart-item__info">
+    {%- if show_vendor -%}<p class="eyebrow">{{ item.vendor | escape }}</p>{%- endif -%}
+    <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title | escape }}</a>
+    {%- unless item.product.has_only_default_variant -%}
+      <p class="cart-item__variant">{{ item.variant.title | escape }}</p>
+    {%- endunless -%}
+    {%- for property in item.properties -%}
+      {%- assign first_char = property.first | slice: 0 -%}
+      {%- if property.last != blank and first_char != '_' -%}
+        <p class="cart-item__variant">{{ property.first | escape }}: {{ property.last | escape }}</p>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="cart-item__row">
+      <div class="quantity quantity--small">
+        <button type="button" class="quantity__button" data-cart-qty="-1" aria-label="{{ 'products.quantity_decrease' | t }}">
+          {% render 'icon', name: 'minus' %}
+        </button>
+        <label for="CartQty-{{ item.key | handle }}" class="visually-hidden">{{ 'products.quantity' | t }}</label>
+        <input
+          id="CartQty-{{ item.key | handle }}"
+          class="quantity__input"
+          type="number"
+          name="updates[]"
+          value="{{ item.quantity }}"
+          min="0"
+          inputmode="numeric"
+          data-cart-input
+        >
+        <button type="button" class="quantity__button" data-cart-qty="1" aria-label="{{ 'products.quantity_increase' | t }}">
+          {% render 'icon', name: 'plus' %}
+        </button>
+      </div>
+
+      <div class="cart-item__price">
+        {%- if item.original_line_price > item.final_line_price -%}
+          <s class="cart-item__compare">{{ item.original_line_price | money }}</s>
+        {%- endif -%}
+        <span>{{ item.final_line_price | money }}</span>
+      </div>
+    </div>
+
+    <a href="{{ item.url_to_remove }}" class="cart-item__remove" data-cart-remove>{{ 'cart.remove' | t }}</a>
+  </div>
+</li>

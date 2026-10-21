@@ -1,6 +1,22 @@
 {
   "sections": {
-    "main": { "type": "main-cart", "settings": {} }
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "heading": "Krepšelis",
+        "continue_label": "Tęsti apsipirkimą",
+        "continue_link": "",
+        "footer_note": "Pristatymo kaina apskaičiuojama atsiskaitant.",
+        "show_note": false,
+        "note_label": "Pastaba užsakymui",
+        "empty_heading": "Krepšelis kol kas tuščias.",
+        "empty_text": "Pradėkite nuo rinkinio arba pasirinkite atskirus produktus.",
+        "empty_button_label": "Rinktis rinkinį",
+        "empty_button_link": "shopify://collections/emergency-kits"
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

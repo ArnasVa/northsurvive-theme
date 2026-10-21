@@ -136,8 +136,10 @@
         if (!response.ok) throw new Error(result.description || result.message || this.dataset.errorText);
 
         var cart = await fetch((window.Shopify && window.Shopify.routes ? window.Shopify.routes.root : '/') + 'cart.js').then((r) => r.json());
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { itemCount: cart.item_count, cart: cart, source: 'product' } }));
-        this.showMessage(this.dataset.addedText, false);
+        var detail = { itemCount: cart.item_count, cart: cart, source: 'product' };
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: detail }));
+        // The side cart opens by itself; show the inline message only when it is switched off
+        if (!detail.openedDrawer) this.showMessage(this.dataset.addedText, false);
       } catch (error) {
         this.showMessage(error.message || this.dataset.errorText, true);
       } finally {

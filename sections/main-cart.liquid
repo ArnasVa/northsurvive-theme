@@ -1,55 +1,88 @@
 {%- comment -%}
   NorthSurvive · sections/main-cart.liquid
-  TEMPORARY cart page using Shopify's native cart form. Works without
-  JavaScript. Phase 4 adds the cart drawer and the final design.
+  The cart page. Same line items as the side cart. Works without
+  JavaScript (Atnaujinti button, remove links); assets/cart.js makes
+  quantity changes instant. Checkout is Shopify's native checkout.
 {%- endcomment -%}
-{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+{{ 'component-cart.css' | asset_url | stylesheet_tag }}
 
-<section class="page-width basic">
-  <header class="basic__head"><h1>{{ 'cart.title' | t }}</h1></header>
+<ns-cart class="cart-page page-width" data-section-id="{{ section.id }}">
+  <header class="cart-page__head">
+    <h1 class="cart-page__title">{{ section.settings.heading | escape }}</h1>
+    {%- if cart.item_count > 0 -%}
+      <a href="{{ section.settings.continue_link | default: routes.all_products_collection_url }}" class="text-link">{{ section.settings.continue_label | escape }}</a>
+    {%- endif -%}
+  </header>
 
-  {%- if cart.item_count == 0 -%}
-    <div style="display: grid; gap: var(--space-5); justify-items: start;">
-      <p class="lead">{{ 'cart.empty' | t }}</p>
-      <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow-right' %}</a>
-    </div>
-  {%- else -%}
-    <form action="{{ routes.cart_url }}" method="post" class="basic-cart">
-      <div>
-        {%- for item in cart.items -%}
-          <div class="basic-cart__row">
-            {%- if item.image -%}
-              {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 96, height: 96, alt: item.product.title }}
-            {%- else -%}
-              <span></span>
-            {%- endif -%}
-            <div>
-              {%- if item.vendor != blank -%}<p class="eyebrow">{{ item.vendor | escape }}</p>{%- endif -%}
-              <a href="{{ item.url }}" class="title" style="display: block;">{{ item.product.title | escape }}</a>
-              {%- unless item.product.has_only_default_variant -%}<p class="small muted">{{ item.variant.title | escape }}</p>{%- endunless -%}
-              <p style="margin-top: var(--space-2);"><a href="{{ item.url_to_remove }}" class="small muted" style="text-decoration: underline; text-underline-offset: 4px;">{{ 'cart.remove' | t }}</a></p>
-            </div>
-            <div class="field">
-              <label class="visually-hidden" for="Qty-{{ item.key }}">{{ 'products.quantity' | t }}</label>
-              <input id="Qty-{{ item.key }}" class="field__input" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
-            </div>
-            <span style="text-align: right;">{{ item.final_line_price | money }}</span>
-          </div>
-        {%- endfor -%}
+  <div data-cart-root>
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty cart-empty--page">
+        <p class="cart-empty__heading">{{ section.settings.empty_heading | escape }}</p>
+        {%- if section.settings.empty_text != blank -%}<p class="muted">{{ section.settings.empty_text | escape }}</p>{%- endif -%}
+        <a href="{{ section.settings.empty_button_link | default: routes.all_products_collection_url }}" class="button">
+          {{ section.settings.empty_button_label | escape }}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
       </div>
-
-      <div class="basic-cart__footer">
-        <p><span class="muted">{{ 'cart.subtotal' | t }}</span> <strong>{{ cart.total_price | money }}</strong></p>
-        <p class="small muted">{{ 'cart.taxes_shipping' | t }}</p>
-        <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
-          <button type="submit" class="button button--secondary">{{ 'cart.update' | t }}</button>
-          <button type="submit" name="checkout" class="button">{{ 'cart.checkout' | t }}</button>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-page__grid" id="CartPageForm">
+        <div>
+          <ul class="cart-items cart-items--page" role="list">
+            {%- for item in cart.items -%}
+              {% render 'cart-line-item', item: item, line: forloop.index %}
+            {%- endfor -%}
+          </ul>
+          <p class="cart-error small" role="alert" data-cart-error hidden></p>
+          <noscript><button type="submit" class="button button--secondary button--small" style="margin-top: 1rem;">{{ 'cart.update' | t }}</button></noscript>
         </div>
-      </div>
-    </form>
-  {%- endif -%}
-</section>
+
+        <aside class="cart-page__summary">
+          <div class="cart-summary">
+            <span>{{ 'cart.subtotal' | t }}</span>
+            <span class="cart-summary__total">{{ cart.total_price | money }}</span>
+          </div>
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <ul class="cart-discounts" role="list">
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <li>{{ discount.title | escape }} (−{{ discount.total_allocated_amount | money }})</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if section.settings.footer_note != blank -%}
+            <p class="small muted">{{ section.settings.footer_note | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.show_note -%}
+            <div class="field cart-page__note">
+              <label for="CartNote" class="field__label">{{ section.settings.note_label | escape }}</label>
+              <textarea id="CartNote" name="note" class="field__input cart-page__textarea" rows="3">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+          <button type="submit" name="checkout" class="button button--full">
+            {{ 'cart.checkout' | t }}
+            {% render 'icon', name: 'arrow-right' %}
+          </button>
+        </aside>
+      </form>
+    {%- endif -%}
+  </div>
+</ns-cart>
 
 {% schema %}
-{ "name": "Cart (temporary)", "tag": "div", "settings": [] }
+{
+  "name": "Cart page",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Krepšelis" },
+    { "type": "text", "id": "continue_label", "label": "\"Continue shopping\" label", "default": "Tęsti apsipirkimą" },
+    { "type": "url", "id": "continue_link", "label": "\"Continue shopping\" link" },
+    { "type": "text", "id": "footer_note", "label": "Note under the total", "default": "Pristatymo kaina apskaičiuojama atsiskaitant." },
+    { "type": "checkbox", "id": "show_note", "label": "Show order note field", "default": false },
+    { "type": "text", "id": "note_label", "label": "Order note label", "default": "Pastaba užsakymui" },
+    { "type": "header", "content": "Empty cart" },
+    { "type": "text", "id": "empty_heading", "label": "Heading", "default": "Krepšelis kol kas tuščias." },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "Pradėkite nuo rinkinio arba pasirinkite atskirus produktus." },
+    { "type": "text", "id": "empty_button_label", "label": "Button label", "default": "Atrasti produktus" },
+    { "type": "url", "id": "empty_button_link", "label": "Button link" }
+  ]
+}
 {% endschema %}

@@ -80,7 +80,9 @@
     "update": "Atnaujinti",
     "subtotal": "Tarpinė suma",
     "taxes_shipping": "Pristatymo kaina apskaičiuojama atsiskaitant.",
-    "checkout": "Pereiti prie apmokėjimo"
+    "checkout": "Pereiti prie apmokėjimo",
+    "close": "Uždaryti krepšelį",
+    "view_cart": "Peržiūrėti krepšelį"
   },
   "search": {
     "title": "Paieška",
