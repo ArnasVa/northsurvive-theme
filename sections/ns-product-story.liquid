@@ -40,7 +40,7 @@
 {%- if visible > 0 -%}
   {{ 'section-product-story.css' | asset_url | stylesheet_tag }}
   <div class="product-story">{{ story_blocks }}</div>
-{%- elsif request.design_mode -%}
+{%- elsif request.design_mode and section.blocks.size == 0 -%}
   <div class="page-width section--tight">
     <p class="muted">{{ 'sections.product_story.empty_editor' | t }}</p>
   </div>
@@ -50,6 +50,7 @@
 {
   "name": "NS · Product story",
   "tag": "div",
+  "max_blocks": 50,
   "settings": [
     { "type": "paragraph", "content": "Add banners and pick the products (or a collection) each one belongs to." }
   ],

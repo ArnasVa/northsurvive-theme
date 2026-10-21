@@ -103,7 +103,7 @@
     "story": {
       "type": "ns-product-story",
       "blocks": {
-        "numbers": {
+        "ha23_numbers": {
           "type": "highlights",
           "settings": {
             "products": [
@@ -121,7 +121,7 @@
             "label_4": "Apsauga nuo vandens ir dulkių"
           }
         },
-        "light": {
+        "ha23_light": {
           "type": "image_text",
           "settings": {
             "products": [
@@ -135,7 +135,7 @@
             "text": "<p>Trys šviesos temperatūros – 3000 K, 4500 K ir 6500 K – nuo šiltos iki dienos šviesos. Taip pat yra papildoma raudona šviesa.</p>"
           }
         },
-        "hands": {
+        "ha23_hands": {
           "type": "full_banner",
           "settings": {
             "products": [
@@ -147,26 +147,756 @@
             "text": "Šviesa krypsta ten, kur žiūrite: žygyje, darbe ar namuose dingus elektrai."
           }
         },
-        "control": {
+        "core_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki"
+            ],
+            "eyebrow": "Blackout Core Kit",
+            "heading": "Vienas rinkinys pirmosioms valandoms be elektros.",
+            "value_1": "5",
+            "label_1": "Produktai rinkinyje",
+            "value_2": "4",
+            "label_2": "Sritys: šviesa, energija, ryšys, pagalba"
+          }
+        },
+        "core_split": {
           "type": "image_text",
           "settings": {
             "products": [
-              "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m"
+              "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki"
             ],
-            "media_index": 4,
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Rinkinyje",
+            "heading": "Šviesa, energija ir informacija.",
+            "text": "<p>Galvos lempa, išorinis akumuliatorius, saulės panelė, avarinis radijas ir pirmosios pagalbos rinkinys – sudėti kartu, kad nereikėtų nieko ieškoti paskutinę minutę.</p>"
+          }
+        },
+        "core_full": {
+          "type": "full_banner",
+          "settings": {
+            "products": [
+              "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki"
+            ],
+            "media_index": 3,
+            "eyebrow": "Pasiruošimas be panikos",
+            "heading": "Kai užgęsta miestas, jūs žinote, ką daryti.",
+            "text": "Svarbiausios priemonės pirmosioms valandoms be elektros – paruoštos iš anksto."
+          }
+        },
+        "start_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "other-example-product-2"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Urban Starter Kit",
+            "heading": "Pirmas žingsnis.",
+            "text": "<p>Paprasta pradžia pasiruošimui namuose – be sudėtingumo ir be didelės investicijos.</p>"
+          }
+        },
+        "start_full": {
+          "type": "full_banner",
+          "settings": {
+            "products": [
+              "other-example-product-2"
+            ],
+            "media_index": 3,
+            "eyebrow": "Pradžia",
+            "heading": "Pradėkite nuo paprastų dalykų.",
+            "text": "Rinkinį galite papildyti atskirais produktais, kai būsite pasiruošę daugiau."
+          }
+        },
+        "water_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "other-example-product-1"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Water Secure Kit",
+            "heading": "Vanduo – pirmiausia.",
+            "text": "<p>Paprastas ir aiškus sprendimas geriamajam vandeniui, kai tiekimas sutrinka ar situacija užsitęsia.</p>"
+          }
+        },
+        "water_full": {
+          "type": "full_banner",
+          "settings": {
+            "products": [
+              "other-example-product-1"
+            ],
+            "media_index": 3,
+            "eyebrow": "Nepriklausomai nuo tiekimo",
+            "heading": "Vienas svarbiausių dalykų – paruoštas iš anksto.",
+            "text": "Atrinkta realioms situacijoms. Be pertekliaus."
+          }
+        },
+        "nc1_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-nu27-ikraunama-galvos-lempa-600-lm-123-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "600 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "123 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "57 val.",
+            "label_3": "Ilgiausias veikimo laikas",
+            "value_4": "56 g",
+            "label_4": "Svoris"
+          }
+        },
+        "nc1_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-nu27-ikraunama-galvos-lempa-600-lm-123-m"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Įkraunama per USB-C",
+            "heading": "Įkraunate kaip telefoną.",
+            "text": "<p>Integruotas 850 mAh akumuliatorius įkraunamas USB-C laidu, o trys šviesos temperatūros ir raudona šviesa leidžia pritaikyti apšvietimą prie situacijos.</p>"
+          }
+        },
+        "nc2_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-ut27-mb-galvos-lempa-800-lm-168-m-raudona-sviesa-150lm-70-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "800 lm",
+            "label_1": "Baltos šviesos srautas",
+            "value_2": "168 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "150 lm",
+            "label_3": "Raudona šviesa",
+            "value_4": "74 g",
+            "label_4": "Svoris"
+          }
+        },
+        "nc2_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-ut27-mb-galvos-lempa-800-lm-168-m-raudona-sviesa-150lm-70-m"
+            ],
+            "media_index": 2,
             "image_position": "left",
-            "color": "paper",
-            "eyebrow": "Valdymas",
-            "heading": "Du mygtukai. Jokių instrukcijų.",
-            "text": "<p>Patogus dviejų mygtukų valdymas, SOS ir Beacon režimai, kai reikia būti pastebėtam.</p>"
+            "color": "white",
+            "eyebrow": "Du maitinimo būdai",
+            "heading": "Akumuliatorius arba AAA baterijos.",
+            "text": "<p>Komplekte esantis 1500 mAh akumuliatorius įkraunamas per USB-C, o prireikus lempą galima naudoti ir su 3 × AAA baterijomis.</p>"
+          }
+        },
+        "nc3_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-p23i-taktinis-zibintuvelis-3000-lm-470-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "3000 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "470 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "5000 mAh",
+            "label_3": "Akumuliatorius",
+            "value_4": "IP68",
+            "label_4": "Apsauga nuo vandens ir dulkių"
+          }
+        },
+        "nc3_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-p23i-taktinis-zibintuvelis-3000-lm-470-m"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Toliaeigė šviesa",
+            "heading": "Matote toli.",
+            "text": "<p>Iki 470 m apšvietimo nuotolis ir talpus 5000 mAh akumuliatorius su USB-C įkrovimu.</p>"
+          }
+        },
+        "nc4_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-p17ix-taktinis-zibintuvelis-5000-lm-330-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "5000 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "330 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "100 val.",
+            "label_3": "Ilgiausias veikimo laikas",
+            "value_4": "IP68",
+            "label_4": "Apsauga nuo vandens ir dulkių"
+          }
+        },
+        "nc4_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-p17ix-taktinis-zibintuvelis-5000-lm-330-m"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "„Duty-Grip“ sistema",
+            "heading": "Kryptinė, plati arba abi kartu.",
+            "text": "<p>Pasirinkite šviesos pobūdį pagal situaciją. Talpus 5500 mAh akumuliatorius įkraunamas per USB-C, o žibintuvėlį galima užrakinti RAPID-Lock funkcija.</p>"
+          }
+        },
+        "nc5_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-mh10-v2-daugiafunkcinis-zibintuvelis-1200-lm-202-m"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "1200 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "202 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "4000 mAh",
+            "label_3": "Akumuliatorius",
+            "value_4": "IP68",
+            "label_4": "Apsauga nuo vandens ir dulkių"
+          }
+        },
+        "nc5_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-mh10-v2-daugiafunkcinis-zibintuvelis-1200-lm-202-m"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Kasdienai",
+            "heading": "Paprastas ir patikimas.",
+            "text": "<p>Aviacinio aliuminio korpusas, USB-C įkrovimas, 4 ryškumo lygiai ir 3 specialieji režimai: SOS, Strobe ir Beacon.</p>"
+          }
+        },
+        "nc6_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-mt2c-pro-zibintuvelis-1800-lm"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "1800 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "520 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "28 val.",
+            "label_3": "Ilgiausias veikimo laikas",
+            "value_4": "114 g",
+            "label_4": "Svoris"
+          }
+        },
+        "nc6_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-mt2c-pro-zibintuvelis-1800-lm"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "Kompaktiškas",
+            "heading": "Mažas korpusas, toli šviečia.",
+            "text": "<p>Du ryškumo lygiai, IP68 apsauga ir atsparumas smūgiams nukritus iš 2 m aukščio.</p>"
+          }
+        },
+        "nc7_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-mt1c-pro-led-zibintuvelis-1000-lm"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "1000 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "360 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "88 mm",
+            "label_3": "Ilgis",
+            "value_4": "53 g",
+            "label_4": "Svoris"
+          }
+        },
+        "nc7_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-mt1c-pro-led-zibintuvelis-1000-lm"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Kišeninis",
+            "heading": "Telpa į kišenę.",
+            "text": "<p>Vos 88 mm ilgio žibintuvėlis tinka 18350, CR123 ir RCR123 baterijoms. IP68 apsauga ir atsparumas smūgiams nukritus iš 2 m aukščio.</p>"
+          }
+        },
+        "nc8_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "nitecore-zibintuvelis-mt10c"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "920 lm",
+            "label_1": "Šviesos srautas",
+            "value_2": "190 m",
+            "label_2": "Apšvietimo nuotolis",
+            "value_3": "57 g",
+            "label_3": "Svoris",
+            "value_4": "IPX8",
+            "label_4": "Atsparumas vandeniui"
+          }
+        },
+        "nc8_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "nitecore-zibintuvelis-mt10c"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "Su raudona šviesa",
+            "heading": "Daugiau nei viena šviesa.",
+            "text": "<p>Keli ryškumo režimai, raudona šviesa, SOS ir Strobe funkcijos – vos 91,2 mm ilgio korpuse.</p>"
           }
         }
       },
       "block_order": [
-        "numbers",
-        "light",
-        "hands",
-        "control"
+        "ha23_numbers",
+        "ha23_light",
+        "ha23_hands",
+        "core_numbers",
+        "core_split",
+        "core_full",
+        "start_split",
+        "start_full",
+        "water_split",
+        "water_full",
+        "nc1_numbers",
+        "nc1_split",
+        "nc2_numbers",
+        "nc2_split",
+        "nc3_numbers",
+        "nc3_split",
+        "nc4_numbers",
+        "nc4_split",
+        "nc5_numbers",
+        "nc5_split",
+        "nc6_numbers",
+        "nc6_split",
+        "nc7_numbers",
+        "nc7_split",
+        "nc8_numbers",
+        "nc8_split"
+      ],
+      "settings": {}
+    },
+    "story_more": {
+      "type": "ns-product-story",
+      "blocks": {
+        "xt1_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-solarbooster-28w-sulankstoma-saules-panele"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "28 W",
+            "label_1": "Saulės panelės galia",
+            "value_2": "2",
+            "label_2": "Įrenginiai vienu metu",
+            "value_3": "USB-C + A",
+            "label_3": "Jungtys"
+          }
+        },
+        "xt1_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-solarbooster-28w-sulankstoma-saules-panele"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Saulės energija",
+            "heading": "Energija iš saulės.",
+            "text": "<p>Sulankstoma panelė telpa į kuprinę, integruota atrama padeda nukreipti ją į saulę, o LCD ekranas rodo įkrovimo galią.</p>"
+          }
+        },
+        "xt2_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-rugged-solar-isorinis-akumuliatorius-su-saules-baterijomis-10-000-mah"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "10 000 mAh",
+            "label_1": "Talpa",
+            "value_2": "iki 2×",
+            "label_2": "Telefono įkrovimai",
+            "value_3": "20 W",
+            "label_3": "USB-C PD",
+            "value_4": "IP65",
+            "label_4": "Apsauga nuo dulkių ir vandens"
+          }
+        },
+        "xt2_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-rugged-solar-isorinis-akumuliatorius-su-saules-baterijomis-10-000-mah"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "Su saulės baterijomis",
+            "heading": "Įkraunamas ir saule.",
+            "text": "<p>Integruotos saulės baterijos suteikia papildomą būdą atgauti energiją be elektros tinklo, o LED žibintuvėlis praverčia tamsoje.</p>"
+          }
+        },
+        "xt3_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-rugged-isorinis-akumuliatorius-20-000-mah-35-w"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "20 000 mAh",
+            "label_1": "Talpa",
+            "value_2": "iki 4×",
+            "label_2": "Telefono įkrovimai",
+            "value_3": "35 W",
+            "label_3": "USB-C PD",
+            "value_4": "IP65",
+            "label_4": "Apsauga nuo dulkių ir vandens"
+          }
+        },
+        "xt3_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-rugged-isorinis-akumuliatorius-20-000-mah-35-w"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Keturios jungtys",
+            "heading": "Keturi įrenginiai vienu metu.",
+            "text": "<p>Keturios USB jungtys, tvirta konstrukcija aktyviam naudojimui lauke ir integruotas LED žibintuvėlis.</p>"
+          }
+        },
+        "xt4_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-45-000-mah-67-w"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "45 000 mAh",
+            "label_1": "Talpa",
+            "value_2": "67 W",
+            "label_2": "USB-C PD",
+            "value_3": "3",
+            "label_3": "Įrenginiai vienu metu"
+          }
+        },
+        "xt4_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-45-000-mah-67-w"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "Didžiausia talpa",
+            "heading": "Užtenka ir nešiojamam kompiuteriui.",
+            "text": "<p>67 W USB-C PD tinka suderinamiems USB-C nešiojamiesiems kompiuteriams, o skaitmeninis ekranas rodo likusį įkrovos lygį. Dėl didelės talpos šio modelio negalima gabenti keleiviniu lėktuvu.</p>"
+          }
+        },
+        "xt5_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-27-000-mah-67-w"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "27 000 mAh",
+            "label_1": "Talpa",
+            "value_2": "5×",
+            "label_2": "Telefono įkrovimai, bent",
+            "value_3": "67 W",
+            "label_3": "USB-C PD",
+            "value_4": "3",
+            "label_4": "Įrenginiai vienu metu"
+          }
+        },
+        "xt5_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-27-000-mah-67-w"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Telefonui ir kompiuteriui",
+            "heading": "Viena baterija visiems įrenginiams.",
+            "text": "<p>67 W USB-C PD ir trys jungtys, o skaitmeninis ekranas parodo, kiek energijos liko.</p>"
+          }
+        },
+        "xt6_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-20-000-mah-35-w"
+            ],
+            "eyebrow": "Svarbiausia",
+            "heading": "",
+            "value_1": "20 000 mAh",
+            "label_1": "Talpa",
+            "value_2": "iki 4×",
+            "label_2": "Telefono įkrovimai",
+            "value_3": "35 W",
+            "label_3": "USB-C PD",
+            "value_4": "3",
+            "label_4": "Įrenginiai vienu metu"
+          }
+        },
+        "xt6_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "xtorm-fuel-series-5-isorinis-akumuliatorius-20-000-mah-35-w"
+            ],
+            "media_index": 2,
+            "image_position": "left",
+            "color": "white",
+            "eyebrow": "Kelionėms",
+            "heading": "Telpa ir į rankinį bagažą.",
+            "text": "<p>Kompaktiška konstrukcija, skaitmeninis ekranas ir trys jungtys. Tinka gabenti lėktuvo rankiniame bagaže, laikantis oro linijų taisyklių.</p>"
+          }
+        },
+        "cp_basic_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-basic"
+            ],
+            "eyebrow": "Rinkinyje",
+            "heading": "",
+            "value_1": "33",
+            "label_1": "Pirmosios pagalbos priemonės",
+            "value_2": "1",
+            "label_2": "Dėklas viskam"
+          }
+        },
+        "cp_compact_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-compact"
+            ],
+            "eyebrow": "Rinkinyje",
+            "heading": "",
+            "value_1": "41",
+            "label_1": "Pirmosios pagalbos priemonės",
+            "value_2": "1",
+            "label_2": "Dėklas viskam"
+          }
+        },
+        "cp_emergency_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-emergency"
+            ],
+            "eyebrow": "Rinkinyje",
+            "heading": "",
+            "value_1": "56",
+            "label_1": "Pirmosios pagalbos priemonės",
+            "value_2": "1",
+            "label_2": "Dėklas viskam"
+          }
+        },
+        "cp_waterproof_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-waterproof"
+            ],
+            "eyebrow": "Rinkinyje",
+            "heading": "",
+            "value_1": "71",
+            "label_1": "Pirmosios pagalbos priemonės",
+            "value_2": "1",
+            "label_2": "Dėklas viskam"
+          }
+        },
+        "cp_family_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-family"
+            ],
+            "eyebrow": "Rinkinyje",
+            "heading": "",
+            "value_1": "76",
+            "label_1": "Pirmosios pagalbos priemonės",
+            "value_2": "1",
+            "label_2": "Dėklas viskam"
+          }
+        },
+        "cp_shared_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-basic",
+              "careplus-pirmosios-pagalbos-rinkinys-compact",
+              "careplus-pirmosios-pagalbos-rinkinys-emergency",
+              "careplus-pirmosios-pagalbos-rinkinys-family",
+              "careplus-pirmosios-pagalbos-rinkinys-professional"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Care Plus",
+            "heading": "Viskas vienoje vietoje.",
+            "text": "<p>Pleistrai, tvarsčiai, kompresai, pirštinės, žirklės ir pincetas – tvarkingai sudėti viename dėkle. Laikykite namuose, automobilyje ar kuprinėje.</p>"
+          }
+        },
+        "cp_waterproof_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "careplus-pirmosios-pagalbos-rinkinys-waterproof"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Vandeniui atsparus dėklas",
+            "heading": "Apsaugota nuo drėgmės.",
+            "text": "<p>Priemonės laikomos vandeniui atspariame dėkle – patogu žygiuose, stovyklaujant ar prie vandens.</p>"
+          }
+        },
+        "sg_numbers": {
+          "type": "highlights",
+          "settings": {
+            "products": [
+              "sangean-mmr-99-dab-fm-avarinis-radijas-arctic-camo",
+              "sangean-mmr-99-dab-fm-avarinis-radijas-midnight-black",
+              "sangean-radijas-mmr-99-dab-fm-ocean-blue",
+              "sangean-radijas-mmr-99-am-fm-forest-green",
+              "sangean-radijas-mrr-99am-fm-desert-tan"
+            ],
+            "eyebrow": "SANGEAN MMR-99",
+            "heading": "Radijas, kuris nepriklauso nuo elektros tinklo.",
+            "value_1": "2",
+            "label_1": "Energijos šaltiniai be tinklo: saulė ir dinama",
+            "value_2": "40",
+            "label_2": "Stočių atmintis",
+            "value_3": "5",
+            "label_3": "LED žibintuvėlio režimai"
+          }
+        },
+        "sg_split": {
+          "type": "image_text",
+          "settings": {
+            "products": [
+              "sangean-mmr-99-dab-fm-avarinis-radijas-arctic-camo",
+              "sangean-mmr-99-dab-fm-avarinis-radijas-midnight-black",
+              "sangean-radijas-mmr-99-dab-fm-ocean-blue",
+              "sangean-radijas-mmr-99-am-fm-forest-green",
+              "sangean-radijas-mrr-99am-fm-desert-tan"
+            ],
+            "media_index": 2,
+            "image_position": "right",
+            "color": "white",
+            "eyebrow": "Avarinis radijas",
+            "heading": "Kai neveikia nei elektra, nei internetas.",
+            "text": "<p>Saulės skydelis ir rankinė dinama leidžia papildyti energiją be elektros tinklo, o integruotas LED žibintuvėlis turi SOS funkciją. Prie telefono jungiasi per Bluetooth.</p>"
+          }
+        },
+        "sg_full": {
+          "type": "full_banner",
+          "settings": {
+            "products": [
+              "sangean-mmr-99-dab-fm-avarinis-radijas-arctic-camo",
+              "sangean-mmr-99-dab-fm-avarinis-radijas-midnight-black",
+              "sangean-radijas-mmr-99-dab-fm-ocean-blue",
+              "sangean-radijas-mmr-99-am-fm-forest-green",
+              "sangean-radijas-mrr-99am-fm-desert-tan"
+            ],
+            "media_index": 3,
+            "eyebrow": "Ryšys",
+            "heading": "Žinios ir tada, kai ryšys nutrūksta.",
+            "text": "Radijo bangos pasiekia net tada, kai mobilusis ryšys ar internetas trumpam neveikia."
+          }
+        }
+      },
+      "block_order": [
+        "xt1_numbers",
+        "xt1_split",
+        "xt2_numbers",
+        "xt2_split",
+        "xt3_numbers",
+        "xt3_split",
+        "xt4_numbers",
+        "xt4_split",
+        "xt5_numbers",
+        "xt5_split",
+        "xt6_numbers",
+        "xt6_split",
+        "cp_basic_numbers",
+        "cp_compact_numbers",
+        "cp_emergency_numbers",
+        "cp_waterproof_numbers",
+        "cp_family_numbers",
+        "cp_shared_split",
+        "cp_waterproof_split",
+        "sg_numbers",
+        "sg_split",
+        "sg_full"
       ],
       "settings": {}
     }
@@ -174,6 +904,7 @@
   "order": [
     "main",
     "story",
+    "story_more",
     "kit_contents",
     "details",
     "related"
