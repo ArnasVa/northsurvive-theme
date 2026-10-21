@@ -4,6 +4,32 @@
       "type": "main-page",
       "settings": {}
     },
+    "story": {
+      "type": "ns-image-banner",
+      "settings": {
+        "only_page": "apie-mus",
+        "fallback_product": "northsurvive-blackout-core-kit-kai-miestas-uzgesta-tu-veiki",
+        "layout": "split",
+        "image_position": "right",
+        "color": "graphite",
+        "eyebrow": "Kaip gimė NorthSurvive",
+        "heading": "Pasiruošimas be baimės.",
+        "text": "<p>NorthSurvive gimė iš paprasto klausimo: ką darytume, jei rytoj dingtų elektra, mobilusis ryšys ar vanduo? Ieškodami atsakymo pastebėjome, kad apie pasiruošimą dažniausiai kalbama per baimę, o reikalinga įranga išmėtyta po dešimtis skirtingų parduotuvių.</p><p>Norėjome tai pakeisti: ramiai, aiškiai ir be panikos. Taip atsirado NorthSurvive, Lietuvos parduotuvė miesto žmogui, kuris nori būti pasiruošęs.</p>"
+      }
+    },
+    "selection": {
+      "type": "ns-image-banner",
+      "settings": {
+        "only_page": "apie-mus",
+        "fallback_product": "nitecore-ha23-uhe-galvos-lempa-600-lm-132-m",
+        "layout": "split",
+        "image_position": "left",
+        "color": "white",
+        "eyebrow": "Kaip atrenkame produktus",
+        "heading": "Tik tai, kuo pasitikime patys.",
+        "text": "<p>Nesiekiame didelio katalogo. Kiekvieną produktą vertiname pagal tai, ar jis sprendžia konkrečią situaciją, ar gamintojas patikimas ir ar įrangą paprasta naudoti net skubant ar tamsoje.</p><p>Todėl renkamės specializuotus gamintojus: NITECORE apšvietimui, XTORM energijai, Care Plus pirmajai pagalbai ir SANGEAN radijams.</p>"
+      }
+    },
     "about": {
       "type": "ns-about",
       "blocks": {
@@ -43,18 +69,90 @@
         "c4"
       ],
       "settings": {
-        "eyebrow": "Kaip atrenkame",
-        "heading": "Atrenkame tai, kuo verta pasikliauti.",
-        "text": "<p>NorthSurvive nėra didelis katalogas. Atrenkame nedaug, bet patikimų dalykų, kurie padeda jaustis ramiau namie, kelyje ir gamtoje.</p>",
-        "button_label": "Rinktis rinkinį",
-        "button_link": "shopify://collections/emergency-kits",
+        "eyebrow": "Atrankos kriterijai",
+        "heading": "Ką patikriname prieš įtraukdami produktą.",
+        "text": "<p>Kiekvienas produktas turi atitikti visus keturis kriterijus. Jei bent vieno trūksta, jo nesiūlome.</p>",
+        "button_label": "",
         "criteria_label": "Kriterijus",
         "only_page": "apie-mus"
+      }
+    },
+    "brands": {
+      "type": "ns-brands",
+      "blocks": {
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "name": "NITECORE",
+            "label": "Šviesa",
+            "text": "Žibintuvėliai ir galvos lempos",
+            "link": "shopify://collections/nitecore"
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "name": "XTORM",
+            "label": "Energija",
+            "text": "Išoriniai akumuliatoriai ir saulės įkrovikliai",
+            "link": "shopify://collections/xtorm"
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "name": "Care Plus",
+            "label": "Pagalba",
+            "text": "Pirmosios pagalbos rinkiniai",
+            "link": "shopify://collections/careplus"
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "name": "SANGEAN",
+            "label": "Ryšys",
+            "text": "Avariniai radijai",
+            "link": "shopify://collections/sangean"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Prekės ženklai",
+        "heading": "Gamintojai, kuriais pasitikime",
+        "text": "Kiekvieną prekės ženklą pasirinkome dėl jo srities: šviesos, energijos, pirmosios pagalbos ir ryšio.",
+        "link_label": "Žiūrėti produktus",
+        "only_page": "apie-mus"
+      }
+    },
+    "kits": {
+      "type": "ns-image-banner",
+      "settings": {
+        "only_page": "apie-mus",
+        "fallback_product": "other-example-product-2",
+        "layout": "split",
+        "image_position": "right",
+        "color": "paper",
+        "eyebrow": "Kodėl rinkiniai",
+        "heading": "Viskas jau sudėta kartu.",
+        "text": "<p>Pasiruošti neturi būti sudėtinga. Iš atrinktų produktų sudarėme rinkinius konkrečioms situacijoms, todėl nereikia rinktis kiekvieno daikto atskirai ir galvoti, ar nieko nepamiršote.</p><p>Pradėkite nuo rinkinio, o vėliau papildykite jį atskirais produktais pagal savo poreikius.</p>",
+        "button_label": "Rinktis rinkinį",
+        "button_link": "shopify://collections/emergency-kits"
       }
     }
   },
   "order": [
     "main",
-    "about"
+    "story",
+    "selection",
+    "about",
+    "brands",
+    "kits"
   ]
 }

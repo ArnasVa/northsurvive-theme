@@ -289,8 +289,8 @@
         "eyebrow": "Kaip sudarome rinkinius",
         "heading": "Kiekvienas rinkinys sudarytas iš atskirų, patikrintų produktų.",
         "text": "<p>Rinkiniuose naudojame NITECORE apšvietimą, XTORM energiją, Care Plus pirmąją pagalbą ir SANGEAN radijus. Tą pačią įrangą galite įsigyti ir atskirai: papildyti savo rinkinį arba susidaryti jį patys.</p>",
-        "button_label": "Rinktis kategoriją",
-        "button_link": "/collections"
+        "button_label": "Kaip atrenkame produktus",
+        "button_link": "shopify://pages/apie-mus"
       }
     }
   },
