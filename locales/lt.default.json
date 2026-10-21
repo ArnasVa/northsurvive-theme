@@ -3,7 +3,9 @@
     "page_number": "{{ page }} puslapis",
     "pagination": "Puslapiai",
     "home": "Pradžia",
-    "breadcrumbs": "Naršymo kelias"
+    "breadcrumbs": "Naršymo kelias",
+    "previous_page": "Ankstesnis puslapis",
+    "next_page": "Kitas puslapis"
   },
   "accessibility": {
     "skip_to_content": "Pereiti prie turinio"
@@ -58,7 +60,17 @@
       "few": "{{ count }} produktai",
       "many": "{{ count }} produkto",
       "other": "{{ count }} produktų"
-    }
+    },
+    "filters": "Filtrai",
+    "close_filters": "Uždaryti filtrus",
+    "sort_by": "Rikiuoti",
+    "price_from": "Nuo, €",
+    "price_to": "Iki, €",
+    "show_results": "Rodyti rezultatus",
+    "clear_all": "Išvalyti filtrus",
+    "remove_filter": "Pašalinti filtrą",
+    "no_matches": "Pagal pasirinktus filtrus produktų nerasta.",
+    "browse_categories": "Žiūrėti kategorijas"
   },
   "cart": {
     "title": "Krepšelis",

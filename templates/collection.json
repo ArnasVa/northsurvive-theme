@@ -1,6 +1,85 @@
 {
   "sections": {
-    "main": { "type": "main-collection", "settings": {} }
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_breadcrumbs": true,
+        "show_description": true,
+        "products_per_page": 24,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "show_quick_add": true
+      }
+    },
+    "kits_banner": {
+      "type": "ns-image-banner",
+      "settings": {
+        "fallback_product": "other-example-product-2",
+        "layout": "split",
+        "image_position": "right",
+        "color": "white",
+        "eyebrow": "Rinkiniai",
+        "heading": "Norite visko iš karto?",
+        "text": "<p>Rinkiniuose atrinkti produktai jau sudėti kartu.</p>",
+        "button_label": "Rinktis rinkinį",
+        "button_link": "shopify://collections/emergency-kits"
+      }
+    },
+    "other": {
+      "type": "ns-essentials",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "zibintuveliai",
+            "title": "Apšvietimas",
+            "label": ""
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "isorines-baterijos-ir-saules-paneles",
+            "title": "Energija",
+            "label": ""
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "pirmosios-pagalbos-rinkiniai",
+            "title": "Pirmoji pagalba",
+            "label": ""
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "avariniai-radijai",
+            "title": "Avariniai radijai",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "layout": "row",
+        "eyebrow": "Kategorijos",
+        "heading": "Kitos kategorijos",
+        "text": "",
+        "show_count": true,
+        "main_heading": false
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "kits_banner",
+    "other"
+  ]
 }

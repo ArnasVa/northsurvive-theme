@@ -1,0 +1,39 @@
+{% doc %}
+  Accessible numbered pagination for collections, search and blogs.
+
+  @param {object} paginate - The paginate object
+
+  @example
+  {% render 'pagination', paginate: paginate %}
+{% enddoc %}
+<nav class="pagination" aria-label="{{ 'general.pagination' | t }}">
+  <ul class="pagination__list" role="list">
+    {%- if paginate.previous -%}
+      <li>
+        <a href="{{ paginate.previous.url }}" class="pagination__item pagination__item--arrow" data-facets-link>
+          <span aria-hidden="true">←</span>
+          <span class="visually-hidden">{{ 'general.previous_page' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- for part in paginate.parts -%}
+      <li>
+        {%- if part.is_link -%}
+          <a href="{{ part.url }}" class="pagination__item" data-facets-link>{{ part.title }}</a>
+        {%- elsif part.title == paginate.current_page -%}
+          <span class="pagination__item is-current" aria-current="page">{{ part.title }}</span>
+        {%- else -%}
+          <span class="pagination__item pagination__item--gap">{{ part.title }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+    {%- if paginate.next -%}
+      <li>
+        <a href="{{ paginate.next.url }}" class="pagination__item pagination__item--arrow" data-facets-link>
+          <span aria-hidden="true">→</span>
+          <span class="visually-hidden">{{ 'general.next_page' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+</nav>

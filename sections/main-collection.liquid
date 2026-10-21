@@ -1,43 +1,243 @@
 {%- comment -%}
   NorthSurvive · sections/main-collection.liquid
-  TEMPORARY collection page: title, description and a paginated product grid.
-  Phase 4 adds filters, sorting and the final product card.
+  A category page: breadcrumbs, title, short intro, filters, sorting,
+  product grid and pagination. All products, prices and stock come from
+  Shopify.
+
+  Filters are Shopify's own storefront filters. Choose which ones appear in
+  the free "Shopify Search & Discovery" app (availability, price, brand…).
+  Behaviour: assets/facets.js (<ns-facets>) updates the results without a
+  page reload; without JavaScript the "Rodyti" button submits the form.
 {%- endcomment -%}
-{{ 'template-basic.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 
-<section class="page-width basic">
-  <header class="basic__head">
-    <p class="eyebrow">{{ 'collections.products_count' | t: count: collection.products_count }}</p>
-    <h1>{{ collection.title | escape }}</h1>
-    {%- if collection.description != blank -%}<div class="rte muted">{{ collection.description }}</div>{%- endif -%}
-  </header>
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <ns-facets class="collection page-width" data-section-id="{{ section.id }}">
+    {%- if section.settings.show_breadcrumbs -%}
+      {% render 'breadcrumbs' %}
+    {%- endif -%}
 
-  {%- paginate collection.products by 24 -%}
-    <div class="basic__grid">
-      {%- for product in collection.products -%}
-        <a href="{{ product.url }}" class="basic-card">
-          <div class="basic-card__media">
-            {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 900px) 25vw, 50vw' }}
+    <header class="collection__head">
+      <h1 class="collection__title">{{ collection.title | escape }}</h1>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="collection__intro rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- liquid
+      assign active_count = 0
+      for filter in collection.filters
+        assign active_count = active_count | plus: filter.active_values.size
+        if filter.type == 'price_range'
+          if filter.min_value.value != blank or filter.max_value.value != blank
+            assign active_count = active_count | plus: 1
+          endif
+        endif
+      endfor
+    -%}
+
+    <div class="collection__toolbar">
+      {%- if section.settings.enable_filtering and collection.filters.size > 0 -%}
+        <button type="button" class="button button--secondary button--small collection__filter-toggle" data-facets-open aria-controls="Facets-{{ section.id }}" aria-expanded="false">
+          {{ 'collections.filters' | t }}
+          <span class="collection__filter-count" data-facets-count {% if active_count == 0 %}hidden{% endif %}>{{ active_count }}</span>
+        </button>
+      {%- endif -%}
+
+      <p class="collection__count" data-results-count>{{ 'collections.products_count' | t: count: collection.products_count }}</p>
+
+      {%- if section.settings.enable_sorting -%}
+        <div class="collection__sort">
+          <label for="SortBy-{{ section.id }}" class="collection__sort-label">{{ 'collections.sort_by' | t }}</label>
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          <select id="SortBy-{{ section.id }}" name="sort_by" class="collection__sort-select" form="FacetsForm-{{ section.id }}" data-facets-sort data-default="{{ collection.default_sort_by | escape }}">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="collection__layout{% unless section.settings.enable_filtering and collection.filters.size > 0 %} collection__layout--no-filters{% endunless %}">
+      {%- if section.settings.enable_filtering and collection.filters.size > 0 -%}
+        <aside class="facets" id="Facets-{{ section.id }}" aria-label="{{ 'collections.filters' | t }}" data-facets-panel>
+          <div class="facets__top">
+            <p class="facets__heading">{{ 'collections.filters' | t }}</p>
+            <button type="button" class="icon-button facets__close" data-facets-close>
+              {% render 'icon', name: 'close' %}
+              <span class="visually-hidden">{{ 'collections.close_filters' | t }}</span>
+            </button>
+          </div>
+
+          <form id="FacetsForm-{{ section.id }}" class="facets__form" action="{{ collection.url }}" method="get" data-facets-form>
+            {%- for filter in collection.filters -%}
+              {%- case filter.type -%}
+                {%- when 'list', 'boolean' -%}
+                  <details class="facets__group" {% if forloop.index <= 3 or filter.active_values.size > 0 %}open{% endif %}>
+                    <summary class="facets__summary">
+                      {{ filter.label | escape }}
+                      {% render 'icon', name: 'chevron-down', class: 'facets__chevron' %}
+                    </summary>
+                    <ul class="facets__values" role="list">
+                      {%- for value in filter.values -%}
+                        <li>
+                          <label class="facets__option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              {% if value.active %}
+                                checked
+                              {% endif %}
+                              {% if value.count == 0 and value.active == false %}
+                                disabled
+                              {% endif %}
+                            >
+                            <span class="facets__label">{{ value.label | escape }}</span>
+                            <span class="facets__value-count">{{ value.count }}</span>
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+
+                {%- when 'price_range' -%}
+                  <details class="facets__group" open>
+                    <summary class="facets__summary">
+                      {{ filter.label | escape }}
+                      {% render 'icon', name: 'chevron-down', class: 'facets__chevron' %}
+                    </summary>
+                    {%- liquid
+                      assign max_price = filter.range_max | divided_by: 100.0 | ceil
+                    -%}
+                    <div class="facets__price">
+                      <div class="field">
+                        <label class="field__label" for="PriceMin-{{ section.id }}">{{ 'collections.price_from' | t }}</label>
+                        <input
+                          id="PriceMin-{{ section.id }}"
+                          class="field__input"
+                          type="number"
+                          inputmode="decimal"
+                          name="{{ filter.min_value.param_name }}"
+                          {% if filter.min_value.value %}
+                            value="{{ filter.min_value.value | divided_by: 100.0 }}"
+                          {% endif %}
+                          placeholder="0"
+                          min="0"
+                          max="{{ max_price }}"
+                          step="1"
+                        >
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="PriceMax-{{ section.id }}">{{ 'collections.price_to' | t }}</label>
+                        <input
+                          id="PriceMax-{{ section.id }}"
+                          class="field__input"
+                          type="number"
+                          inputmode="decimal"
+                          name="{{ filter.max_value.param_name }}"
+                          {% if filter.max_value.value %}
+                            value="{{ filter.max_value.value | divided_by: 100.0 }}"
+                          {% endif %}
+                          placeholder="{{ max_price }}"
+                          min="0"
+                          max="{{ max_price }}"
+                          step="1"
+                        >
+                      </div>
+                    </div>
+                  </details>
+              {%- endcase -%}
+            {%- endfor -%}
+
+            <div class="facets__actions">
+              <button type="submit" class="button button--full facets__submit">{{ 'collections.show_results' | t }}</button>
+              {%- if active_count > 0 -%}
+                <a href="{{ collection.url }}{% if collection.sort_by != blank %}?sort_by={{ collection.sort_by }}{% endif %}" class="text-link" data-facets-link>{{ 'collections.clear_all' | t }}</a>
+              {%- endif -%}
+            </div>
+          </form>
+        </aside>
+        <div class="facets__backdrop" data-facets-close hidden></div>
+      {%- endif -%}
+
+      <div class="collection__results" data-collection-results aria-live="polite">
+        {%- if active_count > 0 -%}
+          <ul class="active-filters" role="list">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <li>
+                  <a href="{{ value.url_to_remove }}" class="active-filters__chip" data-facets-link>
+                    {{ value.label | escape }}
+                    {% render 'icon', name: 'close' %}
+                    <span class="visually-hidden">{{ 'collections.remove_filter' | t }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+                  <li>
+                    <a href="{{ filter.url_to_remove }}" class="active-filters__chip" data-facets-link>
+                      {{- filter.min_value.value | default: 0 | money -}} – {{- filter.max_value.value | default: filter.range_max | money -}}
+                      {% render 'icon', name: 'close' %}
+                      <span class="visually-hidden">{{ 'collections.remove_filter' | t }}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if collection.products.size > 0 -%}
+          <ul class="product-grid collection__grid" role="list">
+            {%- for product in collection.products -%}
+              <li>
+                {%- liquid
+                  assign eager = false
+                  if forloop.index <= 3 and paginate.current_page == 1
+                    assign eager = true
+                  endif
+                -%}
+                {% render 'product-card', product: product, show_quick_add: section.settings.show_quick_add, eager: eager, sizes: '(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw' %}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- else -%}
+          <div class="collection__empty">
+            {%- if active_count > 0 -%}
+              <p class="lead">{{ 'collections.no_matches' | t }}</p>
+              <a href="{{ collection.url }}" class="button button--secondary" data-facets-link>{{ 'collections.clear_all' | t }}</a>
             {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              <p class="lead">{{ 'collections.empty' | t }}</p>
+              <a href="{{ routes.collections_url }}" class="button button--secondary">{{ 'collections.browse_categories' | t }}</a>
             {%- endif -%}
           </div>
-          {%- if product.vendor != blank -%}<span class="eyebrow">{{ product.vendor | escape }}</span>{%- endif -%}
-          <span class="title">{{ product.title | escape }}</span>
-          <span>{{ product.price | money }}</span>
-          {%- unless product.available -%}<span class="availability availability--sold-out">{{ 'products.sold_out' | t }}</span>{%- endunless -%}
-        </a>
-      {%- else -%}
-        <p class="muted">{{ 'collections.empty' | t }}</p>
-      {%- endfor -%}
+        {%- endif -%}
+      </div>
     </div>
-    {%- if paginate.pages > 1 -%}
-      <nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>
-    {%- endif -%}
-  {%- endpaginate -%}
-</section>
+  </ns-facets>
+{%- endpaginate -%}
 
 {% schema %}
-{ "name": "Collection (temporary)", "tag": "div", "settings": [] }
+{
+  "name": "Collection",
+  "tag": "section",
+  "class": "section-main-collection",
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description above products", "default": true, "info": "Keep it short. Longer texts work best in a section below the products." },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filters", "default": true, "info": "Choose the filters in the Shopify Search & Discovery app." },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show add-to-cart buttons", "default": true }
+  ]
+}
 {% endschema %}

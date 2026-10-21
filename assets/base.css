@@ -318,6 +318,12 @@ a { color: inherit; text-decoration: none; }
 .availability--sold-out { color: var(--color-stone); }
 .availability--sold-out::before { background: transparent; border: 1.5px solid var(--color-stone); }
 
+/* Breadcrumbs (product and collection pages) */
+.breadcrumbs__list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; font-size: 0.8125rem; color: var(--color-stone); }
+.breadcrumbs__list li + li::before { content: '/'; margin-right: var(--space-2); color: #b6b9b7; }
+.breadcrumbs__list a:hover,
+.breadcrumbs__list [aria-current] { color: var(--color-ink); }
+
 /* 8. Utilities and accessibility ------------------------------------------- */
 :focus-visible { outline: 2px solid var(--color-signal); outline-offset: 3px; }
 
